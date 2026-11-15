@@ -1,0 +1,53 @@
+{
+  "name": "LiveGomezSynth 0.1-dev",
+  "version": "0.1-dev",
+  "product": "SMK-37 Pro_20000",
+  "family": "LIVEGMZ",
+  "file": "livegomezsynth-0.1-dev-smk37.fwsc",
+  "size": 651819,
+  "sha256": "83f5c764958d6b0fbb7aa09b1edc06d9aff29364d8ada875e226ac07965a4505",
+  "built": "2026-11-15T04:58:41Z",
+  "source_commit": null,
+  "source_dirty": true,
+  "package_kind": "update (needs SMKSYNTH 1.x or LiveGomezSynth on the keyboard; no first-install package for stock V016 yet)",
+  "budgets": {
+    "image": 290976,
+    "image_max": 327680,
+    "ram": 72976,
+    "ram_max": 98304
+  },
+  "patches": 436,
+  "patches_per_category": {
+    "Pianos": 12,
+    "E-Pianos": 12,
+    "Organs": 20,
+    "Strings": 9,
+    "Winds": 9,
+    "Choirs": 7,
+    "Brass": 15,
+    "Basses": 16,
+    "Pads": 19,
+    "Leads": 16,
+    "SFX": 8,
+    "Complex": 29,
+    "Drums": 5,
+    "Guitars": 7,
+    "ICONIC": 252
+  },
+  "patches_per_engine": {
+    "syn": 212,
+    "drm": 5,
+    "fm2": 90,
+    "org": 40,
+    "sp": 72,
+    "fm6": 17
+  },
+  "golden_sha256": "9afd4bb87ee73d9d75a373b095192c84179cbc610ea08b9bef1385b5a596f6eb",
+  "simulator_wasm_sha256": "28ee2f9bb101af23e49d5c9b4ca8eb2a8ed722fe4c882a5e0808faee2f369f1d",
+  "hardware_tested": false,
+  "gates": {
+    "G1_simulator_owner_validation": "pending",
+    "G2_hardware_dev": "pending",
+    "G3_soak": "pending"
+  }
+}

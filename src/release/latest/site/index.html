@@ -1,0 +1,139 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LiveGomezSynth Simulator</title>
+    <link rel="stylesheet" href="sim.css" />
+  </head>
+  <body>
+    <header class="top">
+      <h1>LiveGomezSynth <small>simulator</small></h1>
+      <p class="tag">
+        The firmware's own C code compiled to WebAssembly: screen, sound and
+        LEDs come from the firmware. Work in progress (M1: PATCH, PERFORM and
+        EDIT).
+      </p>
+    </header>
+
+    <main>
+      <section class="stage">
+        <div class="device" id="device" aria-label="Simulated SMK-37 Pro">
+          <div class="wheels">
+            <label class="wheel" title="Pitch wheel (springs back)"
+              ><input id="pw" type="range" min="-100" max="100" value="0"
+            /></label>
+            <label class="wheel" title="Mod wheel"
+              ><input id="mw" type="range" min="0" max="127" value="0"
+            /></label>
+          </div>
+          <div class="logo">M-VAVE</div>
+          <div class="screenbox">
+            <canvas
+              id="screen"
+              width="240"
+              height="240"
+              aria-label="Screen"
+            ></canvas>
+            <button id="power" class="power">
+              <span class="p1">Start audio</span
+              ><span class="p2">tap to power on</span>
+            </button>
+          </div>
+          <div class="btnsL" id="btnsL"></div>
+          <div class="knobs" id="knobs"></div>
+          <div class="pads" id="pads"></div>
+          <div class="faders" id="faders"></div>
+          <div class="btnsR" id="btnsR"></div>
+          <div class="keys" id="keys" aria-label="Keyboard, C3 to C6"></div>
+        </div>
+        <div class="under" id="btns"></div>
+      </section>
+
+      <section class="info">
+        <div class="box zoom">
+          <h2>Screen (enlarged)</h2>
+          <canvas id="screenBig" width="480" height="480"></canvas>
+        </div>
+        <div class="box">
+          <h2>Controls</h2>
+          <ul>
+            <li>
+              <b>K1-K4</b> patch parameters, <b>K5-K7</b> navigation,
+              <b>K8</b> MASTER (drag a knob up/down or scroll on it).
+            </li>
+            <li>
+              <b>KNOB BANK + FADER BANK</b> together = the <b>CHORD</b> button
+              below the buttons (a mouse has one pointer).
+            </li>
+            <li>Pad LEDs, button LEDs and the screen are the firmware's.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h2>Computer keyboard</h2>
+          <table class="map">
+            <tr>
+              <th>Keys C4 .. E5</th>
+              <td>
+                <kbd>Z</kbd> <kbd>S</kbd> <kbd>X</kbd> <kbd>D</kbd> <kbd>C</kbd>
+                <kbd>V</kbd> <kbd>G</kbd> <kbd>B</kbd> <kbd>H</kbd> <kbd>N</kbd>
+                <kbd>J</kbd> <kbd>M</kbd> <kbd>,</kbd> <kbd>L</kbd> <kbd>.</kbd>
+                <kbd>;</kbd> <kbd>/</kbd>
+              </td>
+            </tr>
+            <tr>
+              <th>Keys F3 .. B3</th>
+              <td>
+                <kbd>Q</kbd> <kbd>2</kbd> <kbd>W</kbd> <kbd>3</kbd> <kbd>E</kbd>
+                <kbd>4</kbd> <kbd>R</kbd>
+              </td>
+            </tr>
+            <tr>
+              <th>Keys F5 .. G5</th>
+              <td><kbd>I</kbd> <kbd>9</kbd> <kbd>O</kbd></td>
+            </tr>
+            <tr>
+              <th>Buttons</th>
+              <td>
+                <kbd>1</kbd> KNOB BANK, <kbd>5</kbd> FADER BANK,
+                <kbd>7</kbd> PATCH, <kbd>-</kbd> PARA, <kbd>=</kbd> GLOBE,
+                <kbd>[</kbd> FX, <kbd>]</kbd> BT, <kbd>A</kbd> <kbd>F</kbd> OCT
+                &minus;/+, <kbd>&larr;</kbd> <kbd>&rarr;</kbd> &lt; &gt;
+              </td>
+            </tr>
+            <tr>
+              <th>K7</th>
+              <td><kbd>&uarr;</kbd> <kbd>&darr;</kbd></td>
+            </tr>
+          </table>
+        </div>
+        <div class="box">
+          <h2>State (developer)</h2>
+          <pre id="state">-</pre>
+          <label
+            >Velocity
+            <input id="vel" type="range" min="1" max="127" value="100"
+          /></label>
+          <button id="ped" class="small">Sustain pedal (hold, or Space)</button>
+          <div class="midirow">
+            <button id="midiBtn" class="small">Connect MIDI</button>
+            <select id="midiSel" disabled>
+              <option value="">no MIDI yet</option>
+            </select>
+          </div>
+          <p class="hint" id="midiMsg">
+            Web MIDI works in Chrome, Edge and Firefox.
+          </p>
+          <p class="hint">
+            Favorites and performances are kept in this browser (localStorage).
+            Not simulated yet: device flash, USB (see
+            DOCs/07-simulator-spec.md).
+          </p>
+          <button id="resetDb" class="small">Reset user data</button>
+        </div>
+      </section>
+    </main>
+    <script src="sim.js"></script>
+  </body>
+</html>

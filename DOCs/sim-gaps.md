@@ -1,0 +1,18 @@
+# Simulator gaps (T0.6)
+
+What `src/web/sim` does **not** reproduce yet. Anything listed here must be checked on hardware (gate G2).
+
+| Gap                                                           | Effect                                                                                                                                                                                    | Plan                                                       |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Wheel and pedal feel | wheels (sliders) and pedal (button, Space) are on the page; real wheel noise, calibration drift and pedal polarity are not modelled | check on hardware |
+| Flash storage (favorites, performances) | the page keeps the firmware's image in localStorage; flash timing, erase stalls (A-2) and the A/B copy logic are not exercised (the logic has its own power-cut test) | hardware (G2) |
+| K8 MASTER in the firmware                                     | the page and `sim.c` apply the master gain after `app_audio()`, like the device's audio IRQ; the firmware's own virtual pot in `hal/smk_input.h` is not exercised                         | check on hardware                                          |
+| USB MIDI/audio, OTA, boot guard                               | host harness stubs                                                                                                                                                                        | hardware only                                              |
+| Pad LEDs, button LEDs                                         | pad RGB from the firmware (`padled_rgb`); button LEDs from `host_leds` bits 0..13 only (BTN 14..17 have no LED bit in the harness)                                                        | extend `tests/host.c` when the UI uses them                |
+| CPU deadline, flash timing, key/pad velocity curves, pressure | not modelled (the page's velocity slider is constant)                                                                                                                                     | hardware CPU counters (T0.3, G2/G3)                        |
+| Fast taps                                                     | the firmware reads buttons through the edge API; keys are read as a level (a tap shorter than one main-loop pass, ~1 ms, could be missed in the page; not on the device, which debounces) | acceptable                                                 |
+| Sample rate                                                   | 44.1 kHz only (the firmware's tables)                                                                                                                                                     | -                                                          |
+| Chord KNOB BANK + FADER BANK                                  | a page button presses both together                                                                                                                                                       | firmware-side chord timing (D-37) is tested in M1          |
+
+How to run: `sh web/sim/build.sh && python3 -m http.server -d build/sim-site 8737`, open `http://localhost:8737/index.html?autostart`
+(tools: `brew install zig binaryen`). Headless firmware test: `node tests/sim_wasm_test.mjs` (10 checks).

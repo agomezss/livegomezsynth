@@ -1,0 +1,21 @@
+# Reference projects used to build this one: not versioned (each is its own git repository, see AGENTS.md)
+/SMKSYNTH/
+/smk37_open/
+/clipper-smk/
+
+# build output and local files
+build/
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+.venv/
+*.log
+
+# releases: only the latest one is published (GitHub Pages serves src/release/latest/site)
+/src/release/*
+!/src/release/latest/
+
+# crash dumps (the x86 toolchain runs under qemu on macOS)
+core
+core.*

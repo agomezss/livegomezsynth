@@ -1,0 +1,5 @@
+# Allowed call sites of the low-level flash primitives fl_write()/fl_erase4k() outside hal/ and loader/ (T0.5).
+# file  max-call-count     (comments are ignored). A new writer must be added here in the same change, after review.
+platform.c 18        # sector_save, slot_save, owner check, OTA and voice-store hooks (imported; to be reworked in T1.9)
+smk_restore.h 2      # the SMKSYNTH bank restore (b2_write/b2_erase); never started in this build (b1_can_begin() == 0); deleted in T0.7d
+lgs_store.h 0        # the only place new writers may live (M1, T1.9)

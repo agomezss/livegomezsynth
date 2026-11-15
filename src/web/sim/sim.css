@@ -1,0 +1,399 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
+:root {
+  --bg: #0b0e16;
+  --panel: #151a28;
+  --edge: #252c42;
+  --txt: #cfd6ea;
+  --dim: #7d86a3;
+  --acc: #5aa0ff;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font:
+    14px/1.4 system-ui,
+    sans-serif;
+}
+.top {
+  padding: 14px 20px 4px;
+}
+.top h1 {
+  margin: 0;
+  font-size: 20px;
+}
+.top small {
+  color: var(--dim);
+  font-weight: 400;
+}
+.tag {
+  margin: 4px 0 0;
+  color: var(--dim);
+  max-width: 760px;
+}
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 14px 20px 30px;
+  align-items: flex-start;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+/* the panel follows the photo of the SMK-37 Pro: every part is placed in percent of the body (714 x 280), type scales with it */
+.stage {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.device {
+  position: relative;
+  width: min(100%, 1180px);
+  aspect-ratio: 714 / 280;
+  container-type: inline-size;
+  background: linear-gradient(#eeeeec, #dcdcd9);
+  border: 1px solid #b9b9b5;
+  border-radius: 2.2cqw;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: #3a3d46;
+  user-select: none;
+}
+.device > * {
+  position: absolute;
+}
+.wheels {
+  left: 2.4%;
+  top: 6%;
+  width: 8.6%;
+  height: 31%;
+  display: flex;
+  gap: 8%;
+}
+.wheel {
+  flex: 1;
+  display: block;
+  background: linear-gradient(90deg, #111, #3a3a3e 50%, #111);
+  border-radius: 1cqw;
+  position: relative;
+}
+.wheel input {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0.85;
+  cursor: ns-resize;
+  accent-color: #8a8d96;
+}
+.logo {
+  left: 2.4%;
+  top: 40%;
+  width: 8.6%;
+  font: 800 1.5cqw/1 system-ui, sans-serif;
+  letter-spacing: 0.1cqw;
+  text-align: center;
+  color: #222;
+}
+.screenbox {
+  left: 13.2%;
+  top: 4.6%;
+  width: 9.4%;
+  aspect-ratio: 1;
+  border: 0.3cqw solid #000;
+  border-radius: 0.6cqw;
+  background: #000;
+  overflow: hidden;
+}
+#screen {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+.power {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 14, 22, 0.92);
+  color: var(--txt);
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px;
+}
+.power[hidden] {
+  display: none;
+}
+.power .p1 {
+  font-size: 1.05cqw;
+  line-height: 1.1;
+}
+.power .p2 {
+  color: var(--dim);
+  font-size: 0.75cqw;
+}
+.knobs {
+  left: 23.4%;
+  top: 3.6%;
+  width: 48.4%;
+  height: 15%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+.knob {
+  text-align: center;
+  touch-action: none;
+  cursor: ns-resize;
+}
+.knob .cap {
+  width: 3.6cqw;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4a4d58, #14151a);
+  box-shadow: 0 0.3cqw 0.6cqw rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.knob .cap::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 0.35cqw;
+  height: 28%;
+  margin-left: -0.17cqw;
+  background: #fff;
+  border-radius: 1px;
+}
+.knob .lab {
+  font-size: 0.75cqw;
+  color: #6a6e7a;
+  margin-top: 0.3cqw;
+  white-space: nowrap;
+}
+.knob.master .cap::after {
+  background: #ff8a8a;
+}
+.btnsL {
+  left: 13.2%;
+  top: 29.5%;
+  width: 9.4%;
+  height: 24%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5cqw;
+}
+.btnsR {
+  left: 75.2%;
+  top: 33%;
+  width: 22.6%;
+  height: 14%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 0.4cqw;
+  padding: 0.5cqw;
+  background: #25272e;
+  border-radius: 0.6cqw;
+}
+.btn {
+  background: #2d3038;
+  color: #d9dce6;
+  border: 0;
+  border-radius: 0.4cqw;
+  padding: 0;
+  font: 600 0.6cqw/1.05 system-ui, sans-serif;
+  cursor: pointer;
+  touch-action: none;
+  overflow: hidden;
+  box-shadow: 0 0.2cqw 0 #111;
+}
+.btnsL .btn {
+  background: #cfd0d3;
+  color: #3a3d46;
+  box-shadow: 0 0.2cqw 0 #9b9ca0;
+}
+.btn.down {
+  transform: translateY(0.15cqw);
+  box-shadow: none;
+}
+.btn.lit {
+  outline: 0.2cqw solid #ff9a3c;
+  outline-offset: -0.2cqw;
+}
+.pads {
+  left: 25.5%;
+  top: 19.3%;
+  width: 47.6%;
+  height: 21.4%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 0.7cqw;
+}
+.pad {
+  border-radius: 0.6cqw;
+  background: #2c2f38;
+  border: 0.1cqw solid #1a1c22;
+  cursor: pointer;
+  touch-action: none;
+  transition: box-shadow 60ms;
+}
+.pad.down {
+  outline: 0.2cqw solid #fff;
+}
+.faders {
+  left: 76%;
+  top: 5%;
+  width: 21.7%;
+  height: 25%;
+  display: flex;
+  justify-content: space-between;
+}
+.fader {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  width: 22%;
+  height: 100%;
+  font-size: 0.65cqw;
+  color: #6a6e7a;
+}
+.fader input {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+  accent-color: #55585f;
+}
+.fader span {
+  white-space: nowrap;
+}
+.under {
+  display: flex;
+  gap: 6px;
+}
+.under .btn {
+  background: #1d2336;
+  border: 1px solid #d8a45a;
+  font: 11px system-ui;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+.keys {
+  left: 2.4%;
+  top: 57%;
+  width: 94.8%;
+  height: 40%;
+  touch-action: none;
+}
+.key {
+  position: absolute;
+  top: 0;
+  border: 1px solid #000;
+  border-radius: 0 0 0.4cqw 0.4cqw;
+  cursor: pointer;
+}
+.key.w {
+  height: 100%;
+  background: #fbfbfa;
+}
+.key.b {
+  height: 62%;
+  background: #1a1d29;
+  z-index: 2;
+}
+.key.down.w {
+  background: #9cc3ff;
+}
+.key.down.b {
+  background: #3a62a8;
+}
+.key .kl {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.7cqw;
+  color: #889;
+  pointer-events: none;
+}
+.key.b .kl {
+  color: #99a;
+}
+.key.outer.w {
+  background: #e4e5e8;
+}
+.info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+.box {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.box h2 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+.box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+kbd {
+  background: #222a42;
+  border: 1px solid #3a4263;
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 11px;
+}
+.map th {
+  text-align: left;
+  padding-right: 8px;
+  color: var(--dim);
+  font-weight: 400;
+  white-space: nowrap;
+  vertical-align: top;
+}
+.map td {
+  padding-bottom: 4px;
+}
+pre {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #a8d0ff;
+}
+.hint {
+  color: var(--dim);
+  font-size: 12px;
+}
+.small {
+  font-size: 12px;
+}
+
+.zoom canvas {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+  border: 3px solid #000;
+  border-radius: 6px;
+  background: #000;
+  display: block;
+}
