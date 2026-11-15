@@ -39,9 +39,13 @@ The calibration data at `0xC1000` is never written by this firmware or its loade
 
 ## 4. First start
 
-- The first start initializes the user-data bank.
+- The first start initializes the user-data bank (on a keyboard that ran SMKSYNTH: its programs and favourites are cleared, its pattern slots are left alone). The panel check's `Overruns` row ends in `flash OK  s1` after that start (`s0` on later starts); `flash --` means the store was refused and nothing can be saved.
 - Panel check: hold **KNOB BANK** for 0.7 s. It tests faders, wheels, pedal, buttons and voices and shows render time. Calibration must be reported as found; if not, stop and go back.
 - Play a few categories; ICONIC is category 16.
+
+## If an update says "the device stopped after 0 requests"
+
+Versions 0.1.5 and 0.1.6 refuse SMKSYNTH's data bank (`flash --` in the panel check) and then ignore the update command. Switch the keyboard off, hold **OCTAVE-** while switching it on (the loader starts, no audio), connect the installer page and install 0.1.7 or later as usual: its first start takes the bank over and later updates work from the running firmware.
 
 ## Going back
 

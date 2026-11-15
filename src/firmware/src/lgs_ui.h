@@ -48,6 +48,17 @@ static const char *nb(uint32_t v, uint32_t w)   /* zero-padded number in one of 
     return o;
 }
 
+static const char *snb(int32_t v)               /* a signed number, two rotating buffers */
+{
+    static char b[2][8];
+    static uint32_t n;
+    char *o = b[n++ & 1u];
+    o[0] = 0;
+    if (v < 0) { scat(o, "-"); v = -v; }
+    scat(o, nb((uint32_t)v, 0));
+    return o;
+}
+
 static void rowf(uint32_t r, uint16_t c, const char *a, const char *b, const char *c2, const char *d)
 {
     char *o = row_t[r];
@@ -1100,7 +1111,7 @@ static void screen_check(void)
     rowf(6, COL_ACC, "Voices ", nb(n, 0), "/8   tempo ", nb(ctl_tempo, 0));
 #ifndef OBV_HOST
     rowf(7, COL_ACC, "Render ", nb(ui_render_us, 0), " us, peak ", nb(ui_render_peak_us, 0));
-    rowf(8, ui_render_overruns ? COL_RED : COL_ACC, "Overruns ", nb(ui_render_overruns, 0), flash_ok ? "   flash OK" : "   flash --", 0);
+    rowf(8, ui_render_overruns ? COL_RED : COL_ACC, "Overruns ", nb(ui_render_overruns, 0), flash_ok ? "  flash OK  s" : "  flash --  s", snb(smk_store_rc));
 #else
     rowf(7, COL_DIM, "Render: device only", 0, 0, 0);
 #endif

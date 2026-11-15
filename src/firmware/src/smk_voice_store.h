@@ -65,5 +65,24 @@ static int voice_store_prepare(const uint8_t want[16]){
     if(voice_store_write(VOICE_OWNER_AT,want,16)||voice_store_read(VOICE_OWNER_AT,tag,16)||memcmp(tag,want,16))return -7;
     return 1;
 }
+/* Another family's SMK37DATA tag (SMKSYNTH's own bank, which voice_store_prepare refuses with -8): the installer made the
+ * user back it up and confirm. Only the owner sector, the settings and the two program / favourite sector pairs (our A/B
+ * windows) are cleared, the tag sector last, then our tag written; the pattern slots and the stable store are never touched. A cut before the tag sector is
+ * erased repeats this; a cut after it leaves a blank tag, which voice_store_prepare initializes on the next boot. Anything that is not a SMK37DATA tag stays refused. */
+static int voice_store_takeover(const uint8_t want[16]){
+    uint8_t tag[16];
+    if(voice_store_read(VOICE_OWNER_AT,tag,16))return -1;
+    if(!memcmp(tag,want,16))return 0;
+    if(memcmp(tag,"SMK37DATA",9))return -8;
+    if(voice_store_erase(VOICE_SETTINGS_AT))return -3;
+    for(unsigned i=0;i<2;i++){
+        voice_store_feed();
+        if(voice_store_erase(VOICE_PSECT_AT+i*4096u))return -4;
+        if(voice_store_erase(VOICE_PFAV_AT+i*4096u))return -5;
+    }
+    if(voice_store_erase(VOICE_OWNER_AT))return -2;
+    if(voice_store_write(VOICE_OWNER_AT,want,16)||voice_store_read(VOICE_OWNER_AT,tag,16)||memcmp(tag,want,16))return -7;
+    return 1;
+}
 #endif
 #endif

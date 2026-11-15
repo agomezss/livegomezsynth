@@ -143,6 +143,7 @@ static volatile uint32_t fm1_ms;                /* milliseconds since power-on (
 #endif
 #include "fm1_flash.h"
 static uint8_t flash_ok;
+static uint8_t ota_ok;                         /* the chip is a known one: the updater may run even when the user store could not be opened */
 #include "obv_store_read.h"
 
 static uint8_t recovery_active;
@@ -314,6 +315,7 @@ static int psect_save(uint32_t i, const void *p, uint32_t n)
 /* the store's owner (the kit's convention, smk_store.h): our tag, load as ever; anything else (the stock settings,
  * another port's data) is cleared once and the tag written, before the audio starts */
 static uint8_t smk_store_cleared, smk_trim_ok;   /* (the panel check shows them) */
+static int8_t smk_store_rc;                     /* the first-start store preparation: 0 ready, 1 initialized, negative = refused (flash --) */
 static uint32_t smk_jedec;
 #if OBV_VOICE_HW
 static int voice_store_read(uint32_t o,void *p,uint32_t n){return st_read(o,p,n);}
@@ -343,6 +345,8 @@ static void smk_owner_check(void)
         return;
 #if OBV_VOICE_HW
     int rc=voice_store_prepare(want);
+    if(rc==-8)rc=voice_store_takeover(want);
+    smk_store_rc=(int8_t)rc;
     if(rc<0){flash_ok=0;return;} /* no saves if the first clone could not finish */
     smk_store_cleared=(uint8_t)(rc>0);
 #else
@@ -517,7 +521,7 @@ static void platform_poll(void)
 #endif
     if (usb.ota_req) {
         usb.ota_req = 0;
-        if (flash_ok)
+        if (ota_ok)
             ota_session();                      /* returns only if nothing was committed */
     }
     if (usb.uboot_req) {
@@ -588,8 +592,10 @@ void fm1_cstart(void)
 #if BOARD_SMK37
     smk_jedec = FL_FAR(fl_jedec_ram)();         /* (the panel check shows it: units may carry another part) */
     flash_ok = FL_JEDEC_OK(smk_jedec);
+    ota_ok = flash_ok;
 #else
     flash_ok = FL_JEDEC_OK(FL_FAR(fl_jedec_ram)());
+    ota_ok = flash_ok;
 #endif
 #if OBV_VOICE_HW
     if(flash_ok)b2_scan();

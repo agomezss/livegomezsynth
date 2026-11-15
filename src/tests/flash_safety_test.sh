@@ -9,6 +9,8 @@ T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
 python3 tools/check_provenance.py
 python3 tools/check_flash_writes.py
 cc -O1 -DBOARD_SMK37=1 -Ifirmware/hal -o "$T/smk_flash_test" tests/smk_flash_test.c && "$T/smk_flash_test" | tail -1
+# 0. the first start over SMKSYNTH's bank (owner tag takeover), power cut at every step, nothing outside our sectors
+cc -O1 -Wall -DBOARD_SMK37=1 -Ifirmware/hal -Ifirmware/src -o "$T/voice_takeover_test" tests/voice_takeover_test.c && "$T/voice_takeover_test" | sed 's/^/  /'
 # 1. a new write call site must be refused
 mkdir -p "$T/src" && cp firmware/src/*.c firmware/src/*.h "$T/src/"
 printf 'static void evil(void) { fl_write(0xC1000u, 0, 0); }\n' >> "$T/src/lgs_app.c"
