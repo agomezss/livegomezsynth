@@ -166,6 +166,7 @@ back to `OFF` and the option is skipped in K7 for that engine.
 | PERFORM: combo slot empty               | **dark**                                                                 |
 | PERFORM: combo slot filled              | blue, dim                                                                |
 | PERFORM: combo slot selected            | **green, blinking**; steady and dim while a solo is active               |
+| PERFORM: cursor on an empty slot        | that pad **blinks red**; the loaded one stays steady green; row 1 says `(empty slot) now: A-3` |
 | PERFORM: SOLO 1 / SOLO 2 (pads 8, 16)   | no patch on the line: dark; otherwise **both orange**, steady; the active solo **blinks** |
 | EDIT: category pads                     | one distinct colour per category (16-colour palette), selected category bright |
 | Popup: pad 1 / pad 2                    | solid blue / solid red; all others dark                                  |

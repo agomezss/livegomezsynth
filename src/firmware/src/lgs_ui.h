@@ -864,7 +864,10 @@ static void screen_perf(void)
 {
     uint32_t i, idx = (uint32_t)fb_bank * 14u + ps_slot;
     rowf(0, COL_WHITE, "[PERFORM] Bank ", bk(fb_bank), " - ", nb(ps_slot + 1u, 0));
-    if (!perf_filled(&db.perf[idx])) rowf(1, COL_RED, "(empty slot)", 0, 0, 0);
+    if (!perf_filled(&db.perf[idx])) {
+        if (cur_slot >= 0) rowf(1, COL_RED, "(empty slot) now: ", bk((uint32_t)cur_slot / 14u), "-", nb((uint32_t)cur_slot % 14u + 1u, 0));
+        else rowf(1, COL_RED, "(empty slot)", 0, 0, 0);
+    }
     else if ((int32_t)idx != cur_slot) rowf(1, COL_ORG, "loading...", 0, 0, 0);
     else if (solo) rowf(1, COL_ORG, "SOLO ", nb(solo, 0), 0, 0);
     for (i = 0; i < LGS_NLINE; i++) {
@@ -1108,8 +1111,10 @@ static void leds_update(void)
                 else pad_rgb(p, 255, 140, 20, solo == s ? blink_pct() : 45u);        /* both solos orange, the active one blinks */
             } else {
                 uint32_t slot = p < 7u ? p : p - 1u;
-                if (!perf_filled(&db.perf[fb_bank * 14u + slot])) pad_rgb(p, 0, 0, 0, 0);
-                else if (cur_slot == (int32_t)(fb_bank * 14u + slot)) pad_rgb(p, 80, 255, 120, solo ? 25u : blink_pct());   /* selected: green, blinking (steady dim during a solo) */
+                uint32_t idx = fb_bank * 14u + slot;
+                uint32_t on_empty = !perf_filled(&db.perf[fb_bank * 14u + ps_slot]);     /* the cursor is on an empty slot: nothing new is loaded */
+                if (!perf_filled(&db.perf[idx])) { if (on_empty && slot == ps_slot) pad_rgb(p, 255, 60, 50, blink_pct()); else pad_rgb(p, 0, 0, 0, 0); }
+                else if (cur_slot == (int32_t)idx) pad_rgb(p, 80, 255, 120, solo ? 25u : on_empty ? 70u : blink_pct());   /* selected: green, blinking (steady while a solo or an empty slot holds the cursor) */
                 else pad_rgb(p, 60, 140, 255, 40);
             }
         } else {
