@@ -103,6 +103,7 @@ static void patch_build(patch_t *np, const lgs_patch_t *cp)
         for (i = 0; i < PATCH_NAME && pr->name[i]; i++) np->v[NPARAM + i] = (uint8_t)pr->name[i];
     } else if (cp->data >= NFACT) patch_from_factory(np, &FACTORY_LGS[cp->data - NFACT]);
     else patch_from_factory(np, &FACTORY[cp->data]);
+    if (cp->id == 353u || cp->id == 356u || cp->id == 359u) np->v[P_MODE] = M_POLY;     /* one-shot effects (Reso Zap, Laser, Thump): fast hits overlap */
 }
 
 static uint32_t sound_engine(const sound_t *s) { const lgs_patch_t *cp = pat_by_id(s->patch); return cp ? cp->engine : 0u; }

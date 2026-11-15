@@ -87,9 +87,48 @@ static void th_band(uint32_t r, int32_t y)
     }
 }
 
+/* ---- splash: the name and the author for a few seconds after power-on (any button or pad ends it) ----- */
+#ifdef OBV_WASM
+static uint32_t splash_ms;                       /* the simulator page asks for it (sim_splash_set); tests run without */
+#else
+static uint32_t splash_ms = 5000u;
+#endif
+static uint32_t splash_until;
+
+static void cv_text2x(int32_t y, const char *s, uint16_t c, uint16_t bg)   /* FONT_S doubled, centred; the canvas's top 16 rows are scratch */
+{
+    int32_t w = text_w(&FONT_S, s), x0 = (240 - 2 * w) / 2, ix, iy;
+    cv_rect(0, 0, w, 16, bg);
+    cv_text(0, 0, &FONT_S, s, c);
+    for (iy = 0; iy < 16; iy++)
+        for (ix = 0; ix < w; ix++) {
+            uint16_t px = cv_px[(uint32_t)iy * cv_w + (uint32_t)ix];
+            uint32_t d = (uint32_t)(y + 2 * iy) * cv_w + (uint32_t)(x0 + 2 * ix);
+            cv_px[d] = cv_px[d + 1u] = cv_px[d + cv_w] = cv_px[d + cv_w + 1u] = px;
+        }
+    cv_rect(0, 0, w, 16, bg);
+}
+
+static void splash_draw(uint32_t s)
+{
+    uint16_t bg = theme ? TH_BG : C_BLACK, fg = theme ? RGB(226, 232, 240) : COL_WHITE, dim = theme ? RGB(120, 142, 172) : COL_DIM;
+    int32_t top = (int32_t)(s * 120u);
+    cv_begin(240, 120, bg);
+    if (s == 0u) {
+        cv_text2x(76, "LiveGomezSynth", fg, bg);
+        cv_rect(56, 114, 128, 2, COL_ACC);
+    } else {
+        int32_t y1 = 134 - top, y2 = 156 - top;
+        cv_text((240 - text_w(&FONT_S, "by Alessandro Gomez")) / 2, y1, &FONT_S, "by Alessandro Gomez", fg);
+        cv_text((240 - text_w(&FONT_S, "agomezss (Github)")) / 2, y2, &FONT_S, "agomezss (Github)", dim);
+    }
+    cv_blit(0, s * 120u);
+}
+
 static void scr_flush(void)
 {
     uint32_t s, r;
+    if (splash_until) { splash_draw(0); splash_draw(1); return; }
     for (s = 0; s < 2u; s++) {
         cv_begin(240, 120, theme ? TH_BG : C_BLACK);
         for (r = s * 6u; r < s * 6u + 6u; r++) {
@@ -687,6 +726,7 @@ static void pad_press(uint32_t p)
 
 static void pad_release(uint32_t p)
 {
+    if (mode == M_PATCH && drum_pads) { note_event_p(0, 0, DRUM_NOTE[p & 7u], 0); return; }   /* the key path's note-off, so the held list is the same */
     if (mode == M_PATCH && ov == OV_NONE && (pad_dn >> p & 1u)) {      /* a tap: load the favorite */
         pad_dn &= (uint16_t)~(1u << p);
         pat_cat = 1;
@@ -760,6 +800,7 @@ static void arrows(int32_t d)
 static void buttons_poll(void)
 {
     uint32_t rel, e = fm1_input_edges(&rel);
+    if (splash_until && e) { splash_until = 0; ui_dirty = 1; }
     if (e >> BTN_KNOB_BANK & 1u) { kb_dn = 1; kb_t = fm1_ms; if (fb_dn && fm1_ms - fb_t <= CHORD_MS) { kb_sup = fb_sup = 1; chord_action(); } }
     if (e >> BTN_FADER_BANK & 1u) { fb_dn = 1; fb_t = fm1_ms; if (kb_dn && fm1_ms - kb_t <= CHORD_MS) { kb_sup = fb_sup = 1; chord_action(); } }
     if (rel >> BTN_KNOB_BANK & 1u) { if (kb_dn && !kb_sup) kb_single(); kb_dn = 0; if (!fb_dn) kb_sup = fb_sup = 0; }
@@ -795,6 +836,7 @@ static void buttons_poll(void)
 
 static void ov_timers(void)
 {
+    if (splash_until && (int32_t)(fm1_ms - splash_until) >= 0) { splash_until = 0; ui_dirty = 1; }
     if (ov == OV_CHECK) {                       /* live values while KNOB BANK stays down */
         static uint32_t last;
         if (!kb_dn) { ov = OV_NONE; ui_dirty = 1; }
@@ -1246,6 +1288,8 @@ static void lgs_ui_init(void)
     lgs_fx_init();
     if (!lgs_store_load()) db_defaults();
     theme = (uint8_t)db.theme;
+    splash_until = splash_ms ? fm1_ms + splash_ms : 0u;
+    if (splash_ms && !splash_until) splash_until = 1u;
     for (i = 0; i < 4u; i++) fd_last[i] = fm1_in.fader[i];
     smk_pad_events = 1;
 #ifndef OBV_HOST
@@ -1274,6 +1318,7 @@ static void lgs_frame(void)
     while ((e = smk_pad_take()) >= 0) {
         uint32_t p = ((uint32_t)e >> 8) & 15u;
         pad_vel = (uint32_t)e & 255u;
+        if (splash_until && pad_vel) { splash_until = 0; ui_dirty = 1; }
         if (pad_vel) pad_press(p); else pad_release(p);
     }
     pads_hold_poll();

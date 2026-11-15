@@ -19,6 +19,8 @@ node tests/installer_test.mjs >/dev/null
 python3 tools/name_review.py >/dev/null
 echo "== screens";        node tests/screens_dump.mjs
 echo "== storage image";  node tests/store_test.mjs >/dev/null && echo "  ok"
+echo "== splash";         node tests/splash_test.mjs >/dev/null && echo "  ok"
+echo "== polyphony";     node tests/polyphony_test.mjs >/dev/null && echo "  ok"
 echo "== flash safety";   sh tests/flash_safety_test.sh | tail -1
 if [ "$1" != "--quick" ]; then
     echo "== package";    python3 tools/lgs_build.py | grep -E "image |package"

@@ -138,6 +138,7 @@ EXPORT void sim_pad(uint32_t p, uint32_t velocity) { if (p < 16u) { fm1_in.pad_s
 EXPORT void sim_fader(uint32_t f, uint32_t v) { if (f < 4u) fm1_in.fader[f] = (uint8_t)(v & 127u); }
 EXPORT void sim_pedal(uint32_t v) { fm1_in.pedal = (uint16_t)(v > 1023u ? 1023u : v); }
 EXPORT void sim_wheel(uint32_t w, uint32_t v) { if (w < 2u) fm1_in.wheel[w] = (uint16_t)v; }
+EXPORT void sim_splash_set(uint32_t ms) { splash_ms = ms; }   /* before sim_init: how long the start-up splash shows (0 = none) */
 EXPORT uint32_t sim_pad_rgb(uint32_t p) { return p < 16u ? padled_rgb[p] : 0u; }
 EXPORT void sim_button(uint32_t b, uint32_t down)   /* BTN_* (platform.c): 0 KNOB BANK 1 FADER BANK 2 LEFT 3 RIGHT 4 OCT- 5 OCT+ 6 ARP 7 LFO 8 SEL 9 ENV
                                                        10 GLO 11 SAVE 12 HOME 13 EDIT 14 FX 15 SEQ 16 PLAY 17 REC */

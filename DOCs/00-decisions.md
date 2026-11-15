@@ -48,6 +48,7 @@ spec author from `IDEA.md`; reversible, listed so they can be challenged.
 | D-57 | **The EDIT search popup previews** the highlighted sound live on the edited line (keys sound there whatever the range) and restores the stored sound on cancel. PERFORM shows no idle hint line. |
 | D-58 | **SEQ button = screen theme**: Classic (plain text on black, the default) or Studio (SMKSYNTH's blue-black panel: header band, highlighted rows, footer bar). Same layout and text in both. The choice is stored in the user-data image (`db.theme`, image version 2) and the SEQ LED is lit for Studio. |
 | D-59 | **VOC engine (id 7)**: our own vowel voice (two detuned saws and breath through three formant filters, vowel U-O-A-E-I, SIZE, BITE, SPRD, VIB, BRTH, MOVE, TILT) for choirs and vocal pads; about 0.6x the render cost of SYN in the simulator, ~3 KB of code. The SP choir patches stay for comparison. The two SP brass patches (200, 201) became FM6 presets. The name `VOX` is a brand, so the engine and its patches say `VOC` (D-42). |
+| D-60 | **Start-up splash**: "LiveGomezSynth / by Alessandro Gomez / agomezss (Github)" centred for 5 s after power-on (any button or pad ends it; the keyboard plays underneath). The simulator page shows it too; tests run without it (`sim_splash_set`, before `sim_init`). Drum pads send a note-off on release like a key, and the one-shot effects Reso Zap, Laser and Thump are polyphonic; leads, basses, flutes and the arpeggiated Complex patches stay monophonic on purpose. |
 
 ## Fixed by IDEA.md (not up for debate unless the owner says so)
 

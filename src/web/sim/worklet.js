@@ -19,6 +19,7 @@ class LGS extends AudioWorkletProcessor {
         new Uint8Array(this.ex.memory.buffer, this.ex.sim_stage(), o.db.byteLength).set(new Uint8Array(o.db));
         this.ex.sim_stage_set(o.db.byteLength);
       }
+      this.ex.sim_splash_set(5000);   // the start-up splash, like the keyboard
       if (this.ex.sim_init(44100) !== 0) throw new Error("sim_init failed");
       if (o.master !== undefined) this.ex.sim_master(o.master);
       this.port.postMessage({ t: "ready" });
