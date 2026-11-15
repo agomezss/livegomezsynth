@@ -104,7 +104,8 @@ check("package: one flipped bit is refused", (await rejects(validatePackage(flip
 check("kit: a firmware package is accepted", (await validateKit(STOCK)).product === "SMK-37 Pro_016");
 check("kit: a random file is refused", (await rejects(validateKit(new Uint8Array(5000)))) instanceof InstallError);
 check("operation: stock keyboard refused", (await rejects(Promise.resolve().then(() => chooseOperation("SMK-37 Pro_016", null, PIN))))?.code === "stock");
-check("operation: unknown loader without a pending install refused", (await rejects(Promise.resolve().then(() => chooseOperation(LOADER, null, PIN))))?.code === "pending");
+check("operation: the loader without a pending install is a rescue write", chooseOperation(LOADER, null, PIN).rescue === true && chooseOperation(LOADER, null, PIN).mode === "resume");
+check("operation: the loader with another package pending is a rescue write too", chooseOperation(LOADER, { sha: "x", product: "SMK-37 Pro_1" }, PIN).rescue === true);
 check("operation: loader with a matching pending install resumes", chooseOperation(LOADER, { sha: PIN.sha256, product: PIN.product }, PIN).mode === "resume");
 
 // ---- install from SMKSYNTH
@@ -149,6 +150,19 @@ check("operation: loader with a matching pending install resumes", chooseOperati
   check("the keyboard in update mode is recognised", classify(id.text) === "loader", id.text);
   const product = await svc2.install(PIN, OURS, { source: id.text });
   check("resume writes the package and clears the marker", product === "SMK-37 Pro_20001" && kb2.wrote === true && !st.has(PENDING));
+}
+// ---- rescue: the keyboard started in its loader (OCTAVE- at power-on), nothing pending in this browser
+{
+  const kb = prep(new Keyboard(LOADER), OURS), st = store(), svc = new InstallService(kb.access, st);
+  const id = await svc.identify();
+  const product = await svc.install(PIN, OURS, { source: id.text });
+  check("rescue: the package is written into a loader nobody started here", product === "SMK-37 Pro_20001" && kb.wrote === true && !st.has(PENDING));
+}
+{
+  const kb = prep(new Keyboard(LOADER), OURS), svc = new InstallService(kb.access, store());
+  const wrongModel = { ...PIN, product: "SMK-37 Elite_20001" };
+  const e = await rejects(svc.install(wrongModel, OURS, { source: LOADER }));
+  check("rescue: a package for another model is refused", !!e && kb.wrote === null, e?.message?.slice(0, 60));
 }
 // ---- restore
 {

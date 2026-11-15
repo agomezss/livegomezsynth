@@ -122,10 +122,9 @@ export function chooseOperation(idText, pending, pin) {
       pending.product === pin.product
     )
       return { mode: "resume", where, source: idText };
-    throw new InstallError(
-      "pending",
-      "the keyboard is in update mode from an earlier transfer; reconnect with the browser that started it",
-    );
+    // the rescue loader (OCTAVE- at power-on) or a transfer another browser started: write this package into it; the
+    // updater checks that the loader's model is the package's model and the identity the keyboard reports afterwards
+    return { mode: "resume", where, source: idText, rescue: true };
   }
   if (where === "stock")
     throw new InstallError(

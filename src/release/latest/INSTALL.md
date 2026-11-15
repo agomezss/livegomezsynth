@@ -45,7 +45,7 @@ The calibration data at `0xC1000` is never written by this firmware or its loade
 
 ## If an update says "the device stopped after 0 requests"
 
-Versions 0.1.5 and 0.1.6 refuse SMKSYNTH's data bank (`flash --` in the panel check) and then ignore the update command. Switch the keyboard off, hold **OCTAVE-** while switching it on (the loader starts, no audio), connect the installer page and install 0.1.7 or later as usual: its first start takes the bank over and later updates work from the running firmware.
+Versions 0.1.5 and 0.1.6 refuse SMKSYNTH's data bank (`flash --` in the panel check) and then ignore the update command. Switch the keyboard off, hold **OCTAVE-** while switching it on (the loader starts, no audio), open the installer page of 0.1.8 or later (earlier pages refuse a loader nobody started in that browser), press **Connect and identify** (the plan says "The keyboard is in its update loader (rescue mode)"), save the identity record and press **Install**. The first start of the new firmware takes the bank over and later updates work from the running firmware.
 
 ## Going back
 

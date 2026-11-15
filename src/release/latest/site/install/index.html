@@ -16,29 +16,32 @@
         programs. <a href="../">Try the simulator first</a>.
       </p>
 
+      <p id="browser" class="status bad" hidden></p>
+
       <section id="s1">
         <h2>1. Connect</h2>
+        <p>
+          Connect the keyboard by USB cable and close other programs that use
+          MIDI, then press the button. The page reads which firmware the
+          keyboard runs and tells you what happens next.
+        </p>
         <button id="connect">Connect and identify</button>
         <p id="device" class="status">Not connected.</p>
         <p id="plan" class="status"></p>
+        <div id="advice" class="advice" hidden></div>
       </section>
 
-      <section id="s2">
-        <h2>2. Back up the current firmware</h2>
+      <section id="s2" hidden>
+        <h2>Keep a way back (first install only)</h2>
         <p>
-          This page cannot read the keyboard's flash: the update protocol only
-          lets the keyboard pull a package. The way back is a copy of the
-          firmware you run now, plus a record of what the keyboard reports.
+          This page cannot read the keyboard's memory, so it cannot copy your
+          current firmware. Keep the file of the firmware you run now, and make
+          sure your own banks are saved:
         </p>
         <ol>
           <li>
-            <button id="record" disabled>Save the identity record</button>
-            <span id="recordState" class="status"></span>
-          </li>
-          <li>
-            Choose the package of the firmware you run now (the M-VAVE
-            <code>.fwsc</code> from M-UPGRADE for stock, or your SMKSYNTH
-            <code>.fwsc</code>):
+            Choose the <code>.fwsc</code> file of the firmware you run now
+            (your SMKSYNTH package):
             <input id="kitFile" type="file" accept=".fwsc" disabled />
             <span id="kitState" class="status"></span>
             <button id="kitCopy" disabled>Download a copy</button>
@@ -46,8 +49,8 @@
           <li>
             <label
               ><input id="bankBackup" type="checkbox" disabled /> My SMKSYNTH
-              banks and favorites are backed up. The first start of
-              LiveGomezSynth re-initializes the user-data bank.</label
+              banks and favorites are saved with its own backup page. The first
+              start of LiveGomezSynth clears them.</label
             >
           </li>
           <li>
@@ -61,7 +64,7 @@
       </section>
 
       <section id="s3">
-        <h2>3. Install</h2>
+        <h2>2. Install</h2>
         <p id="pin" class="status">Loading the package list...</p>
         <p>
           <a id="pkgDownload" class="btn" href="#" download hidden
@@ -78,6 +81,7 @@
         <button id="install" disabled>Install</button>
         <progress id="progress" max="100" value="0"></progress>
         <p id="step" class="status"></p>
+        <div id="help" class="advice" hidden></div>
       </section>
 
       <details id="s4">

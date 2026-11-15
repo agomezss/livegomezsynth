@@ -27,7 +27,6 @@ const state = {
   pkg: null,
   kit: null,
   kitRaw: null,
-  recorded: false,
   busy: false,
 };
 
@@ -65,25 +64,64 @@ const download = (name, data, type) => {
   setTimeout(() => URL.revokeObjectURL(u), 1000);
 };
 
+// the first install over SMKSYNTH is the only case that needs a way back kept here; an update of LiveGomezSynth and a
+// write into the update loader (rescue) need nothing else
+const hasMidi = !!navigator.requestMIDIAccess;
+const needsBackup = () => !!state.op && state.op.where === "smksynth";
+
 function refresh() {
   const known = !!state.id,
-    ours = known && classify(state.id.text) === "ours";
-  $("connect").disabled = state.busy;
-  $("record").disabled = state.busy || !known;
+    ours = known && classify(state.id.text) === "ours",
+    backup = needsBackup();
+  $("s2").hidden = !backup;
+  $("connect").disabled = state.busy || !hasMidi;
   $("kitFile").disabled = state.busy || !known;
   $("kitCopy").disabled = !state.kitRaw;
   $("bankBackup").disabled = $("stockKnown").disabled =
     state.busy || !state.kit;
   const backedUp =
-    state.op && state.op.where !== "smksynth"
-      ? true
-      : state.kit &&
-        state.kit.product === state.id.text &&
-        $("bankBackup").checked &&
-        $("stockKnown").checked; // a keyboard on LiveGomezSynth already has its kit
-  const ready = known && state.op && state.pin && state.recorded && backedUp;
+    !backup ||
+    (state.kit &&
+      state.kit.product === state.id.text &&
+      $("bankBackup").checked &&
+      $("stockKnown").checked);
+  const ready = known && state.op && state.pin && backedUp;
   $("install").disabled = state.busy || !ready;
   $("restore").disabled = state.busy || !(ours && state.kit);
+}
+
+// what the page found, in plain words: [status line, advice, advice kind]
+function describe(where, rescue) {
+  const v = state.pin ? state.pin.version : "";
+  if (where === "ours")
+    return [
+      `LiveGomezSynth found. Install updates it to ${v}.`,
+      "Your favourites and performances are kept (the release notes say if a version resets them). Nothing else to prepare: press Install.",
+      "",
+    ];
+  if (where === "smksynth")
+    return [
+      `SMKSYNTH found: this is the first install of LiveGomezSynth.`,
+      "Next: keep your SMKSYNTH file and make sure your banks are saved (the box below), then Install. After the first install, later updates need only one click.",
+      "",
+    ];
+  if (where === "loader" || rescue)
+    return [
+      "The keyboard is in its update loader (rescue mode): Install writes this package into it.",
+      "This is the normal way to get out of a keyboard that does not accept updates. Do not unplug until the page says Installed.",
+      "",
+    ];
+  if (where === "stock")
+    return [
+      "This keyboard runs the original M-VAVE firmware.",
+      "LiveGomezSynth installs over SMKSYNTH, not over the original firmware (a first-install package for it does not exist yet). Install SMKSYNTH first, then come back to this page.",
+      "bad",
+    ];
+  return [
+    "A firmware this page does not know.",
+    "Nothing was sent to the keyboard. LiveGomezSynth installs over SMKSYNTH or over itself. To start from another firmware, go back to the original with M-UPGRADE and install SMKSYNTH first.",
+    "bad",
+  ];
 }
 
 async function loadPin() {
@@ -142,25 +180,30 @@ $("connect").onclick = async () => {
     }
     say("device", `Keyboard: ${state.id.text}`, "good");
     log("identity " + state.id.text);
+    state.op = null;
+    $("help").hidden = true;
+    const where = classify(state.id.text);
+    const [plan, advice, kind] = describe(where);
+    say("plan", plan, kind === "bad" ? "bad" : "good");
+    $("advice").textContent = advice;
+    $("advice").className = "advice " + kind;
+    $("advice").hidden = false;
     try {
       state.op = state.pin
         ? chooseOperation(state.id.text, state.service.readPending(), state.pin)
         : null;
-      say(
-        "plan",
-        state.op
-          ? state.op.mode === "resume"
-            ? "An earlier transfer was interrupted: Install resumes it."
-            : `Ready to update from ${state.op.where === "ours" ? "LiveGomezSynth" : "SMKSYNTH"}.`
-          : "",
-        "good",
-      );
     } catch (e) {
-      say("plan", e.message, "bad");
       log(e.message);
     }
   } catch (e) {
-    say("device", e.message, "bad");
+    const blocked = e.name === "SecurityError" || e.name === "NotAllowedError";
+    say(
+      "device",
+      blocked
+        ? "The browser blocked MIDI access. Allow MIDI with system exclusive for this page and press the button again."
+        : e.message,
+      "bad",
+    );
     log(e.message);
   } finally {
     state.busy = false;
@@ -168,7 +211,7 @@ $("connect").onclick = async () => {
   }
 };
 
-$("record").onclick = () => {
+const saveRecord = () => {
   const rec = {
     tool: "LiveGomezSynth installer",
     time: new Date().toISOString(),
@@ -183,9 +226,6 @@ $("record").onclick = () => {
     JSON.stringify(rec, null, 2),
     "application/json",
   );
-  state.recorded = true;
-  say("recordState", "saved", "good");
-  refresh();
 };
 
 $("kitFile").onchange = async (ev) => {
@@ -268,6 +308,7 @@ function stepper(total) {
 async function run(title, text, word, job) {
   if (state.busy || !(await ask(title, text, word))) return;
   state.busy = true;
+  $("help").hidden = true;
   refresh();
   try {
     if (!navigator.locks?.request)
@@ -284,18 +325,41 @@ async function run(title, text, word, job) {
   } catch (e) {
     say("step", e.message, "bad");
     log("ERROR " + (e.code || "") + " " + e.message);
+    showHelp(e);
   } finally {
     state.busy = false;
     refresh();
   }
 }
 
+// what to do next, for the failures that have a known remedy
+function showHelp(e) {
+  const h = $("help");
+  let t = "";
+  if (e.code === "stopped" && /after 0 requests/.test(e.message))
+    t =
+      "The keyboard did not accept the update command. Some older versions (LiveGomezSynth 0.1.5 and 0.1.6) cannot be updated from the page; do this once:\n1. Switch the keyboard off.\n2. Hold OCTAVE- and switch it on again. The screen stays dark: that is the update loader.\n3. Press Connect and identify here again, then Install.\nAfter that, updates work with one click.";
+  else if (e.code === "noloader")
+    t =
+      "Unplug the USB cable, plug it again, press Connect and identify and then Install: the keyboard waits in update mode until the install is finished.";
+  else if (e.code === "lost" || e.code === "noreturn")
+    t =
+      "Do not switch anything off yet. Wait 30 seconds, then press Connect and identify: if the keyboard shows up in update mode, Install resumes the write.";
+  h.textContent = t;
+  h.className = "advice bad";
+  h.hidden = !t;
+}
+
 $("install").onclick = () =>
   run(
     "Install " + state.pin.name,
-    `The keyboard (${state.id.text}) will restart into the update loader and the firmware will be written (about ${Math.round(state.pin.size / 1024)} KB). Do not unplug or close this page. The first start re-initializes the user-data bank.`,
+    `The keyboard (${state.id.text}) ${state.op.rescue ? "is in its update loader" : "will restart into the update loader"} and the firmware will be written (about ${Math.round(state.pin.size / 1024)} KB). Do not unplug or close this page. ` +
+      (needsBackup()
+        ? "The first start clears the SMKSYNTH programs and favourites."
+        : "Your favourites and performances are kept unless the release notes say otherwise."),
     "INSTALL",
     async () => {
+      if (needsBackup()) saveRecord(); // the identity record: what the keyboard reported and when, kept by the browser download
       const product = await state.service.install(
         state.pin,
         state.pkg,
@@ -332,5 +396,10 @@ window.addEventListener("beforeunload", (e) => {
     e.returnValue = "";
   }
 });
+if (!hasMidi) {
+  $("browser").textContent =
+    "This page needs desktop Chrome or Edge (Web MIDI with system exclusive). Open it there.";
+  $("browser").hidden = false;
+}
 loadPin();
 refresh();

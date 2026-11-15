@@ -92,3 +92,17 @@ dialog {
 li {
   margin: 0.6rem 0;
 }
+
+.advice {
+  margin: 0.6rem 0;
+  padding: 0.6rem 0.9rem;
+  border-left: 3px solid #4a85ff;
+  background: #1a2030;
+  white-space: pre-line;
+}
+.advice.bad {
+  border-left-color: #ff9a9a;
+}
+[hidden] {
+  display: none !important;
+}
