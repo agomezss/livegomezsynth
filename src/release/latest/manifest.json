@@ -1,16 +1,21 @@
 {
-  "name": "LiveGomezSynth 0.1.8",
-  "version": "0.1.8",
+  "name": "LiveGomezSynth 0.1.9",
+  "version": "0.1.9",
   "product": "SMK-37 Pro_20000",
   "family": "LIVEGMZ",
-  "file": "livegomezsynth-0.1.8-smk37.fwsc",
+  "file": "livegomezsynth-0.1.9-smk37.fwsc",
   "size": 651819,
-  "sha256": "03cc6281e9adc18a8d6e36c545d0178efa87effd44183b250b9c5cdc52b5e6de",
-  "built": "2026-11-15T14:33:41Z",
-  "source_commit": "30187dec41e58dc8af9ca83b97f11b1b1d2f358c",
+  "sha256": "2538906e623d4b215b275710583ac50d7e62c116e2a9eb9a90f49be591cb3168",
+  "built": "2026-11-15T14:40:42Z",
+  "source_commit": "42ec294e2a15aa536341c36809e4dd4c5fdf3289",
   "source_dirty": true,
   "package_kind": "update (needs SMKSYNTH 1.x or LiveGomezSynth on the keyboard; no first-install package for stock V016 yet)",
-  "budgets": null,
+  "budgets": {
+    "image": 295408,
+    "image_max": 327680,
+    "ram": 73648,
+    "ram_max": 98304
+  },
   "patches": 444,
   "patches_per_category": {
     "Pianos": 12,

@@ -111,6 +111,12 @@ function describe(where, rescue) {
       "This is the normal way to get out of a keyboard that does not accept updates. Do not unplug until the page says Installed.",
       "",
     ];
+  if (where === "recovery")
+    return [
+      "The keyboard is on its USB RESCUE screen: Install writes this package.",
+      "Nothing else to prepare. Your favourites and performances are kept unless the release notes say otherwise. Do not unplug until the page says Installed.",
+      "",
+    ];
   if (where === "stock")
     return [
       "This keyboard runs the original M-VAVE firmware.",

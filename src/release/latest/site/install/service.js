@@ -59,13 +59,15 @@ export const sha256 = async (bytes) =>
   hex(await crypto.subtle.digest("SHA-256", bytes));
 
 // where the keyboard stands: "ours" (a LiveGomezSynth, can be updated), "smksynth" (can be updated), "stock" (needs a first-install
-// package, which this release does not have), "loader" (an update was interrupted), "other"
+// package, which this release does not have), "recovery" (our own USB RESCUE screen, identity _000: updates like "ours"),
+// "loader" (an update was interrupted), "other"
 export function classify(idText) {
   let m = /^SMK-37 Pro_(\d{3,5})$/.exec(idText || "");
   if (m) {
     if (/^2\d{4}$/.test(m[1])) return "ours";
     if (SMKSYNTH_IDS.has(m[1])) return "smksynth";
     if (m[1] === "016") return "stock";
+    if (m[1] === "000") return "recovery";
     return "other";
   }
   return idText === LOADER ? "loader" : "other";

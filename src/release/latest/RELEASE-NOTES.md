@@ -1,4 +1,4 @@
-# LiveGomezSynth 0.1.8
+# LiveGomezSynth 0.1.9
 
 Custom live-performance firmware for the M-VAVE SMK-37 Pro. Identity `SMK-37 Pro_20000`, family `LIVEGMZ`.
 
@@ -8,7 +8,8 @@ Custom live-performance firmware for the M-VAVE SMK-37 Pro. Identity `SMK-37 Pro
 
 - 444 patches in 15 categories (Pianos 12, E-Pianos 12, Organs 20, Strings 9, Winds 9, Choirs 15, Brass 15, Basses 16, Pads 19, Leads 16, SFX 8, Complex 29, Drums 5, Guitars 7, ICONIC 252)
 - engines: drm 5, fm2 90, fm6 19, org 40, sp 70, syn 212, voc 8
-- package: `livegomezsynth-0.1.8-smk37.fwsc`, 651819 bytes, SHA-256 `03cc6281e9adc18a8d6e36c545d0178efa87effd44183b250b9c5cdc52b5e6de`
+- package: `livegomezsynth-0.1.9-smk37.fwsc`, 651819 bytes, SHA-256 `2538906e623d4b215b275710583ac50d7e62c116e2a9eb9a90f49be591cb3168`
+- budgets: image 295408 of 327680 bytes, RAM 73648 of 98304 bytes
 
 ## Before installing
 

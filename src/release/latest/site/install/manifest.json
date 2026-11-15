@@ -1,8 +1,8 @@
 {
-  "name": "LiveGomezSynth 0.1.8",
+  "name": "LiveGomezSynth 0.1.9",
   "product": "SMK-37 Pro_20000",
   "size": 651819,
-  "sha256": "03cc6281e9adc18a8d6e36c545d0178efa87effd44183b250b9c5cdc52b5e6de",
-  "version": "0.1.8",
-  "url": "./firmware/livegomezsynth-0.1.8-smk37.fwsc"
+  "sha256": "2538906e623d4b215b275710583ac50d7e62c116e2a9eb9a90f49be591cb3168",
+  "version": "0.1.9",
+  "url": "./firmware/livegomezsynth-0.1.9-smk37.fwsc"
 }

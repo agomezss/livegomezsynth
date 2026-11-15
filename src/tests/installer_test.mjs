@@ -96,6 +96,8 @@ check("classify: SMKSYNTH 1.2.0", classify("SMK-37 Pro_19649") === "smksynth");
 check("classify: ours", classify("SMK-37 Pro_20001") === "ours");
 check("classify: stock V016", classify("SMK-37 Pro_016") === "stock");
 check("classify: the update loader", classify(LOADER) === "loader");
+check("classify: our USB RESCUE screen (_000)", classify("SMK-37 Pro_000") === "recovery");
+check("operation: the USB RESCUE screen updates like a running firmware", chooseOperation("SMK-37 Pro_000", null, PIN).mode === "install");
 check("classify: another firmware", classify("SMK-37_931") === "other" && classify("FM-1_904") === "other");
 check("package: the pinned file passes", !!(await validatePackage(OURS, PIN)));
 check("package: another file is refused", (await rejects(validatePackage(OLD, PIN))) instanceof InstallError);
