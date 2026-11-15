@@ -62,6 +62,7 @@ static int b1_can_begin(void) { return 0; }
 #include "lgs_eng_org.h"
 #include "lgs_eng_sp.h"
 #include "lgs_eng_fm6.h"
+#include "lgs_eng_voc.h"
 #include "lgs_ui.h"
 
 static void app_main(void)

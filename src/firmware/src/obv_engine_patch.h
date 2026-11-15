@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-only */
 /* Typed patches in the six reserved trailing bytes. Legacy bytes/names/CCs keep
  * their offsets. No automatic writes or conversion of legacy patches. */
-enum { OBV_ANALOG, OBV_VOICE, OBV_DRUMS, OBV_FM2, OBV_ORG, OBV_SP, OBV_FM6, OBV_ENGINE_COUNT };   /* LiveGomezSynth: FM2 (4-op) and ORG (drawbar) are Clipper engines, lgs_engine_adapter.h */
+enum { OBV_ANALOG, OBV_VOICE, OBV_DRUMS, OBV_FM2, OBV_ORG, OBV_SP, OBV_FM6, OBV_VOC, OBV_ENGINE_COUNT };   /* LiveGomezSynth: FM2 (4-op) and ORG (drawbar) are Clipper engines, lgs_engine_adapter.h */
 #define OBV_ENGINE_TAG_AT 74u
 _Static_assert(NPARAM + PATCH_NAME <= OBV_ENGINE_TAG_AT, "engine tag overlaps patch data");
 _Static_assert(OBV_ENGINE_TAG_AT + 6u == PATCH_BYTES, "engine tag layout");

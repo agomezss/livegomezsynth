@@ -8,7 +8,7 @@ const ex = instance.exports;
 ex.sim_init(44100);
 const run = (ms) => { for (let i = 0; i < ms; i += 2) ex.sim_render(88); };
 run(300);
-const ENG = ["SYN", "?", "DRM", "FM2", "ORG", "SP", "FM6"];
+const ENG = ["SYN", "?", "DRM", "FM2", "ORG", "SP", "FM6", "VOC"];
 const pick = {};
 for (let i = 0; i < ex.sim_patch_n(); i++) { const e = ex.sim_patch_engine(i); if (!(e in pick) && e !== 2) pick[e] = ex.sim_patch_id(i); }
 const res = {};

@@ -26,7 +26,7 @@ const freq = (a) => {                         // zero-crossing estimate over the
 };
 ex.sim_velocity(100);
 grab(300);
-const ENG = ["SYN", "?", "DRM", "FM2", "ORG", "SP", "FM6"];
+const ENG = ["SYN", "?", "DRM", "FM2", "ORG", "SP", "FM6", "VOC"];
 const rows = [];
 let silent = 0, hot = 0, stuck = 0;
 for (let i = 0; i < ex.sim_patch_n(); i++) {

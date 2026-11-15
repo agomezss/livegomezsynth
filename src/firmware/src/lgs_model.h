@@ -15,7 +15,7 @@ static const uint8_t KNOB_SLOT_SYN[4] = {P_CUTOFF, P_RESO, P_FENV_AMT, P_AR};
 static const uint8_t KNOB_SLOT_DRM[4] = {DP_MORPH, DP_TONE, DP_LENGTH, DP_FOLD};     /* drum kits: morph, tone, length, fold */
 static const lgs_eng_t *lgs_eng_by_id(uint32_t id)
 {
-    return id == OBV_FM2 ? &LGS_ENG_FM2 : id == OBV_ORG ? &LGS_ENG_ORG : id == OBV_SP ? &LGS_ENG_SP : id == OBV_FM6 ? &LGS_ENG_FM6 : 0;
+    return id == OBV_FM2 ? &LGS_ENG_FM2 : id == OBV_ORG ? &LGS_ENG_ORG : id == OBV_SP ? &LGS_ENG_SP : id == OBV_FM6 ? &LGS_ENG_FM6 : id == OBV_VOC ? &LGS_ENG_VOC : 0;
 }
 static knob_t knob_desc(uint32_t engine, uint32_t i)
 {

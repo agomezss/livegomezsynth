@@ -47,6 +47,7 @@ spec author from `IDEA.md`; reversible, listed so they can be challenged.
 | D-56 | **Navigation always lands on a sound**: `<` `>` = category (as the spec said; the code stepped patches), and a bank change (KNOB BANK in PATCH, FADER BANK in PERFORM) jumps to the first filled favorite / performance of the new bank and loads it. The PATCH hint line was removed (row 8 stays empty). |
 | D-57 | **The EDIT search popup previews** the highlighted sound live on the edited line (keys sound there whatever the range) and restores the stored sound on cancel. PERFORM shows no idle hint line. |
 | D-58 | **SEQ button = screen theme**: Classic (plain text on black, the default) or Studio (SMKSYNTH's blue-black panel: header band, highlighted rows, footer bar). Same layout and text in both. The choice is stored in the user-data image (`db.theme`, image version 2) and the SEQ LED is lit for Studio. |
+| D-59 | **VOC engine (id 7)**: our own vowel voice (two detuned saws and breath through three formant filters, vowel U-O-A-E-I, SIZE, BITE, SPRD, VIB, BRTH, MOVE, TILT) for choirs and vocal pads; about 0.6x the render cost of SYN in the simulator, ~3 KB of code. The SP choir patches stay for comparison. The two SP brass patches (200, 201) became FM6 presets. The name `VOX` is a brand, so the engine and its patches say `VOC` (D-42). |
 
 ## Fixed by IDEA.md (not up for debate unless the owner says so)
 

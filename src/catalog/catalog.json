@@ -819,9 +819,9 @@
   {
    "id": 200,
    "cat": 8,
-   "engine": "sp",
-   "name": "SP Horn Stab",
-   "factory": 1
+   "engine": "fm6",
+   "name": "FM6 Horn Stab",
+   "factory": 8
   },
   {
    "id": 100,
@@ -903,9 +903,9 @@
   {
    "id": 201,
    "cat": 8,
-   "engine": "sp",
-   "name": "SP Warm Horns",
-   "factory": 13
+   "engine": "fm6",
+   "name": "FM6 Warm Horns",
+   "factory": 9
   },
   {
    "id": 133,
@@ -1298,6 +1298,62 @@
    "engine": "sp",
    "name": "SP Choir Aahs",
    "factory": 21
+  },
+  {
+   "id": 168,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Choir Aahs",
+   "factory": 0
+  },
+  {
+   "id": 169,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Choir Oohs",
+   "factory": 1
+  },
+  {
+   "id": 170,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Choir Swell",
+   "factory": 2
+  },
+  {
+   "id": 171,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Male Choir",
+   "factory": 3
+  },
+  {
+   "id": 172,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Child Choir",
+   "factory": 4
+  },
+  {
+   "id": 173,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Vowel Pad",
+   "factory": 5
+  },
+  {
+   "id": 174,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Whisper",
+   "factory": 6
+  },
+  {
+   "id": 175,
+   "cat": 7,
+   "engine": "voc",
+   "name": "VOC Eeh Synth",
+   "factory": 7
   },
   {
    "id": 137,

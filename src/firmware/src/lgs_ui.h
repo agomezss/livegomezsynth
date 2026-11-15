@@ -838,7 +838,7 @@ static void rows_tweaks(void)
 
 static const char *engine_label(uint32_t e)
 {
-    return e == OBV_DRUMS ? "Drum Engine" : e == OBV_FM2 ? "4-Op FM Engine" : e == OBV_ORG ? "Organ Engine" : e == OBV_SP ? "Sample Engine" : e == OBV_FM6 ? "6-Op FM Engine" : "Synth Engine";
+    return e == OBV_DRUMS ? "Drum Engine" : e == OBV_FM2 ? "4-Op FM Engine" : e == OBV_ORG ? "Organ Engine" : e == OBV_SP ? "Sample Engine" : e == OBV_FM6 ? "6-Op FM Engine" : e == OBV_VOC ? "Vocal Engine" : "Synth Engine";
 }
 
 static void rows_footer(void)
@@ -1242,7 +1242,7 @@ static void lgs_ui_init(void)
 {
     uint32_t i;
     cat_init();
-    obv_engines[OBV_FM2] = obv_engines[OBV_ORG] = obv_engines[OBV_SP] = obv_engines[OBV_FM6] = &lgs_clipper_ops;
+    obv_engines[OBV_FM2] = obv_engines[OBV_ORG] = obv_engines[OBV_SP] = obv_engines[OBV_FM6] = obv_engines[OBV_VOC] = &lgs_clipper_ops;
     lgs_fx_init();
     if (!lgs_store_load()) db_defaults();
     theme = (uint8_t)db.theme;

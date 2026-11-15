@@ -53,7 +53,7 @@ Serve the simulator: `python3 -m http.server -d build/sim-site 8737`.
 
 ## Architecture in one paragraph
 
-Three UI modes (PATCH, PERFORM, EDIT) over a user-data block `db` (64 favorites, 8x14 performances). A performance is 4 lines: layers 1-2 (octave range `lo..hi`) and solos 1-2 (**no range**, D-54). A line holds a catalog patch id and 4 tweak values; `part_apply` builds the engine patch (`patch_build`) into `live_p[part]`. Engines: SYN (OBV_ANALOG, id 0), DRUMS (2), FM2 (3, 4-op), ORG (4), SP (5, sampler), FM6 (6, 6-op msfa); ids in `obv_engine_patch.h`. Each engine descriptor (`lgs_eng_t`) exposes 8 macro params; `knob_desc()` maps K1-K4. Engine params live in borrowed analog slots (`LGS_E_SLOT`), ADSR in `LGS_ENV_SLOT`.
+Three UI modes (PATCH, PERFORM, EDIT) over a user-data block `db` (64 favorites, 8x14 performances). A performance is 4 lines: layers 1-2 (octave range `lo..hi`) and solos 1-2 (**no range**, D-54). A line holds a catalog patch id and 4 tweak values; `part_apply` builds the engine patch (`patch_build`) into `live_p[part]`. Engines: SYN (OBV_ANALOG, id 0), DRUMS (2), FM2 (3, 4-op), ORG (4), SP (5, sampler), FM6 (6, 6-op msfa), VOC (7, vowel/formant voice for choirs); ids in `obv_engine_patch.h`. Each engine descriptor (`lgs_eng_t`) exposes 8 macro params; `knob_desc()` maps K1-K4. Engine params live in borrowed analog slots (`LGS_E_SLOT`), ADSR in `LGS_ENV_SLOT`.
 
 ## The catalog pipeline
 
