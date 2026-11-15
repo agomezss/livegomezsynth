@@ -112,6 +112,27 @@ static void ldr_records_drop(void)
     }
 }
 
+#if BOARD_SMK37 && OBV_VOICE_HW
+/* The user bank (0x57000..0x9D000) is kept, never rewritten, when its owner tag is SMKSYNTH's or this build's own
+ * (SMK37DATA + OBV_DATA_FAMILY, what the app writes on its first start: a bank must survive its own firmware's updates);
+ * an erased tag is fine, anything else is refused before the app area is touched. 1 keep, 0 blank, -1 refuse. */
+#ifdef OBV_DATA_FAMILY
+static const char ldr_own_tag[17] = "SMK37DATA" OBV_DATA_FAMILY;
+#endif
+static int ldr_owner_state(const uint8_t *owner)
+{
+    uint32_t i, smk = 0, own = 0, blank = 1;
+    for (i = 0; i < 16u; i++) {
+        smk += owner[i] == (uint8_t) "SMK37DATASMK16P1"[i];
+#ifdef OBV_DATA_FAMILY
+        own += owner[i] == (uint8_t)ldr_own_tag[i];
+#endif
+        blank &= owner[i] == 255u;
+    }
+    return smk == 16u || own == 16u ? 1 : blank ? 0 : -1;
+}
+#endif
+
 static int ldr_pass(void)
 {
     static uint8_t hdr[0x400], sec[0x1000], cur[0x1000];
@@ -143,11 +164,11 @@ static int ldr_pass(void)
     uint32_t journal_crc=j[44]|(uint32_t)j[45]<<8|(uint32_t)j[46]<<16|(uint32_t)j[47]<<24;
     uint32_t all_done=1;for(i=128;i<198;i++)all_done&=j[i]==0;
     if(dirty&&(state!=0||!all_done||memcmp(j,"SMKRST2!",8)||~jc!=journal_crc))return -17; /* resume restoration before installing */
-    uint8_t owner[16];uint32_t preserve=0,blank=1;
+    uint8_t owner[16];int owner_st;uint32_t preserve;
     if(ldr_fread(0x57000u,owner,16))return -8;
-    for(i=0;i<16;i++){preserve+=owner[i]==(uint8_t)"SMK37DATASMK16P1"[i];blank&=owner[i]==255u;}
-    preserve=preserve==16u;
-    if(!preserve&&!blank)return -15;
+    owner_st=ldr_owner_state(owner);
+    if(owner_st<0)return -15;
+    preserve=(uint32_t)owner_st;
 #endif
     /* the head of flash.bin is never written, but it is part of the package's CRC */
     for (s = 0; s < LDR_APP_LO; s += 512u) {

@@ -24,6 +24,8 @@ s2 = s.replace("#define FL_DATA_HI      0x000BB000u", "#define FL_DATA_HI      0
 assert s2 != s; open(p, "w").write(s2)
 PY
 if cc -DBOARD_SMK37=1 -I"$T/hal" -o "$T/bad" tests/smk_flash_test.c 2>/dev/null; then echo "FAIL: an unsafe flash window compiled"; exit 1; else echo "  ok    an allow-list window crossing BTIF/USRTRIM does not compile"; fi
+# 2b. the update loader keeps a bank tagged SMKSYNTH or with our own family, and refuses any other tag (a keyboard that runs us must be updatable again)
+cc -O1 -Wall -Wno-unused-function -Ifirmware/hal -Ifirmware/src -o "$T/ldr_owner_test" tests/ldr_owner_test.c && "$T/ldr_owner_test" | sed 's/^/  /'
 # 3. A/B image storage: power cut at every step, damaged copies
 mkdir -p build && cc -O1 -Wall -Ifirmware/src -o build/store_ab_test tests/store_ab_test.c && build/store_ab_test | sed 's/^/  /'
 echo "flash safety: all checks passed"

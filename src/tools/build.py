@@ -143,6 +143,8 @@ def build_loader():
     src = FW / "loader"
     defs = [d for d in BOARD_DEFS[BOARD] if not (FIRST_INSTALL and d == "-DOBV_VOICE_HW=1")]
     flags = [*CFLAGS, *defs, "-Ifirmware/hal", "-Ifirmware/src"]
+    if BOARD == "smk37":            # the loader keeps a bank tagged with this build's own family (ldr_core.c)
+        flags.append(f'-DOBV_DATA_FAMILY="{os.environ.get("OBV_DATA_FAMILY", SMK_DATA_FAMILY)}"')
     tc_all(("cc", "-c", src / "crt0_ldr.S", "-o", LDR / "crt0_ldr.o"),
            ("cc", *flags, "-c", src / "loader.c", "-o", LDR / "loader.o"))
     elf = LDR / "loader.elf"

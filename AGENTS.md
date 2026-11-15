@@ -34,7 +34,7 @@ Serve the simulator: `python3 -m http.server -d build/sim-site 8737`.
 
 | Path                                                                                   | What                                                                                                                        |
 | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `firmware/hal/`, `firmware/loader/`                                                    | **Protected, verbatim from SMKSYNTH.** Do not edit (flash driver, update loader).                                           |
+| `firmware/hal/`, `firmware/loader/`                                                    | **Protected, from SMKSYNTH.** Do not edit without the owner's OK (flash driver, update loader). One approved change: D-65. |
 | `firmware/src/lgs_app.c`                                                               | The application unit: includes everything, defines the main loop.                                                           |
 | `firmware/src/lgs_ui.h`                                                                | The whole UI: modes, buttons, knobs, pads, screens, LEDs (`leds_update`), popup, save dialog.                               |
 | `firmware/src/lgs_model.h`                                                             | Data model: `sound_t`, `lgline_t`, `perf_t`, `db`; catalog index; `patch_build`; `part_apply`; `part_levels`; `route_mask`. |
@@ -86,7 +86,7 @@ New ICONIC entries go **at the end of `ORDER`** so existing ids stay put. Then f
 
 1. Flash writes only through the guarded `sector_save` allow-list; `tools/check_flash_writes.py` and `flash-write-sites.txt` gate the build.
 2. Never write the calibration/BT/key area (`0xC1000`). User data lives in `0x57000..0x9CFFF`, A/B windows `0x99000` / `0x9B000`.
-3. `firmware/hal/` and `firmware/loader/` stay verbatim (`tools/check_provenance.py` checks hashes).
+3. `firmware/hal/` and `firmware/loader/` stay as imported (`tools/check_provenance.py` checks hashes); the only approved change is D-65 (the loader also keeps a bank tagged with our own family).
 4. No flash access from the audio ISR; code used while flash is busy lives in RAM text.
 5. Nothing is installed on a device before the restore kit is saved (`DOCs/install-guide.md`, `DOCs/06-storage-and-safety.md`).
 
