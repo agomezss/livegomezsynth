@@ -39,8 +39,8 @@ enum { MOD_DEFAULT, MOD_OFF, MOD_FILTER, MOD_BRIGHT, MOD_SWELL, MOD_REVERB, MOD_
 
 /* the user data: this block is what gets persisted (T1.9) */
 #define LGS_DB_MAGIC 0x4C47530Au
-#define LGS_DB_VER 1u
-static struct { uint32_t magic, ver, gen; sound_t fav[LGS_NFAV]; perf_t perf[LGS_NPERF]; uint32_t crc; } db;   /* layout of lgs_ab.h */
+#define LGS_DB_VER 2u
+static struct { uint32_t magic, ver, gen, theme; sound_t fav[LGS_NFAV]; perf_t perf[LGS_NPERF]; uint32_t crc; } db;   /* layout of lgs_ab.h */
 static uint8_t db_dirty;
 
 /* ---- catalog --------------------------------------------------------------------------------- */

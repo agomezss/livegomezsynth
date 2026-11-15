@@ -19,6 +19,7 @@ static void sound_sanitize(sound_t *s)
 static void db_sanitize(void)
 {
     uint32_t i, l;
+    if (db.theme > 1u) db.theme = 0;
     for (i = 0; i < LGS_NFAV; i++) sound_sanitize(&db.fav[i]);
     for (i = 0; i < LGS_NPERF; i++)
         for (l = 0; l < LGS_NLINE; l++) {

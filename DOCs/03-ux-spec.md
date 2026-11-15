@@ -2,7 +2,7 @@
 
 Panel: 37 keys, 8 endless knobs (K1-K8, left to right), 4 faders, 16 pads (2 rows x 8, RGB), arrows `<` `>`,
 buttons incl. KNOB BANK, FADER BANK, PATCH (HOME), PARA (EDIT), CHORD, NOTE REPEAT, SCALE, GLOBE, BT, ARP, FX,
-OCTAVE-/+. The SEQ, SEQ PLAY and SEQ REC buttons exist on the panel but are unused (sequencer removed, D-50). Pitch and mod wheels. Display 240x240 (assumed 30 cols x 15 rows, **VERIFY**).
+OCTAVE-/+. SEQ switches the screen theme (D-58); SEQ PLAY and SEQ REC exist on the panel but are unused (sequencer removed, D-50). Pitch and mod wheels. Display 240x240 (assumed 30 cols x 15 rows, **VERIFY**).
 
 UX principles: the layout of the controls **never changes between modes** except where stated; every action gives
 immediate visual feedback; destructive actions need confirmation; the user is never more than one button from PATCH
@@ -32,7 +32,7 @@ or PERFORM.
 | ARP / CHORD / GLOBE / FX / PARA / ENV / NOTE REPEAT / SCALE / OCTAVE | **as SMKSYNTH**                                                                                     | as SMKSYNTH          | as SMKSYNTH                             | -                         |
 | PATCH (HOME)                                                         | short press: return to main screen; if a Drums patch is loaded, toggles pads DRUMS/FAVORITES (D-12) | same                 | prompt save/discard then exit EDIT      | cancel                    |
 
-SEQ / SEQ PLAY / SEQ REC buttons: unused (D-50; may be given a job later if there is room to bring the sequencer back).
+SEQ = screen theme (Classic / Studio, kept across power cycles, D-58). SEQ PLAY / SEQ REC: unused (D-50; may be given a job later if there is room to bring the sequencer back).
 `IDEA.md` promised a finer spec of K5-K7 "below" but did not give one: the table above was proposed and approved (D-11).
 Sustain comes from the SMK-37's physical sustain input (D-44).
 

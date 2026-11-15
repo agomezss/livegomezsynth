@@ -46,6 +46,7 @@ spec author from `IDEA.md`; reversible, listed so they can be challenged.
 | D-55 | **Informative UX without new modes**: a hint line per mode, per-line level characters in PERFORM, a favorite overwrite prompt that names old and new sound, and a message when a combination pad only exits the solo (03 section 8b). |
 | D-56 | **Navigation always lands on a sound**: `<` `>` = category (as the spec said; the code stepped patches), and a bank change (KNOB BANK in PATCH, FADER BANK in PERFORM) jumps to the first filled favorite / performance of the new bank and loads it. The PATCH hint line was removed (row 8 stays empty). |
 | D-57 | **The EDIT search popup previews** the highlighted sound live on the edited line (keys sound there whatever the range) and restores the stored sound on cancel. PERFORM shows no idle hint line. |
+| D-58 | **SEQ button = screen theme**: Classic (plain text on black, the default) or Studio (SMKSYNTH's blue-black panel: header band, highlighted rows, footer bar). Same layout and text in both. The choice is stored in the user-data image (`db.theme`, image version 2) and the SEQ LED is lit for Studio. |
 
 ## Fixed by IDEA.md (not up for debate unless the owner says so)
 

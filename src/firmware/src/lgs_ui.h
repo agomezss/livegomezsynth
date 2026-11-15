@@ -61,13 +61,42 @@ static void rowf(uint32_t r, uint16_t c, const char *a, const char *b, const cha
 
 static void scr_clear(void) { uint32_t r; for (r = 0; r < ROWS; r++) row_t[r][0] = 0; }
 
+/* theme 0: Classic (plain text on black); theme 1: Studio (SMKSYNTH's blue-black panel: header band, highlighted rows, footer bar) */
+static uint8_t theme;
+#define TH_BG RGB(14, 18, 28)
+#define TH_HEAD RGB(26, 38, 62)
+#define TH_SEL RGB(28, 44, 74)
+#define TH_FOOT RGB(20, 28, 46)
+#define TH_RULE RGB(48, 60, 84)
+
+static uint16_t th_col(uint16_t c)
+{
+    return c == COL_WHITE ? RGB(226, 232, 240) : c == COL_DIM ? RGB(120, 142, 172) : c == COL_GRN ? RGB(110, 231, 140) : c;
+}
+
+static void th_band(uint32_t r, int32_t y)
+{
+    if (r == 0u) {
+        cv_rect(0, y, 240, 19, TH_HEAD);
+        cv_rect(0, y + 19, 240, 1, COL_ACC);
+    } else if (r == ROWS - 1u) {
+        if (row_t[r][0]) { cv_rect(0, y, 240, 20, TH_FOOT); cv_rect(0, y, 240, 1, TH_RULE); }
+    } else if (row_t[r][0] && row_c[r] == COL_WHITE) {
+        cv_rect(0, y, 240, 20, TH_SEL);
+        cv_rect(0, y, 3, 20, COL_ACC);
+    }
+}
+
 static void scr_flush(void)
 {
     uint32_t s, r;
     for (s = 0; s < 2u; s++) {
-        cv_begin(240, 120, C_BLACK);
-        for (r = s * 6u; r < s * 6u + 6u; r++)
-            if (row_t[r][0]) cv_text(6, (int32_t)((r - s * 6u) * 20u + 2u), &FONT_S, row_t[r], row_c[r]);
+        cv_begin(240, 120, theme ? TH_BG : C_BLACK);
+        for (r = s * 6u; r < s * 6u + 6u; r++) {
+            int32_t y = (int32_t)((r - s * 6u) * 20u);
+            if (theme) th_band(r, y);
+            if (row_t[r][0]) cv_text(6, y + 2, &FONT_S, row_t[r], theme ? th_col(row_c[r]) : row_c[r]);
+        }
         cv_blit(0, s * 120u);
     }
 }
@@ -99,11 +128,13 @@ static void say(const char *s, uint16_t c, uint32_t ms)
 #define METER_T3 12000u
 
 static uint8_t save_pending;
+static const char *save_ok = "Saved successfully";
 
 static void save_request(void)                  /* the data are in db; "Saved" is shown once they are in non-volatile storage */
 {
     db_dirty = 1;
     save_pending = 1;
+    save_ok = "Saved successfully";
     say("Saving...", COL_ORG, 60000);
 }
 
@@ -753,6 +784,13 @@ static void buttons_poll(void)
         }
     }
     if ((e >> BTN_EDIT & 1u) && mode == M_EDIT && ov == OV_NONE) { edit_page ^= 1u; ui_dirty = 1; }
+    if ((e >> BTN_SEQ & 1u) && ov == OV_NONE) {            /* the screen theme, kept across power cycles */
+        theme ^= 1u;
+        db.theme = theme;
+        save_request();
+        save_ok = theme ? "Theme: Studio (saved)" : "Theme: Classic (saved)";
+        ui_dirty = 1;
+    }
 }
 
 static void ov_timers(void)
@@ -1128,6 +1166,7 @@ static void leds_update(void)
     fm1_led_key(BTN_KNOB_BANK, mode == M_PATCH);
     fm1_led_key(BTN_FADER_BANK, mode == M_PERF);
     fm1_led_key(BTN_EDIT, mode == M_EDIT);
+    fm1_led_key(BTN_SEQ, theme);
     for (p = 0; p < sizeof PGBTN / sizeof PGBTN[0]; p++) fm1_led_key(PGBTN[p].btn, page_btn == (int8_t)p);
     fm1_led_key(BTN_SAVE, ov == OV_SC);
     fm1_led_key(BTN_LEFT, ov == OV_POP);
@@ -1206,6 +1245,7 @@ static void lgs_ui_init(void)
     obv_engines[OBV_FM2] = obv_engines[OBV_ORG] = obv_engines[OBV_SP] = obv_engines[OBV_FM6] = &lgs_clipper_ops;
     lgs_fx_init();
     if (!lgs_store_load()) db_defaults();
+    theme = (uint8_t)db.theme;
     for (i = 0; i < 4u; i++) fd_last[i] = fm1_in.fader[i];
     smk_pad_events = 1;
 #ifndef OBV_HOST
@@ -1251,7 +1291,7 @@ static void lgs_frame(void)
         int rc = lgs_store_commit();
         if (rc) {
             save_pending = 0;
-            if (rc > 0) say("Saved successfully", COL_GRN, 2000);
+            if (rc > 0) say(save_ok, COL_GRN, 2000);
             else say("Save failed", COL_RED, 3000);
         }
     }

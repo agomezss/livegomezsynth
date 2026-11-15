@@ -40,9 +40,23 @@ check("wrong size -> defaults", d.sim_fav(9) === def9);
 
 const stale = img.slice();
 const dv = new DataView(stale.buffer);
-dv.setUint16(12 + 9 * 10, 9999, true);       // fav[9].patch = an id that is not in the catalog
+dv.setUint16(16 + 9 * 10, 9999, true);       // fav[9].patch = an id that is not in the catalog
 const sum = (() => { let cr = 0xffffffff; for (let i = 0; i < n - 4; i++) { cr ^= stale[i]; for (let k = 0; k < 8; k++) cr = cr & 1 ? (cr >>> 1) ^ 0xedb88320 : cr >>> 1; } return (~cr) >>> 0; })();
 dv.setUint32(n - 4, sum, true);
 let e = await boot(stale);
 check("stale patch id is emptied by the sanitizer", e.sim_fav(9) === 0 && e.sim_fav(0) > 0, "" + e.sim_fav(9));
+
+// the screen theme (SEQ button) survives a restart
+const press = (ex, b) => { ex.sim_button(b, 1); run(ex, 20); ex.sim_button(b, 0); run(ex, 3000); };   // 3 s: the "saved" message is gone
+let t0 = await boot();
+const classic = t0.sim_fb_hash();
+press(t0, 15);
+const studio = t0.sim_fb_hash();
+check("SEQ switches the screen theme", studio !== classic);
+check("and lights its LED", (t0.sim_leds_buttons() >>> 15 & 1) === 1);
+const timg = new Uint8Array(t0.memory.buffer, t0.sim_db_export(), t0.sim_db_size()).slice();
+let t1 = await boot(timg);
+check("the theme is back after a restart", t1.sim_fb_hash() === studio && (t1.sim_leds_buttons() >>> 15 & 1) === 1);
+press(t1, 15);
+check("SEQ again returns to the classic theme", t1.sim_fb_hash() === classic);
 process.exit(fail ? 1 : 0);

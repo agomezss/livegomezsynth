@@ -60,7 +60,7 @@ Three modes, one button each. The layout of the controls does not change between
 | **PERFORM** | **FADER BANK** | load a **performance**; pads 8 and 16 = **SOLO 1 / 2** | tweak | tempo | bank A-H | slot 1-14 | MASTER |
 | **EDIT** | **KNOB BANK + FADER BANK** together, from PERFORM | pick a **category** for the selected line (pad 16 = ICONIC) | K1 line, K2 patch, K3/K4 octave range (layers only) | line volume | pitch bend (page 2) | mod action (page 2) | MASTER |
 
-**Everywhere:** faders = FX sends of the active line. `<` `>` = previous / next category. **BT** = Save / Copy. **PARA** = EDIT page 1/2. Hold **KNOB BANK** for 0.7 s = panel check.
+**Everywhere:** faders = FX sends of the active line. `<` `>` = previous / next category. **BT** = Save / Copy. **PARA** = EDIT page 1/2. **SEQ** = screen theme (Classic / Studio, remembered). Hold **KNOB BANK** for 0.7 s = panel check.
 
 ### Pad lights
 
