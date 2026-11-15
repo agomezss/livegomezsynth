@@ -7,6 +7,16 @@
   const $ = (s, r = document) => r.querySelector(s);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
+  fetch("version.json")
+    .then((r) => (r.ok ? r.json() : Promise.reject()))
+    .then((j) => {
+      $("#ver").textContent = "v" + j.version;
+      $("#ver").title = "Firmware in this page and in the installer, built " + j.built;
+    })
+    .catch(() => {
+      $("#ver").textContent = "dev build";
+    });
+
   // the firmware's numbers (firmware/src/platform.c: BTN_*; lgs_input.h: LGS_K*)
   const BTN = [
     ["KNOB BANK", 0],

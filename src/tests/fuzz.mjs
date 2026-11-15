@@ -19,7 +19,7 @@ for (let seed = 1; seed <= seeds; seed++) {
     if (mode < 0 || mode > 2) bad = "mode " + mode;
     if (ov < 0 || ov > 5) bad = "overlay " + ov;
     if (solo < 0 || solo > 2) bad = "solo " + solo;
-    if (cat < 1 || cat > 15) bad = "category " + cat;
+    if (cat < 1 || cat > 16) bad = "category " + cat;
     for (let p = 0; p < 4; p++) if (ex.sim_part(p, 5) > 8) bad = "voices " + ex.sim_part(p, 5);
     const l = new Float32Array(ex.memory.buffer, ex.sim_out_l(), 88);
     for (const v of l) if (!Number.isFinite(v) || Math.abs(v) > 4) bad = "sample " + v;

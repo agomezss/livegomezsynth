@@ -104,7 +104,7 @@ static int fm6_done(track_t *t, cvoice_t *v)    /* every carrier has gone silent
 }
 
 /* output shift per voice, measured against the other engines (tests/engines_test.mjs): the six-carrier DRAWBARS is much quieter */
-static const uint8_t FM6_SHIFT[FM6_NSLOT] = {31, 31, 31, 31, 31, 31, 26, 31};
+static const uint8_t FM6_SHIFT[FM6_NSLOT] = {26, 26, 26, 26, 26, 26, 26, 26};
 
 static void fm6_render(track_t *t, cvoice_t *v, int32_t *out, uint32_t len, const vmod_t *m)
 {

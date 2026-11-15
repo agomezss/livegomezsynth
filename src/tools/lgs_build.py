@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """LiveGomezSynth build (SMK-37 Pro only): app + update loader + installable .fwsc package.
 
-  tools/lgs_build.py [--version 0.1-dev] [--id 20000] [--family LIVEGMZ] [--sdk PATH]
+  tools/lgs_build.py [--version <src/VERSION>] [--id 20000] [--family LIVEGMZ] [--sdk PATH]
 
 Wraps the build steps in build.py (imported from the SMKSYNTH/OberVave code base, see ../PROVENANCE.md) without its
 SMKSYNTH-specific release gating. Environment: JIELI_TOOLCHAIN (JieLi Linux toolchain), AC79_SDK (JieLi AC79 SDK
@@ -27,7 +27,7 @@ APP_SLOT = 0x50000          # 320 KiB; the user-data region starts at 0x55000 (T
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--version", default="0.1-dev", help="shown on the instrument (APP_VER)")
+    ap.add_argument("--version", default=(Path(__file__).resolve().parent.parent / "VERSION").read_text().strip(), help="shown on the instrument (APP_VER); default: src/VERSION")
     ap.add_argument("--id", default="20000", help="3-5 digit identity suffix: 'SMK-37 Pro_<id>'")
     ap.add_argument("--family", default="LIVEGMZ", help="flash owner tag, 1..7 of A-Z 0-9 (D-01)")
     ap.add_argument("--sdk", type=Path, default=os.environ.get("AC79_SDK"), help="JieLi AC79 SDK checkout")

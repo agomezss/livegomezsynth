@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """Release assembly (T4.2): from a built package to a folder that can be published as it is.
 
-  python3 tools/package_release.py [--version 0.1-dev] [--id 20000] [--build]
+  python3 tools/package_release.py [--version <src/VERSION>] [--bump] [--id 20000] [--build]
 
 --build runs tools/lgs_build.py first (needs the JieLi toolchain, see README). Without it the package in build/ is used.
 Writes release/<version>/ and a copy in release/latest/:
@@ -47,10 +47,18 @@ def gate(title, cmd):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--version", default="0.1-dev")
+    ap.add_argument("--version", default=None, help="default: src/VERSION")
+    ap.add_argument("--bump", action="store_true", help="raise the last number of src/VERSION first (once per commit)")
     ap.add_argument("--id", default="20000")
     ap.add_argument("--build", action="store_true", help="run lgs_build.py first")
     a = ap.parse_args()
+    vfile = root / "VERSION"
+    if a.bump:
+        parts = vfile.read_text().strip().split(".")
+        parts[-1] = str(int(parts[-1]) + 1)
+        vfile.write_text(".".join(parts) + "\n")
+    a.version = a.version or vfile.read_text().strip()
+    print("version  " + a.version)
     budget = None
     if a.build:
         out = gate("device package build", [sys.executable, "tools/lgs_build.py", "--version", a.version, "--id", a.id])
@@ -118,6 +126,7 @@ def main():
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     # the site: simulator at /, installer at /install/
     shutil.copytree(root / "build" / "sim-site", out / "site", dirs_exist_ok=True)
+    (out / "site" / "version.json").write_text(json.dumps({k: manifest[k] for k in ("version", "built", "size")}) + "\n")
     for f in ("index.html", "app.js", "service.js", "protocol.js", "package.js", "style.css", "JieLi-Apache-2.0.txt"):
         shutil.copy(root / "web" / "install" / f, out / "site" / "install" / f)
     shutil.copy(pkg_path, out / "site" / "install" / "firmware" / name)

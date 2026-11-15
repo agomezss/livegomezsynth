@@ -25,7 +25,7 @@ node tests/screens_dump.mjs [--update] # 10 screen goldens (tests/golden-screens
 node tests/fuzz.mjs 3 2000             # random panel and MIDI input
 node tests/installer_test.mjs          # installer page logic against a fake keyboard
 python3 tools/name_review.py           # D-42 name check
-python3 tools/package_release.py --build   # checks, then release/<ver>/ and release/latest/
+python3 tools/package_release.py --build   # checks, then release/<ver>/ and release/latest/ (version from src/VERSION)
 ```
 
 Serve the simulator: `python3 -m http.server -d build/sim-site 8737`.
@@ -91,6 +91,8 @@ New ICONIC entries go **at the end of `ORDER`** so existing ids stay put. Then f
 5. Nothing is installed on a device before the restore kit is saved (`DOCs/install-guide.md`, `DOCs/06-storage-and-safety.md`).
 
 ## Installer and release
+
+**Versioning rule:** `src/VERSION` is the single source (instrument APP_VER, package name, `version.json` shown on the simulator page). Every commit that changes firmware, simulator or installer bumps it once: `python3 tools/package_release.py --bump --build`, then commit `release/latest` with the sources.
 
 `tools/lgs_build.py` builds app + loader + `.fwsc` (env: `JIELI_TOOLCHAIN`, `AC79_SDK`; Docker on macOS). Our package is an **update** package (like SMKSYNTH's): it installs on a keyboard that already runs SMKSYNTH (`SMK-37 Pro_19615..19649`) or us (`SMK-37 Pro_2xxxx`); stock V016 needs a first-install package that does not exist yet. `web/install/service.js` holds the source rules; `tests/installer_test.mjs` runs it against a fake keyboard. `tools/package_release.py` writes `release/latest/site` (simulator at `/`, installer at `/install/`), which `.github/workflows/pages.yml` publishes.
 

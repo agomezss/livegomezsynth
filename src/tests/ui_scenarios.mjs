@@ -37,11 +37,20 @@ check("pad tap loads a favorite", ex.sim_ui(PAT) === ex.sim_fav(2), row(0));
 check("header shows the pad", row(0) === "[PATCH] Bank A - 3", row(0));
 press(BTN.KB);
 check("KNOB BANK in PATCH cycles the bank", ex.sim_ui(KB) === 1 && row(0).includes("Bank B"));
+check("... and the list jumps to that bank's favorites", ex.sim_ui(CAT) === 1 && ex.sim_ui(IDX) >> 4 === ex.sim_ui(KB), "cat " + ex.sim_ui(CAT) + " idx " + ex.sim_ui(IDX));
 for (let i = 0; i < 3; i++) press(BTN.KB);
 check("bank wraps D -> A", ex.sim_ui(KB) === 0);
-check("PATCH shows a hint line", row(8).includes("K6 cat"), row(8));
+check("PATCH keeps row 8 free", row(8) === "", row(8));
 ex.sim_load_patch(449); run(60);
 check("an ICONIC name is shown whole", row(1).endsWith("Rhapsody Piano"), row(1));
+{
+  const before = ex.sim_ui(CAT);
+  press(BTN.RIGHT);
+  const name = row(2).split(" (")[0];
+  check("> goes to the next category and loads its first sound", ex.sim_ui(CAT) === before % 16 + 1 && ex.sim_ui(IDX) === 0 && row(1).startsWith(name), row(1) + " | " + row(2));
+  press(BTN.LEFT);
+  check("< goes back", ex.sim_ui(CAT) === before, "cat " + ex.sim_ui(CAT));
+}
 tap(1);
 const sel = ex.sim_ui(PAT);
 ex.sim_pad(5, 100); run(800);
@@ -158,8 +167,20 @@ check("K5 toggles sustain", (ex.sim_line(1, 4) & 1) === 0);
 enc(6, 2);
 check("K7 mod action", (ex.sim_line(1, 4) >> 2) === 2, "" + (ex.sim_line(1, 4) >> 2));
 press(BTN.EDIT);
+const stored = ex.sim_part(1, 13);       // a fingerprint of the sound on LAYER 2
 press(BTN.LEFT);
 check("arrow opens the search popup", ex.sim_ui(OV) === 3);
+{
+  enc(0, 1);
+  check("moving in the popup previews the highlighted sound on the line", ex.sim_part(1, 13) !== stored);
+  key(0, 1);   // F3 is outside LAYER 2's range
+  check("the preview sounds whatever the line's range", voices(1) >= 1, `${voices(0)}${voices(1)}`);
+  key(0, 0); run(300);
+  tap(1);      // cancel
+  run(100);
+  check("cancel puts the stored sound back", ex.sim_part(1, 13) === stored);
+  press(BTN.LEFT);
+}
 enc(0, 1);
 tap(0);
 check("popup confirm applies the patch", ex.sim_ui(OV) === 0 && ex.sim_line(1, 0) !== 97, "" + ex.sim_line(1, 0));

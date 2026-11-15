@@ -44,6 +44,8 @@ spec author from `IDEA.md`; reversible, listed so they can be challenged.
 | D-53 | **Category 16 is ICONIC** (the slot freed by D-51): 252 timbres (room for 255) evoking iconic songs of the repertoire (rock, pop rock, rock nacional, Latin rock, 80s, organs, classical-fantasy), names only hint at the song (JUMP SYNTH, COUNTDOWN SYNTH, DOOR ORGAN), built on the existing engines from `tools/famous_defs.py`. First drafts, to be judged by ear. |
 | D-54 | **Pad light language** (PATCH and PERFORM): nothing assigned = dark, assigned = colour, selected = a different colour that blinks; both solo pads share one colour and the active one blinks. **Solo lines have no octave range**: a solo plays on the whole keyboard, so EDIT hides K3/K4 for them. |
 | D-55 | **Informative UX without new modes**: a hint line per mode, per-line level characters in PERFORM, a favorite overwrite prompt that names old and new sound, and a message when a combination pad only exits the solo (03 section 8b). |
+| D-56 | **Navigation always lands on a sound**: `<` `>` = category (as the spec said; the code stepped patches), and a bank change (KNOB BANK in PATCH, FADER BANK in PERFORM) jumps to the first filled favorite / performance of the new bank and loads it. The PATCH hint line was removed (row 8 stays empty). |
+| D-57 | **The EDIT search popup previews** the highlighted sound live on the edited line (keys sound there whatever the range) and restores the stored sound on cancel. PERFORM shows no idle hint line. |
 
 ## Fixed by IDEA.md (not up for debate unless the owner says so)
 

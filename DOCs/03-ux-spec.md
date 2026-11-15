@@ -174,9 +174,16 @@ back to `OFF` and the option is skipped in K7 for that engine.
 
 Blinking is `(fm1_ms >> 8) & 1` (full / 10 %), computed in `leds_update()` on every UI pass, so it needs no timer.
 
+## 8a. Navigation lands on a sound (D-56)
+
+- `<` `>` and K6 change the category in PATCH and **load its first sound** (Favorites: the first filled favorite of the current bank). K7 moves within the category. In Favorites the bank letter follows the cursor.
+- KNOB BANK in PATCH moves to the next bank A-D, and the list jumps to that bank's first filled favorite and loads it. FADER BANK in PERFORM does the same with performances (bank A-H, first filled slot).
+
+- **The EDIT search popup auditions**: moving the cursor (K1, arrows) plays the highlighted sound on the edited line, and keys sound on that line whatever its octave range. Pad 1 confirms, pad 2 or leaving the popup puts the stored sound back. The popup opens on the line's own patch.
+
 ## 8b. Hints and live feedback (D-55)
 
-- A dim **hint line** shows the controls of the mode: PATCH row 8 (`K6 cat K7 patch hold pad:save`), PERFORM row 8 (`Pad load  8/16 solo  K6 bank`, `Solo on: tap solo pad to exit` during a solo), EDIT row 1 (per page and line type). Messages and the value bar take the row while they last. Rows hold 30 characters (8 px font on 240 px).
+- **Hint line** only in EDIT (row 1, per page and line type). PATCH and PERFORM keep row 8 empty; the drum kit shows `Pads play the drum kit`. Messages and the value bar take the row while they last. Rows hold 30 characters (8 px font on 240 px).
 - PERFORM shows **how loud each line sounds** as one character after the `>` marker (`.` `:` `+` `#`, from the mixer's per-part peak, sampled every 80 ms).
 - The favorite **overwrite prompt** names what is there now and what will replace it (`now:` / `with:`).
 - Tapping a combination pad during a solo only leaves the solo and says `Solo off - tap again to load`.

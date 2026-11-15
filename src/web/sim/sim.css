@@ -29,6 +29,28 @@ body {
   color: var(--dim);
   font-weight: 400;
 }
+.top .ver {
+  margin-left: 10px;
+  padding: 1px 8px;
+  border: 1px solid var(--dim);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--dim);
+}
+.top .cta {
+  margin-left: 10px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: #2a6df4;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.top .cta:hover {
+  background: #4a85ff;
+}
 .tag {
   margin: 4px 0 0;
   color: var(--dim);

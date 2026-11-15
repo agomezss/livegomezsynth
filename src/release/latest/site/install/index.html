@@ -1,66 +1,102 @@
 <!doctype html>
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LiveGomezSynth installer</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<main>
-<h1>LiveGomezSynth installer</h1>
-<p class="note">For the M-VAVE SMK-37 Pro. Works in desktop Chrome or Edge over HTTPS (Web MIDI with SysEx). Connect the keyboard by USB and close other MIDI programs. <a href="../">Try the simulator first</a>.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LiveGomezSynth installer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>LiveGomezSynth installer</h1>
+      <p class="note">
+        For the M-VAVE SMK-37 Pro. Works in desktop Chrome or Edge over HTTPS
+        (Web MIDI with SysEx). Connect the keyboard by USB and close other MIDI
+        programs. <a href="../">Try the simulator first</a>.
+      </p>
 
-<section id="s1">
-<h2>1. Connect</h2>
-<button id="connect">Connect and identify</button>
-<p id="device" class="status">Not connected.</p>
-<p id="plan" class="status"></p>
-</section>
+      <section id="s1">
+        <h2>1. Connect</h2>
+        <button id="connect">Connect and identify</button>
+        <p id="device" class="status">Not connected.</p>
+        <p id="plan" class="status"></p>
+      </section>
 
-<section id="s2">
-<h2>2. Back up the current firmware</h2>
-<p>This page cannot read the keyboard's flash: the update protocol only lets the keyboard pull a package. The way back is a copy of the firmware you run now, plus a record of what the keyboard reports.</p>
-<ol>
-<li><button id="record" disabled>Save the identity record</button> <span id="recordState" class="status"></span></li>
-<li>Choose the package of the firmware you run now (the M-VAVE <code>.fwsc</code> from M-UPGRADE for stock, or your SMKSYNTH <code>.fwsc</code>):
-<input id="kitFile" type="file" accept=".fwsc" disabled> <span id="kitState" class="status"></span>
-<button id="kitCopy" disabled>Download a copy</button></li>
-<li><label><input id="bankBackup" type="checkbox" disabled> My SMKSYNTH banks and favorites are backed up. The first start of LiveGomezSynth re-initializes the user-data bank.</label></li>
-<li><label><input id="stockKnown" type="checkbox" disabled> I know the official way back is M-VAVE's M-UPGRADE with the factory package, and that nothing here was tested on hardware yet.</label></li>
-</ol>
-</section>
+      <section id="s2">
+        <h2>2. Back up the current firmware</h2>
+        <p>
+          This page cannot read the keyboard's flash: the update protocol only
+          lets the keyboard pull a package. The way back is a copy of the
+          firmware you run now, plus a record of what the keyboard reports.
+        </p>
+        <ol>
+          <li>
+            <button id="record" disabled>Save the identity record</button>
+            <span id="recordState" class="status"></span>
+          </li>
+          <li>
+            Choose the package of the firmware you run now (the M-VAVE
+            <code>.fwsc</code> from M-UPGRADE for stock, or your SMKSYNTH
+            <code>.fwsc</code>):
+            <input id="kitFile" type="file" accept=".fwsc" disabled />
+            <span id="kitState" class="status"></span>
+            <button id="kitCopy" disabled>Download a copy</button>
+          </li>
+          <li>
+            <label
+              ><input id="bankBackup" type="checkbox" disabled /> My SMKSYNTH
+              banks and favorites are backed up. The first start of
+              LiveGomezSynth re-initializes the user-data bank.</label
+            >
+          </li>
+          <li>
+            <label
+              ><input id="stockKnown" type="checkbox" disabled /> I know the
+              official way back is M-VAVE's M-UPGRADE with the factory package,
+              and that nothing here was tested on hardware yet.</label
+            >
+          </li>
+        </ol>
+      </section>
 
-<section id="s3">
-<h2>3. Install</h2>
-<p id="pin" class="status">Loading the package list...</p>
-<button id="install" disabled>Install</button>
-<progress id="progress" max="100" value="0"></progress>
-<p id="step" class="status"></p>
-</section>
+      <section id="s3">
+        <h2>3. Install</h2>
+        <p id="pin" class="status">Loading the package list...</p>
+        <button id="install" disabled>Install</button>
+        <progress id="progress" max="100" value="0"></progress>
+        <p id="step" class="status"></p>
+      </section>
 
-<details id="s4">
-<summary>Restore the previous firmware (experimental)</summary>
-<p>Writes back the package saved in step 2 with the same update mechanism. Not tested on hardware. If anything fails, use M-UPGRADE.</p>
-<button id="restore" disabled>Restore</button> <span id="restoreState" class="status"></span>
-</details>
+      <details id="s4">
+        <summary>Restore the previous firmware (experimental)</summary>
+        <p>
+          Writes back the package saved in step 2 with the same update
+          mechanism. Not tested on hardware. If anything fails, use M-UPGRADE.
+        </p>
+        <button id="restore" disabled>Restore</button>
+        <span id="restoreState" class="status"></span>
+      </details>
 
-<section>
-<h2>Log</h2>
-<pre id="log"></pre>
-<button id="downloadLog">Download the log</button>
-</section>
-</main>
+      <section>
+        <h2>Log</h2>
+        <pre id="log"></pre>
+        <button id="downloadLog">Download the log</button>
+      </section>
+    </main>
 
-<dialog id="confirm">
-<form method="dialog">
-<h3 id="confirmTitle"></h3>
-<p id="confirmText"></p>
-<p>Type <strong id="word"></strong> to continue: <input id="typed" autocomplete="off"></p>
-<button value="cancel">Cancel</button> <button id="go" value="confirm" disabled>Continue</button>
-</form>
-</dialog>
-<script type="module" src="app.js"></script>
-</body>
+    <dialog id="confirm">
+      <form method="dialog">
+        <h3 id="confirmTitle"></h3>
+        <p id="confirmText"></p>
+        <p>
+          Type <strong id="word"></strong> to continue:
+          <input id="typed" autocomplete="off" />
+        </p>
+        <button value="cancel">Cancel</button>
+        <button id="go" value="confirm" disabled>Continue</button>
+      </form>
+    </dialog>
+    <script type="module" src="app.js"></script>
+  </body>
 </html>

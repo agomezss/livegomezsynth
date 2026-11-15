@@ -223,6 +223,7 @@ EXPORT int32_t sim_part(uint32_t p, uint32_t i)      /* i: 0 lvl 1 cho 2 dly 3 r
     case 7: return ctl_hold >> p & 1u;
     case 8: return ctl_bend_off >> p & 1u;
     case 9: return ctl_mod_cut[p];
+    case 13: { uint32_t k, h = 0; for (k = 0; k < NPARAM; k++) h = h * 31u + live_p[p].v[k]; return (int32_t)(h & 0x7FFFFFFF); }   /* a fingerprint of the sound in the part */
     case 10: return ctl_vib_off >> p & 1u;
     case 11: return obv_engine_track[p].active;
     case 12: return drums_busy(p);

@@ -202,6 +202,20 @@ static void pat_select(void)                    /* the list cursor (pat_cat, pat
     }
 }
 
+static uint32_t fav_first(uint32_t bank)       /* the first filled favorite of a bank (else its first slot) */
+{
+    uint32_t i;
+    for (i = bank * 16u; i < bank * 16u + 16u; i++) if (db.fav[i].patch) return i;
+    return bank * 16u;
+}
+
+static uint32_t perf_first(uint32_t bank)      /* the first filled performance of a bank (else the current slot) */
+{
+    uint32_t s;
+    for (s = 0; s < 14u; s++) if (perf_filled(&db.perf[bank * 14u + s])) return s;
+    return ps_slot;
+}
+
 static void perf_apply_all(void)
 {
     page_btn = -1;
@@ -278,10 +292,39 @@ static uint32_t pop_fav_at(uint32_t k)          /* the k-th non-empty favorite (
     return 64u;
 }
 
+static uint8_t pop_audition;                    /* the edited line's part holds the highlighted sound, not the stored one */
+
+static void pop_preview(void)                   /* the highlighted sound plays on the edited line (undone by pop_restore) */
+{
+    sound_t s;
+    memset(&s, 0, sizeof s);
+    if (pop_cat == 1u) {
+        uint32_t f = pop_fav_at(pop_idx);
+        if (f >= 64u) return;
+        s = db.fav[f];
+    } else if (pop_idx < cat_n[pop_cat]) sound_defaults(&s, LGS_PATCH[cat_first[pop_cat] + pop_idx].id);
+    else return;
+    keys_release_all();
+    part_apply(edit_line, &s, cur.line[edit_line].vol);
+    fd_reset();
+    pop_audition = 1;
+}
+
+static void pop_restore(void)
+{
+    pop_audition = 0;
+    keys_release_all();
+    if (cur.line[edit_line].s.patch) part_apply(edit_line, &cur.line[edit_line].s, cur.line[edit_line].vol);
+}
+
 static void pop_open(void)
 {
-    pop_cat = (uint8_t)patch_cat_of(cur.line[edit_line].s.patch);
+    uint32_t c = patch_cat_of(cur.line[edit_line].s.patch), i;
+    pop_cat = (uint8_t)(c ? c : 2u);
     pop_idx = 0;
+    for (i = 0; c && i < cat_n[c]; i++)             /* start on the line's own patch: nothing changes until you move */
+        if (LGS_PATCH[cat_first[c] + i].id == cur.line[edit_line].s.patch) pop_idx = (uint8_t)i;
+    pop_audition = 0;
     ov = OV_POP;
     ov_until = 0;
     ui_dirty = 1;
@@ -307,6 +350,7 @@ static void edit_set_patch(uint32_t l, uint32_t id)
 
 static void pop_confirm(void)
 {
+    pop_audition = 0;
     if (pop_cat == 1u) {
         uint32_t f = pop_fav_at(pop_idx);
         if (f < 64u) edit_set_line(edit_line, &db.fav[f], f + 1u);
@@ -369,9 +413,10 @@ static void tempo_knob(int32_t d)
 static void pat_nav(int32_t dc, int32_t di)
 {
     uint32_t n;
-    if (dc) { pat_cat = (uint8_t)(1 + wrap((int32_t)pat_cat - 1 + dc, 16)); pat_idx = 0; }
+    if (dc) { pat_cat = (uint8_t)(1 + wrap((int32_t)pat_cat - 1 + dc, 16)); pat_idx = (uint8_t)(pat_cat == 1u ? fav_first(kb_bank) : 0u); }
     n = pat_cat == 1u ? LGS_NFAV : cat_n[pat_cat];
     if (di) pat_idx = (uint8_t)wrap((int32_t)pat_idx + di, (int32_t)n);
+    if (pat_cat == 1u) kb_bank = (uint8_t)(pat_idx >> 4);     /* the bank letter follows the favorites list */
     pat_select();
     ui_dirty = 1;
 }
@@ -502,7 +547,7 @@ static void knobs_poll(void)
     int32_t d[7];
     for (k = 0; k < 7u; k++) d[k] = lgs_knob(k);
     if (ov == OV_POP) {
-        if (d[0]) { uint32_t n = pop_count(); pop_idx = (uint8_t)wrap((int32_t)pop_idx + d[0], (int32_t)n); ui_dirty = 1; }
+        if (d[0]) { uint32_t n = pop_count(); pop_idx = (uint8_t)wrap((int32_t)pop_idx + d[0], (int32_t)n); pop_preview(); ui_dirty = 1; }
         return;
     }
     if (ov == OV_SC) {
@@ -536,7 +581,7 @@ static void kb_note(uint32_t on, uint32_t key, uint32_t vel)
     if (key >= 128u) return;
     if (on) {
         n = (uint32_t)clampi((int32_t)key + (kb_ext ? 0 : oct_shift * 12), 0, 127);
-        m = mode == M_PATCH ? 1u : route_mask(&cur, solo, n);
+        m = mode == M_PATCH ? 1u : ov == OV_POP && mode == M_EDIT ? 1u << edit_line : route_mask(&cur, solo, n);   /* the popup auditions on the edited line, whatever its range */
         if (held_mask[key]) return;
         held_mask[key] = (uint8_t)m;
         held_note[key] = (uint8_t)n;
@@ -651,7 +696,12 @@ static void kb_single(void)
     if (ov != OV_NONE) { ov = OV_NONE; ui_dirty = 1; return; }
     if (mode == M_EDIT) { ov = OV_EXIT; ov_until = fm1_ms + 10000u; }
     else if (mode != M_PATCH) enter_patch();
-    else { kb_bank = (uint8_t)((kb_bank + 1u) & 3u); }
+    else {                                       /* next bank: the list jumps to its first favorite and loads it */
+        kb_bank = (uint8_t)((kb_bank + 1u) & 3u);
+        pat_cat = 1;
+        pat_idx = (uint8_t)fav_first(kb_bank);
+        pat_select();
+    }
     ui_dirty = 1;
 }
 
@@ -660,7 +710,7 @@ static void fb_single(void)
     if (ov != OV_NONE) { ov = OV_NONE; ui_dirty = 1; return; }
     if (mode == M_EDIT) { ov = OV_EXIT; ov_until = fm1_ms + 10000u; }
     else if (mode != M_PERF) enter_perf();
-    else { fb_bank = (uint8_t)((fb_bank + 1u) & 7u); }
+    else { uint32_t b = (fb_bank + 1u) & 7u; perf_select(b, perf_first(b)); }   /* next bank: its first performance */
     ui_dirty = 1;
 }
 
@@ -668,9 +718,9 @@ static void arrows(int32_t d)
 {
     if (mode == M_EDIT) {
         if (ov == OV_NONE) pop_open();
-        if (ov == OV_POP) { pop_cat = (uint8_t)(1 + wrap((int32_t)pop_cat - 1 + d, 16)); pop_idx = 0; }
+        if (ov == OV_POP) { pop_cat = (uint8_t)(1 + wrap((int32_t)pop_cat - 1 + d, 16)); pop_idx = 0; pop_preview(); }
     } else if (ov == OV_NONE) {
-        if (mode == M_PATCH) pat_nav(0, d);
+        if (mode == M_PATCH) pat_nav(d, 0);
         else perf_select((uint32_t)wrap((int32_t)fb_bank + d, 8), ps_slot);
     }
     ui_dirty = 1;
@@ -764,8 +814,7 @@ static void rows_footer(void)
     row_c[11] = COL_DIM;
     if (msg[0]) { rowf(8, msg_c, msg, 0, 0, 0); }
     else if (bar[0]) { rowf(8, COL_ACC, bar, 0, 0, 0); }
-    else if (mode == M_PATCH) rowf(8, COL_DIM, drum_pads ? "Pads play the drum kit" : pat_cat == 1u ? "K6 cat K7 fav  pad: load" : "K6 cat K7 patch hold pad:save", 0, 0, 0);
-    else rowf(8, COL_DIM, solo ? "Solo on: tap solo pad to exit" : "Pad load  8/16 solo  K6 bank", 0, 0, 0);
+    else if (mode == M_PATCH) { if (drum_pads) rowf(8, COL_DIM, "Pads play the drum kit", 0, 0, 0); }
 }
 
 static void screen_patch(void)
@@ -1191,6 +1240,7 @@ static void lgs_frame(void)
     wheels_poll();
     flags_apply();
     ov_timers();
+    if (pop_audition && ov != OV_POP) pop_restore();       /* the popup closed without choosing: the stored sound returns */
     meters_poll();
     if (save_pending) {
         int rc = lgs_store_commit();

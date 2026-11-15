@@ -1,17 +1,17 @@
 {
-  "name": "LiveGomezSynth 0.1-dev",
-  "version": "0.1-dev",
+  "name": "LiveGomezSynth 0.1.1",
+  "version": "0.1.1",
   "product": "SMK-37 Pro_20000",
   "family": "LIVEGMZ",
-  "file": "livegomezsynth-0.1-dev-smk37.fwsc",
+  "file": "livegomezsynth-0.1.1-smk37.fwsc",
   "size": 651819,
-  "sha256": "83f5c764958d6b0fbb7aa09b1edc06d9aff29364d8ada875e226ac07965a4505",
-  "built": "2026-11-15T04:58:41Z",
-  "source_commit": null,
+  "sha256": "a7d573d8ab796b969a9578deddfa29cde2d4dc844d3f30d085dda3237f3fb9f2",
+  "built": "2026-11-15T05:38:36Z",
+  "source_commit": "79a20912434c461010d8d7ab69bc8e3cba1ff0c0",
   "source_dirty": true,
   "package_kind": "update (needs SMKSYNTH 1.x or LiveGomezSynth on the keyboard; no first-install package for stock V016 yet)",
   "budgets": {
-    "image": 290976,
+    "image": 291268,
     "image_max": 327680,
     "ram": 72976,
     "ram_max": 98304
@@ -42,8 +42,8 @@
     "sp": 72,
     "fm6": 17
   },
-  "golden_sha256": "9afd4bb87ee73d9d75a373b095192c84179cbc610ea08b9bef1385b5a596f6eb",
-  "simulator_wasm_sha256": "28ee2f9bb101af23e49d5c9b4ca8eb2a8ed722fe4c882a5e0808faee2f369f1d",
+  "golden_sha256": "9714193a4cf22bd38ca0c1859513390b0c99cde5688df05bba20fca7b67e8b69",
+  "simulator_wasm_sha256": "ce5582fba67fea76e922afd5897a9509fb9e5f6a8820a4f68a7c7da260ec80e6",
   "hardware_tested": false,
   "gates": {
     "G1_simulator_owner_validation": "pending",
