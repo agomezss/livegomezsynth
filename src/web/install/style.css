@@ -41,6 +41,22 @@ button {
   color: inherit;
   cursor: pointer;
 }
+a.btn {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #2a2f38;
+  color: inherit;
+  text-decoration: none;
+  margin-right: 0.8rem;
+}
+a.btn[hidden] {
+  display: none;
+}
+a.btn:hover {
+  background: #343a45;
+}
 button:disabled {
   opacity: 0.4;
   cursor: not-allowed;

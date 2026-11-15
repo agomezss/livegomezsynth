@@ -11,6 +11,11 @@
     .then((r) => (r.ok ? r.json() : Promise.reject()))
     .then((j) => {
       $("#ver").textContent = "v" + j.version;
+      if (j.file) {
+        $("#dlLink").href = "install/firmware/" + j.file;
+        $("#dlLink").setAttribute("download", j.file);
+        $("#dlLink").hidden = false;
+      }
       $("#ver").title = "Firmware in this page and in the installer, built " + j.built;
     })
     .catch(() => {

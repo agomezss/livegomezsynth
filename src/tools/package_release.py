@@ -126,7 +126,7 @@ def main():
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     # the site: simulator at /, installer at /install/
     shutil.copytree(root / "build" / "sim-site", out / "site", dirs_exist_ok=True)
-    (out / "site" / "version.json").write_text(json.dumps({k: manifest[k] for k in ("version", "built", "size")}) + "\n")
+    (out / "site" / "version.json").write_text(json.dumps({k: manifest[k] for k in ("version", "built", "size", "file")}) + "\n")
     for f in ("index.html", "app.js", "service.js", "protocol.js", "package.js", "style.css", "JieLi-Apache-2.0.txt"):
         shutil.copy(root / "web" / "install" / f, out / "site" / "install" / f)
     shutil.copy(pkg_path, out / "site" / "install" / "firmware" / name)

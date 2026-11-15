@@ -92,7 +92,7 @@ New ICONIC entries go **at the end of `ORDER`** so existing ids stay put. Then f
 
 ## Installer and release
 
-**Versioning rule:** `src/VERSION` is the single source (instrument APP_VER, package name, `version.json` shown on the simulator page). Every commit that changes firmware, simulator or installer bumps it once: `python3 tools/package_release.py --bump --build`, then commit `release/latest` with the sources.
+**Versioning rule:** `src/VERSION` is the single source (instrument APP_VER, package name, `version.json` shown on the simulator page). Every commit that changes firmware, simulator or installer bumps it once: `python3 tools/package_release.py --bump --build`, then commit `release/latest` with the sources. `.github/workflows/release.yml` publishes `release/latest` as the GitHub Release `v<VERSION>` on every push to main (a PR only checks it and uploads an artifact); `tools/check_release.py` refuses a `release/latest` that does not match `src/VERSION`.
 
 `tools/lgs_build.py` builds app + loader + `.fwsc` (env: `JIELI_TOOLCHAIN`, `AC79_SDK`; Docker on macOS). Our package is an **update** package (like SMKSYNTH's): it installs on a keyboard that already runs SMKSYNTH (`SMK-37 Pro_19615..19649`) or us (`SMK-37 Pro_2xxxx`); stock V016 needs a first-install package that does not exist yet. `web/install/service.js` holds the source rules; `tests/installer_test.mjs` runs it against a fake keyboard. `tools/package_release.py` writes `release/latest/site` (simulator at `/`, installer at `/install/`), which `.github/workflows/pages.yml` publishes.
 

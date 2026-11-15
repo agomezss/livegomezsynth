@@ -48,6 +48,11 @@ body {
   font-weight: 600;
   text-decoration: none;
 }
+.top .cta.alt {
+  background: transparent;
+  border: 1px solid #2a6df4;
+  color: #8fb4ff;
+}
 .top .cta:hover {
   background: #4a85ff;
 }

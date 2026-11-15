@@ -96,6 +96,11 @@ async function loadPin() {
     );
     state.pin = m;
     state.pkg = raw;
+    const dl = $("pkgDownload");
+    dl.href = m.url;
+    dl.download = m.url.split("/").pop();
+    dl.textContent = `Download firmware ${m.version} (.fwsc)`;
+    dl.hidden = false;
     say(
       "pin",
       `Package: ${m.name} (${m.product}), ${m.size} bytes, SHA-256 ${m.sha256.slice(0, 16)}...`,
