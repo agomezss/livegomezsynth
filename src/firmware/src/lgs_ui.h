@@ -72,29 +72,39 @@ static void rowf(uint32_t r, uint16_t c, const char *a, const char *b, const cha
 
 static void scr_clear(void) { uint32_t r; for (r = 0; r < ROWS; r++) row_t[r][0] = 0; }
 
-/* theme 0: Classic (plain text on black); theme 1: Studio (SMKSYNTH's blue-black panel: header band, highlighted rows, footer bar) */
+/* Themes: 0 Classic (plain text on black); 1.. Studio (a header band, highlighted rows, a footer bar) in one colour each:
+ * Blue (SMKSYNTH's), Yellow, Green, Purple, Red, Pink, and White (black on white, for contrast). The SEQ button steps through them. */
+typedef struct { uint16_t bg, head, sel, foot, rule, acc, fg, dim, grn, org, red; } theme_t;
+static const char *const THEME_NAME[NTHEME] = {"Classic", "Blue", "Yellow", "Green", "Purple", "Red", "Pink", "White"};
+static const theme_t TH[NTHEME] = {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {RGB(14, 18, 28), RGB(26, 38, 62), RGB(28, 44, 74), RGB(20, 28, 46), RGB(48, 60, 84), COL_ACC, RGB(226, 232, 240), RGB(120, 142, 172), RGB(110, 231, 140), COL_ORG, COL_RED},
+    {RGB(24, 20, 6), RGB(58, 48, 12), RGB(66, 54, 14), RGB(40, 33, 10), RGB(92, 78, 30), RGB(250, 204, 21), RGB(250, 246, 228), RGB(170, 156, 110), RGB(110, 231, 140), COL_ORG, COL_RED},
+    {RGB(8, 22, 14), RGB(14, 52, 30), RGB(18, 62, 36), RGB(12, 38, 22), RGB(34, 84, 54), RGB(74, 222, 128), RGB(226, 245, 232), RGB(120, 170, 140), RGB(150, 240, 110), COL_ORG, COL_RED},
+    {RGB(20, 12, 30), RGB(46, 26, 72), RGB(56, 32, 88), RGB(34, 20, 54), RGB(84, 56, 120), RGB(192, 132, 252), RGB(240, 230, 250), RGB(150, 128, 180), RGB(110, 231, 140), COL_ORG, COL_RED},
+    {RGB(28, 10, 10), RGB(66, 20, 20), RGB(78, 24, 24), RGB(46, 16, 16), RGB(110, 44, 44), RGB(248, 113, 113), RGB(252, 232, 232), RGB(180, 130, 130), RGB(110, 231, 140), COL_ORG, RGB(255, 140, 120)},
+    {RGB(30, 10, 22), RGB(70, 22, 52), RGB(84, 26, 62), RGB(50, 16, 38), RGB(120, 44, 92), RGB(244, 114, 182), RGB(252, 232, 244), RGB(186, 130, 160), RGB(110, 231, 140), COL_ORG, COL_RED},
+    {RGB(255, 255, 255), RGB(206, 214, 228), RGB(222, 228, 238), RGB(234, 238, 244), RGB(150, 160, 178), RGB(0, 70, 170), RGB(8, 10, 16), RGB(88, 98, 116), RGB(0, 110, 50), RGB(176, 84, 0), RGB(190, 20, 20)},
+};
 static uint8_t theme;
-#define TH_BG RGB(14, 18, 28)
-#define TH_HEAD RGB(26, 38, 62)
-#define TH_SEL RGB(28, 44, 74)
-#define TH_FOOT RGB(20, 28, 46)
-#define TH_RULE RGB(48, 60, 84)
 
 static uint16_t th_col(uint16_t c)
 {
-    return c == COL_WHITE ? RGB(226, 232, 240) : c == COL_DIM ? RGB(120, 142, 172) : c == COL_GRN ? RGB(110, 231, 140) : c;
+    const theme_t *t = &TH[theme];
+    return c == COL_WHITE ? t->fg : c == COL_DIM ? t->dim : c == COL_GRN ? t->grn : c == COL_ACC ? t->acc : c == COL_ORG ? t->org : c == COL_RED ? t->red : c;
 }
 
 static void th_band(uint32_t r, int32_t y)
 {
+    const theme_t *t = &TH[theme];
     if (r == 0u) {
-        cv_rect(0, y, 240, 19, TH_HEAD);
-        cv_rect(0, y + 19, 240, 1, COL_ACC);
+        cv_rect(0, y, 240, 19, t->head);
+        cv_rect(0, y + 19, 240, 1, t->acc);
     } else if (r == ROWS - 1u) {
-        if (row_t[r][0]) { cv_rect(0, y, 240, 20, TH_FOOT); cv_rect(0, y, 240, 1, TH_RULE); }
+        if (row_t[r][0]) { cv_rect(0, y, 240, 20, t->foot); cv_rect(0, y, 240, 1, t->rule); }
     } else if (row_t[r][0] && row_c[r] == COL_WHITE) {
-        cv_rect(0, y, 240, 20, TH_SEL);
-        cv_rect(0, y, 3, 20, COL_ACC);
+        cv_rect(0, y, 240, 20, t->sel);
+        cv_rect(0, y, 3, 20, t->acc);
     }
 }
 
@@ -122,12 +132,12 @@ static void cv_text2x(int32_t y, const char *s, uint16_t c, uint16_t bg)   /* FO
 
 static void splash_draw(uint32_t s)
 {
-    uint16_t bg = theme ? TH_BG : C_BLACK, fg = theme ? RGB(226, 232, 240) : COL_WHITE, dim = theme ? RGB(120, 142, 172) : COL_DIM;
+    uint16_t bg = theme ? TH[theme].bg : C_BLACK, fg = theme ? TH[theme].fg : COL_WHITE, dim = theme ? TH[theme].dim : COL_DIM;
     int32_t top = (int32_t)(s * 120u);
     cv_begin(240, 120, bg);
     if (s == 0u) {
         cv_text2x(76, "LiveGomezSynth", fg, bg);
-        cv_rect(56, 114, 128, 2, COL_ACC);
+        cv_rect(56, 114, 128, 2, theme ? TH[theme].acc : COL_ACC);
     } else {
         int32_t y1 = 134 - top, y2 = 156 - top;
         cv_text((240 - text_w(&FONT_S, "by Alessandro Gomez")) / 2, y1, &FONT_S, "by Alessandro Gomez", fg);
@@ -141,7 +151,7 @@ static void scr_flush(void)
     uint32_t s, r;
     if (splash_until) { splash_draw(0); splash_draw(1); return; }
     for (s = 0; s < 2u; s++) {
-        cv_begin(240, 120, theme ? TH_BG : C_BLACK);
+        cv_begin(240, 120, theme ? TH[theme].bg : C_BLACK);
         for (r = s * 6u; r < s * 6u + 6u; r++) {
             int32_t y = (int32_t)((r - s * 6u) * 20u);
             if (theme) th_band(r, y);
@@ -210,15 +220,20 @@ static uint32_t ctx_vol(void) { return mode == M_PATCH ? 99u : cur.line[ctx_part
 
 /* faders: soft takeover (D-23). After a context change a fader does nothing until it crosses the stored value. */
 static const char *const SEND_NAME[4] = {"CHORUS", "DELAY", "DIST", "REVERB"};
+static const char *const REV_NAME[4] = {"REV L1", "REV L2", "REV S1", "REV S2"};
 static uint8_t fd_last[4], fd_caught[4];
 static int8_t fd_side[4];
 
+/* PATCH: F1-F4 are the sound's four sends. PERFORM and EDIT: one reverb send, F1-F4 set how much each of the four lines feeds it. */
+static uint8_t *fd_slot(uint32_t f) { return mode == M_PATCH ? &pat.snd[f] : &cur.line[f].s.snd[3]; }
+static uint32_t fd_live(uint32_t f) { return mode == M_PATCH || cur.line[f].s.patch != 0u; }
+
 static void fd_reset(void)
 {
-    const sound_t *s = ctx_s();
     uint32_t f;
     for (f = 0; f < 4u; f++) {
-        fd_side[f] = fd_last[f] > s->snd[f] ? 1 : fd_last[f] < s->snd[f] ? -1 : 0;
+        uint32_t t = *fd_slot(f);
+        fd_side[f] = fd_last[f] > t ? 1 : fd_last[f] < t ? -1 : 0;
         fd_caught[f] = fd_side[f] == 0;             /* already matching: live at once */
     }
 }
@@ -228,13 +243,12 @@ static void faders_poll(void)
     uint32_t f;
     for (f = 0; f < 4u; f++) {
         uint32_t v = fm1_in.fader[f];
-        sound_t *s;
+        const char *name = mode == M_PATCH ? SEND_NAME[f] : REV_NAME[f];
         int32_t tgt, sd;
         if (v == fd_last[f]) continue;
         fd_last[f] = (uint8_t)v;
-        if (ov == OV_POP || ov == OV_SC || ov == OV_EXIT) continue;
-        s = ctx_s();
-        tgt = s->snd[f];
+        if (ov == OV_POP || ov == OV_SC || ov == OV_EXIT || !fd_live(f)) continue;
+        tgt = *fd_slot(f);
         sd = (int32_t)v > tgt ? 1 : (int32_t)v < tgt ? -1 : 0;
         if (!fd_caught[f]) {
             int32_t dd = (int32_t)v - tgt;
@@ -242,15 +256,16 @@ static void faders_poll(void)
             if (sd) fd_side[f] = (int8_t)sd;
         }
         if (fd_caught[f]) {
-            s->snd[f] = (uint8_t)v;
-            part_levels(ctx_part(), s, ctx_vol());
-            bar_set(SEND_NAME[f], v, 127, 0);
+            *fd_slot(f) = (uint8_t)v;
+            if (mode == M_PATCH) part_levels(0, &pat, 99);
+            else part_levels(f, &cur.line[f].s, cur.line[f].vol);
+            bar_set(name, v, 127, 0);
         } else {
             char x[16];
             x[0] = 0;
             scat(x, " > ");
             scat(x, nb((uint32_t)tgt, 0));
-            bar_set(SEND_NAME[f], v, 127, x);
+            bar_set(name, v, 127, x);
             ui_dirty = 1;
         }
     }
@@ -327,6 +342,7 @@ static void enter_patch(void)
     page_btn = -1;
     keys_release_all();
     mode = M_PATCH; ov = OV_NONE; solo = 0;
+    fx_sends4 = 1;
     part_apply(0, &pat, 99);
     fd_reset();
     ui_dirty = 1;
@@ -335,7 +351,9 @@ static void enter_patch(void)
 static void enter_perf(void)
 {
     mode = M_PERF; ov = OV_NONE;
+    fx_sends4 = 0;
     if (cur_slot < 0) perf_select(0, 0); else perf_apply_all();
+    fd_reset();
     ui_dirty = 1;
 }
 
@@ -520,7 +538,7 @@ static void edit_knobs(uint32_t k, int32_t d)
         else if (k == LGS_K7) {
             int32_t m = (int32_t)(l->flags >> LF_MOD_SHIFT & 7u) + d;
             m = clampi(m, 0, (int32_t)MOD_N - 1);
-            l->flags = (uint8_t)((l->flags & 3u) | (uint32_t)m << LF_MOD_SHIFT);
+            l->flags = (uint8_t)((l->flags & ~(7u << LF_MOD_SHIFT)) | (uint32_t)m << LF_MOD_SHIFT);
         }
     }
     ui_dirty = 1;
@@ -544,7 +562,7 @@ static uint32_t page_is_fx(uint32_t pg) { return pg == PG_CHORUS || pg == PG_DEL
 static int page_allowed(uint32_t pg)            /* the borrowed analog slots mean something else under the other engines */
 {
     uint32_t e = sound_engine(ctx_s());
-    if (page_is_fx(pg)) return 1;
+    if (page_is_fx(pg)) return mode == M_PATCH || pg == PG_REVERB;     /* PERFORM has the reverb only */
     if (e == OBV_DRUMS) return 0;
     return e == OBV_ANALOG || pg == PG_ARP || pg == PG_AENV;
 }
@@ -610,12 +628,13 @@ static void page_press(uint32_t b)              /* a page button: first press op
     uint32_t i;
     if (ov != OV_NONE || mode == M_EDIT) return;
     for (i = 0; i < sizeof PGBTN / sizeof PGBTN[0]; i++) {
+        uint32_t fresh = page_btn != (int8_t)i;
         if (PGBTN[i].btn != b) continue;
-        if (page_btn == (int8_t)i) {
+        if (!fresh) {
             if (++page_i >= PGBTN[i].n) page_btn = -1;
         } else { page_btn = (int8_t)i; page_i = 0; }
         while (page_btn >= 0 && !page_allowed(page_id())) {          /* skip pages this engine cannot use */
-            if (++page_i >= PGBTN[page_btn].n) { page_btn = -1; say("Not for this engine", COL_DIM, 1500); }
+            if (++page_i >= PGBTN[page_btn].n) { page_btn = -1; if (fresh) say("Not for this engine", COL_DIM, 1500); }
         }
         ui_dirty = 1;
         return;
@@ -665,16 +684,19 @@ static void kb_note(uint32_t on, uint32_t key, uint32_t vel)
         m = mode == M_PATCH ? 1u : ov == OV_POP && mode == M_EDIT ? 1u << edit_line : route_mask(&cur, solo, n);   /* the popup auditions on the edited line, whatever its range */
         if (held_mask[key]) return;
         held_mask[key] = (uint8_t)m;
-        held_note[key] = (uint8_t)n;
         for (p = 0; p < NPART; p++)
-            if (m >> p & 1u) note_event_p(p, 1, n, vel);
+            if (m >> p & 1u) {
+                uint32_t pn = mode == M_PATCH ? n : (uint32_t)clampi((int32_t)n + line_oct(&cur.line[p]) * 12, 0, 127);   /* the line's own octave */
+                held_note[key][p] = (uint8_t)pn;
+                note_event_p(p, 1, pn, vel);
+            }
         if (m && mode != M_PATCH) {
             for (p = 0; p < NPART && !(m >> p & 1u); p++) ;
             if (active_line != p && !(mode == M_EDIT)) { active_line = (uint8_t)p; fd_reset(); ui_dirty = 1; }
         }
     } else if (held_mask[key]) {
         for (p = 0; p < NPART; p++)
-            if (held_mask[key] >> p & 1u) note_event_p(p, 0, held_note[key], 0);
+            if (held_mask[key] >> p & 1u) note_event_p(p, 0, held_note[key][p], 0);
         held_mask[key] = 0;
     }
 }
@@ -822,9 +844,15 @@ static void buttons_poll(void)
     if (e >> BTN_RIGHT & 1u) arrows(1);
     if ((e >> BTN_OCT_DOWN & 1u) || (e >> BTN_OCT_UP & 1u)) {
         keys_release_all();
-        if ((e >> BTN_OCT_DOWN & 1u) && (e >> BTN_OCT_UP & 1u)) oct_shift = 0;
-        else oct_shift = (int8_t)clampi(oct_shift + ((e >> BTN_OCT_UP & 1u) ? 1 : -1), -2, 2);
-        bar_set("OCTAVE", (uint32_t)(oct_shift + 2), 4, 0);
+        if (mode == M_EDIT) {                                   /* the edited line's own octave, saved with the performance */
+            lgline_t *l = &cur.line[edit_line];
+            if (ov == OV_NONE) line_oct_set(l, (e >> BTN_OCT_DOWN & 1u) && (e >> BTN_OCT_UP & 1u) ? 0 : clampi(line_oct(l) + ((e >> BTN_OCT_UP & 1u) ? 1 : -1), -2, 2));
+            ui_dirty = 1;
+        } else {
+            if ((e >> BTN_OCT_DOWN & 1u) && (e >> BTN_OCT_UP & 1u)) oct_shift = 0;
+            else oct_shift = (int8_t)clampi(oct_shift + ((e >> BTN_OCT_UP & 1u) ? 1 : -1), -2, 2);
+            bar_set("OCTAVE", (uint32_t)(oct_shift + 2), 4, 0);
+        }
     }
     if (e >> BTN_SAVE & 1u) { if (ov == OV_NONE) sc_open(); else if (ov == OV_SC) { ov = OV_NONE; ui_dirty = 1; } }
     if ((e >> BTN_HOME & 1u) && mode == M_PATCH && ov == OV_NONE) {
@@ -837,10 +865,13 @@ static void buttons_poll(void)
     }
     if ((e >> BTN_EDIT & 1u) && mode == M_EDIT && ov == OV_NONE) { edit_page ^= 1u; ui_dirty = 1; }
     if ((e >> BTN_SEQ & 1u) && ov == OV_NONE) {            /* the screen theme, kept across power cycles */
-        theme ^= 1u;
+        static char th_msg[32];
+        theme = (uint8_t)((theme + 1u) % NTHEME);
         db.theme = theme;
         save_request();
-        save_ok = theme ? "Theme: Studio (saved)" : "Theme: Classic (saved)";
+        th_msg[0] = 0;
+        scat(th_msg, "Theme: "); scat(th_msg, THEME_NAME[theme]); scat(th_msg, " (saved)");
+        save_ok = th_msg;
         ui_dirty = 1;
     }
 }
@@ -981,7 +1012,7 @@ static void screen_edit(void)
     static const char *const MODN[MOD_N] = {"DEFAULT", "OFF", "FILTER", "BRIGHT", "SWELL", "REVERB"};
     uint32_t i;
     rowf(0, COL_WHITE, "[EDIT] ", bk(fb_bank), nb(ps_slot + 1u, 0), edit_page ? "  page 2/2" : "  page 1/2");
-    rowf(1, COL_DIM, edit_page ? "K5 sustain K6 bend K7 mod" : edit_line < 2u ? "K2 patch K3/K4 range K5 vol" : "K1 line K2 patch K5 vol", 0, 0, 0);
+    rowf(1, COL_DIM, "< or > patch search", 0, 0, 0);
     rowf(2, COL_ACC, "K1 Line: ", LN[edit_line], 0, 0);
     if (!edit_page) {
         rowf(3, COL_ACC, "K2 Patch: ", l->s.patch ? nb(l->s.patch, 3) : "---", " ", l->s.patch ? pname(l->s.patch) : "");
@@ -1002,6 +1033,7 @@ static void screen_edit(void)
         line_text(o + 2, i, &cur.line[i]);
         row_c[7u + i] = i == edit_line ? COL_WHITE : COL_DIM;
     }
+    if (!msg[0] && !bar[0]) rowf(11, COL_ACC, "OCT -/+ Octave: ", line_oct(l) > 0 ? "+" : "", snb(line_oct(l)), 0);
 }
 
 static void screen_popup(void)
@@ -1349,6 +1381,14 @@ static void lgs_frame(void)
             save_pending = 0;
             if (rc > 0) say(save_ok, COL_GRN, 2000);
             else say("Save failed", COL_RED, 3000);
+        }
+    }
+    {
+        static int32_t master_was = -1;                      /* the master volume knob: a bar while it moves, nothing otherwise */
+        if (master_was < 0) master_was = smk_master;
+        if (smk_master != master_was) {
+            master_was = smk_master;
+            bar_set("VOLUME", (uint32_t)(smk_master * 100 / 1023), 100, "%");
         }
     }
     if (ui_dirty) { ui_dirty = 0; screen_draw(); }

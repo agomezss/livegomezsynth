@@ -35,7 +35,7 @@ It is a hobby project made by a keyboard player, with a lot of help from AI (see
 | **Engines** | Analog-style synth (OberVave voice core, plus twin-SVF, poly and ladder flavors), 4-operator FM, 6-operator FM (DX-style), drawbar organ, ADPCM sampler, and five drum kits |
 | **Favorites** | 64 slots (4 banks of 16): one pad = one sound with its tweaks and FX sends |
 | **Performances** | 8 banks of 14: each is **two layers** (split by octave range) and **two solos** (whole keyboard, one tap) with per-line volume, sustain, bend and mod-wheel action |
-| **Controls** | 4 tweak knobs per sound, master volume, 4 FX send faders (chorus, delay, distortion, reverb) with soft takeover, pitch and mod wheels, sustain pedal, MIDI in |
+| **Controls** | 4 tweak knobs per sound, master volume, 4 faders with soft takeover (PATCH: the chorus, delay, distortion and reverb sends; PERFORM: one reverb send per line), pitch and mod wheels, sustain pedal, MIDI in |
 | **Safety** | A/B storage image with CRC, guarded flash writes, an installer that refuses unsafe sources, a way back to stock |
 
 ## Try it now (no keyboard needed)
@@ -58,9 +58,9 @@ Three modes, one button each. The layout of the controls does not change between
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | **PATCH** | **KNOB BANK** | load a **favorite** | tweak the sound | tempo | category | patch in category | MASTER |
 | **PERFORM** | **FADER BANK** | load a **performance**; pads 8 and 16 = **SOLO 1 / 2** | tweak | tempo | bank A-H | slot 1-14 | MASTER |
-| **EDIT** | **KNOB BANK + FADER BANK** together, from PERFORM | pick a **category** for the selected line (pad 16 = ICONIC) | K1 line, K2 patch, K3/K4 octave range (layers only) | line volume | pitch bend (page 2) | mod action (page 2) | MASTER |
+| **EDIT** | **KNOB BANK + FADER BANK** together, from PERFORM | pick a **category** for the selected line (pad 16 = ICONIC) | K1 line, K2 patch, K3/K4 octave range (layers only); **OCT-** / **OCT+** = that line's own octave | line volume | pitch bend (page 2) | mod action (page 2) | MASTER |
 
-**Everywhere:** faders = FX sends of the active line. `<` `>` = previous / next category. **BT** = Save / Copy. **PARA** = EDIT page 1/2. **SEQ** = screen theme (Classic / Studio, remembered). Hold **KNOB BANK** for 0.7 s = panel check.
+**Faders:** PATCH = chorus, delay, distortion and reverb sends of the sound; PERFORM and EDIT = the reverb send of each line (F1 to F4 = L1, L2, S1, S2: one effect, less CPU). **Everywhere:** `<` `>` = previous / next category. **BT** = Save / Copy. **PARA** = EDIT page 1/2. **SEQ** = screen theme: each press steps through eight (Classic, then Studio in Blue, Yellow, Green, Purple, Red, Pink and a high-contrast White), remembered across power cycles. The master volume shows a bar while you turn it. Hold **KNOB BANK** for 0.7 s = panel check.
 
 ### Pad lights
 
@@ -81,8 +81,8 @@ Three modes, one button each. The layout of the controls does not change between
 6. **Solo:** tap pad 8 or 16. The layers mute and the solo plays on the whole keyboard. Tap again to leave.
 7. **Build a performance:** from PERFORM press KNOB BANK + FADER BANK. **K1** picks the line, **K2** the patch, **K3/K4** the octave range of a layer, **K5** its volume. **PARA** shows page 2 (sustain, bend, mod wheel action).
 8. **Save it:** **BT**, then pad 1 to confirm or pad 2 to cancel.
-9. **Shape the space:** the four faders are chorus, delay, distortion and reverb sends of the active line.
-10. **Shift the keyboard:** **OCT-** / **OCT+** (press both to reset).
+9. **Shape the space:** in PATCH the four faders are the chorus, delay, distortion and reverb sends; in PERFORM they set how much each of the four lines feeds the reverb.
+10. **Shift the keyboard:** **OCT-** / **OCT+** (press both to reset). In EDIT they change only the octave of the selected line.
 
 Full details: [DOCs/03-ux-spec.md](DOCs/03-ux-spec.md).
 

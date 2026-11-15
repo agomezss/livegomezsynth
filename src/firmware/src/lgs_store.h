@@ -19,7 +19,7 @@ static void sound_sanitize(sound_t *s)
 static void db_sanitize(void)
 {
     uint32_t i, l;
-    if (db.theme > 1u) db.theme = 0;
+    if (db.theme >= NTHEME) db.theme = 0;
     for (i = 0; i < LGS_NFAV; i++) sound_sanitize(&db.fav[i]);
     for (i = 0; i < LGS_NPERF; i++)
         for (l = 0; l < LGS_NLINE; l++) {
@@ -31,7 +31,8 @@ static void db_sanitize(void)
             if (x->lo > 7u) x->lo = 7;
             if (x->hi < x->lo) x->hi = x->lo;
             if (x->vol > 99u) x->vol = 99;
-            if ((x->flags >> LF_MOD_SHIFT & 7u) >= MOD_N) x->flags &= 3u;
+            if ((x->flags >> LF_MOD_SHIFT & 7u) >= MOD_N) x->flags &= ~(7u << LF_MOD_SHIFT);
+            if (line_oct(x) < -2 || line_oct(x) > 2) line_oct_set(x, 0);
         }
 }
 

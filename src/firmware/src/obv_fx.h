@@ -75,7 +75,7 @@ static int32_t dly_lpl, dly_lpr, rv_lp_in, rv_lpl, rv_lpr, rv_yl, rv_yr;
 #if REV_DIV == 2u
 static int32_t rv_hold;
 #endif
-static uint32_t rev_pre_n = 1, dly_active, rev_active;
+static uint32_t rev_pre_n = 1, dly_active, rev_active, cho_on;
 #if REV_DIV == 2u
 static uint32_t fx_odd;
 #endif
@@ -92,14 +92,17 @@ static void fx_init(void)
     dly_cur = dly_time = 11025 << 16;
 }
 
-/* the patch's numbers, once per ISR call. quarter: frames per quarter note (the arp's clock) */
-static void fx_block(const patch_t *p, uint32_t quarter)
+/* the patch's numbers, once per ISR call. quarter: frames per quarter note (the arp's clock). in: the sends that carry
+ * signal in this block (1 chorus, 2 delay, 4 reverb): an effect without input is not run (its tail still is, 12 s / 24 s) */
+static void fx_block(const patch_t *p, uint32_t quarter, uint32_t in)
 {
     int32_t d, t;
     uint32_t div = p->v[P_DLY_TIME] % NDDIV, samples;
     d = p->v[P_CHO_RATE]; cho_inc = (uint32_t)(10 + ((d * d * 590) >> 14)) * 974u;   /* 0.1 .. 5.9 Hz */
     cho_depth_k = p->v[P_CHO_DEPTH] * 67;       /* x the triangle's +-2048 = Q16 samples: up to +-6 ms */
-    cho_mix = p->v[P_CHO_MIX];
+    cho_mix = (in & 1u) ? p->v[P_CHO_MIX] : 0;  /* a short line, no tail: off at once, cleared when it starts again */
+    if (cho_mix && !cho_on) for (d = 0; d < (int32_t)cho.len; d++) cho.b[d] = 0;
+    cho_on = cho_mix != 0;
     dly_mix = (p->v[P_DLY_MIX] * 180) >> 7;     /* wet up to 0.7 of the dry (Q8): the sum stays in range */
     rev_mix = (p->v[P_REV_MIX] * 180) >> 7;
     dly_fb = p->v[P_DLY_FB] * 250;              /* up to 0.97 */
@@ -117,8 +120,8 @@ static void fx_block(const patch_t *p, uint32_t quarter)
     if (samples > DLY_MAX - 4u) samples = DLY_MAX - 4u;
     if (samples < 64u) samples = 64u;
     dly_time = (int32_t)(samples << 16);
-    if (dly_mix) dly_active = 12u * FS; else if (dly_active > HALF_FRAMES) dly_active -= HALF_FRAMES; else dly_active = 0;
-    if (rev_mix) rev_active = 24u * FS; else if (rev_active > HALF_FRAMES) rev_active -= HALF_FRAMES; else rev_active = 0;
+    if (dly_mix && (in & 2u)) dly_active = 12u * FS; else if (dly_active > HALF_FRAMES) dly_active -= HALF_FRAMES; else dly_active = 0;
+    if (rev_mix && (in & 4u)) rev_active = 24u * FS; else if (rev_active > HALF_FRAMES) rev_active -= HALF_FRAMES; else rev_active = 0;
 }
 
 static inline __attribute__((always_inline)) int32_t line_read_q16(const line_t *l, int32_t back_q16)
@@ -288,6 +291,13 @@ static void fx_process(int32_t *out, const int32_t *cs, const int32_t *ds, const
 {
     uint32_t i, do_dly = dly_active != 0, do_rev = rev_active != 0;
     int32_t cm = cho_mix, dm = dly_mix, rm = rev_mix;
+    if (!cm) cho_ph += cho_inc * n;             /* idle effects keep their clocks running: they start in step, as if they had run on silence */
+    if (!do_dly) {
+        int32_t st = (int32_t)(n << 15);
+        if (dly_cur < dly_time) { dly_cur += st; if (dly_cur > dly_time) dly_cur = dly_time; }
+        else if (dly_cur > dly_time) { dly_cur -= st; if (dly_cur < dly_time) dly_cur = dly_time; }
+    }
+    if (!do_rev) { rv_ph1 += 97391u * n; rv_ph2 += 68174u * n; }   /* (REV_DIV 1: a tick per frame) */
     for (i = 0; i < n; i++) {
         int32_t l = out[2u * i], r = out[2u * i + 1u];
         if (cm) {                               /* two taps a quarter turn apart on one line, around 12 ms */

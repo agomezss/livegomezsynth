@@ -959,10 +959,9 @@ static int32_t mix_g[NPART];                    /* the level as it moves (Q12, s
 
 static void engine_audio(int32_t *out, uint32_t n)
 {
-    uint32_t b, v, i, p, used = 0;
+    uint32_t b, v, i, p, used = 0, fin = 0;      /* fin: the sends that carry signal (1 chorus, 2 delay, 4 reverb, 8 drive) */
     static int32_t sc_prev;
     static uint32_t sc_i, sc_sub;
-    fx_block(&live, quarter_len());
     vol_q12 = (int32_t)((ctl_cc7 * ctl_cc7) >> 2);
     for (p = 0; p < NPART; p++)
         for (i = 0; i < 2u * n; i++) bus[p][i] = 0;
@@ -1051,6 +1050,7 @@ static void engine_audio(int32_t *out, uint32_t n)
         gr = PAN_Q12[pos] * 4096 / 2896;
         gl = gl > 4096 ? 4096 : gl; gr = gr > 4096 ? 4096 : gr;
         sc = ctl_mix_cho[p]; sd = ctl_mix_dly[p]; sr = ctl_mix_rev[p]; sv = ctl_mix_drv[p];
+        fin |= (sc ? 1u : 0u) | (sd ? 2u : 0u) | (sr ? 4u : 0u) | (sv ? 8u : 0u);
         {
         int32_t g = g0 << 8, dg = ((mix_g[p] - g0) << 8) / (int32_t)n;   /* (the level glides over the half, Q8) */
         uint32_t pk = 0;
@@ -1087,8 +1087,9 @@ static void engine_audio(int32_t *out, uint32_t n)
         snd_r[i] = sat16((clampi(snd_r[i], -262144, 262143) >> 2) * vol_q12 >> 10);
         snd_v[i] = sat16((clampi(snd_v[i], -262144, 262143) >> 2) * vol_q12 >> 10);
     }
+    fx_block(&live, quarter_len(), fin);
     fx_process(out, snd_c, snd_d, snd_r, n);
-    drive_process(out, snd_v, n);
+    if (fin & 8u) drive_process(out, snd_v, n);
     master_process(out, n);
     for (i = 0; i < n && click_amp; i++) {     /* the click: after the effects, never recorded */
         int32_t c;

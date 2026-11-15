@@ -57,6 +57,9 @@ check("and lights its LED", (t0.sim_leds_buttons() >>> 15 & 1) === 1);
 const timg = new Uint8Array(t0.memory.buffer, t0.sim_db_export(), t0.sim_db_size()).slice();
 let t1 = await boot(timg);
 check("the theme is back after a restart", t1.sim_fb_hash() === studio && (t1.sim_leds_buttons() >>> 15 & 1) === 1);
+const seen = new Set([classic, studio]);
+for (let i = 2; i < 8; i++) { press(t1, 15); seen.add(t1.sim_fb_hash()); }
+check("SEQ steps through eight different themes", seen.size === 8, "" + seen.size);
 press(t1, 15);
-check("SEQ again returns to the classic theme", t1.sim_fb_hash() === classic);
+check("and the eighth press returns to the classic theme", t1.sim_fb_hash() === classic);
 process.exit(fail ? 1 : 0);

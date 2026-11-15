@@ -202,6 +202,12 @@ check(
 );
 enc(4, 5);
 check("K5 tempo", ex.sim_ui(TEMPO) === 125);
+check("no volume bar before the master moves", !row(8).startsWith("VOLUME"), row(8));
+enc(7, -3);
+run(40);
+check("turning the master volume shows a VOLUME bar", row(8).startsWith("VOLUME") && row(8).endsWith("%"), row(8));
+run(2000);
+check("and it goes away again", !row(8).startsWith("VOLUME"), row(8));
 tap(0);
 check("loading a patch resets the tweak", ex.sim_ui(PAT) === ex.sim_fav(0));
 
@@ -286,6 +292,26 @@ ex.sim_button(BTN.OCTD, 0);
 ex.sim_button(BTN.OCTU, 0);
 run(30);
 check("both OCTAVE buttons reset", ex.sim_ui(OCT) === 0);
+
+// ---- PERFORM keeps one effect: the reverb; F1-F4 set how much each of the four lines feeds it
+check(
+  "PERFORM routes only the reverb send",
+  [0, 1, 2, 3].every((p) => ex.sim_part(p, 1) === 0 && ex.sim_part(p, 2) === 0 && ex.sim_part(p, 4) === 0),
+);
+for (const l of [1, 3]) {
+  const r = ex.sim_part(l, 3),
+    t = r > 60 ? r - 17 : r + 17,
+    other = ex.sim_part(l === 1 ? 0 : 2, 3);
+  ex.sim_fader(l, r);
+  run(20);
+  ex.sim_fader(l, t);
+  run(20);
+  check(
+    `F${l + 1} sets line ${l + 1}'s reverb send`,
+    ex.sim_part(l, 3) === t && ex.sim_part(l === 1 ? 0 : 2, 3) === other && ex.sim_part(l, 2) === 0,
+    `${ex.sim_part(l, 3)} want ${t}`,
+  );
+}
 tap(7);
 check("pad 8 = SOLO 1", ex.sim_ui(SOLO) === 1 && ex.sim_ui(ACT) === 2);
 {
@@ -376,6 +402,7 @@ check(
   ex.sim_ui(MODE) === 2 && ex.sim_ui(OV) === 0,
   `mode ${ex.sim_ui(MODE)} ov ${ex.sim_ui(OV)}`,
 );
+check("EDIT's first row is the search hint", row(1) === "< or > patch search", row(1));
 const l1 = ex.sim_line(1, 0);
 enc(0, 1);
 check("K1 selects the line", ex.sim_ui(EL) === 1);
@@ -401,6 +428,34 @@ check(
   ex.sim_line(1, 0) === 65,
   "" + ex.sim_line(1, 0),
 );
+{
+  const notes = () => Array.from({ length: 8 }, (_, i) => ex.sim_vnote(i)).filter(Boolean),
+    loct = () => ((ex.sim_line(1, 4) >> 5) & 7),
+    shift = ex.sim_ui(OCT);
+  press(BTN.OCTU);
+  check(
+    "EDIT: OCTAVE + raises only the edited line's octave",
+    loct() === 1 && ex.sim_ui(OCT) === shift && row(11).includes("Octave: +1"),
+    `${loct()} ${row(11)}`,
+  );
+  key(0, 1); // F3, inside the line's range
+  run(50);
+  check("the line then sounds an octave higher", notes().includes(65), notes().join());
+  key(0, 0);
+  run(1500);
+  press(BTN.OCTD);
+  press(BTN.OCTD);
+  press(BTN.OCTD);
+  press(BTN.OCTD);
+  check("the line's octave stops at -2", loct() === 6 && row(11).includes("Octave: -2"), `${loct()} ${row(11)}`);
+  ex.sim_button(BTN.OCTD, 1);
+  ex.sim_button(BTN.OCTU, 1);
+  run(20);
+  ex.sim_button(BTN.OCTD, 0);
+  ex.sim_button(BTN.OCTU, 0);
+  run(30);
+  check("both buttons reset the line's octave", loct() === 0 && ex.sim_ui(OCT) === shift);
+}
 press(BTN.EDIT);
 check("PARA toggles page 2", ex.sim_ui(PAGE) === 1 && row(0).includes("2/2"));
 enc(4, 1);
@@ -485,6 +540,10 @@ check("storage dirty flag raised", ex.sim_db_dirty() === 1);
 // ---- pedal, wheels and the per-line sustain / bend / mod
 press(BTN.FB);
 check("back in PERFORM", ex.sim_ui(MODE) === 1);
+press(BTN.FX);
+check("PERFORM: FX opens the reverb page (no chorus, delay or dist)", /^\[PERFORM\].*REVERB/.test(row(0)), row(0));
+press(BTN.FX);
+check("and the next press closes it without a warning", row(0).startsWith("[PERFORM] Bank") && msg() === "", row(0) + "|" + msg());
 ex.sim_pedal(1000);
 run(60);
 check(

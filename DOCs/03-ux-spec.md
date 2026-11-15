@@ -20,7 +20,7 @@ or PERFORM.
 | K6                                                                   | category                                                                                            | bank A-H             | **pitch bend YES/NO** (p2)              | -                         |
 | K7                                                                   | patch within category                                                                               | combo slot 1-14      | **mod wheel action** (p2)               | -                         |
 | K8                                                                   | **MASTER**                                                                                          | **MASTER**           | **MASTER**                              | **MASTER**                |
-| Faders 1-4                                                           | FX sends CHORUS, DELAY, DIST, REVERB                                                                | same, active line    | same, edited line                       | same                      |
+| Faders 1-4 | FX sends CHORUS, DELAY, DIST, REVERB | **REVERB send of L1, L2, S1, S2** (D-62) | same | same |
 | `<` `>`                                                              | previous/next category                                                                              | (unused)             | open popup / change category            | change category           |
 | Pads 1-16                                                            | favorites                                                                                           | combos + solo        | pre-select category N for the line      | pad1 confirm, pad2 cancel |
 | KNOB BANK                                                            | go PATCH; repeat = bank A->D                                                                        | go PATCH             | (see 4)                                 | -                         |
@@ -32,7 +32,7 @@ or PERFORM.
 | ARP / CHORD / GLOBE / FX / PARA / ENV / NOTE REPEAT / SCALE / OCTAVE | **as SMKSYNTH**                                                                                     | as SMKSYNTH          | as SMKSYNTH                             | -                         |
 | PATCH (HOME)                                                         | short press: return to main screen; if a Drums patch is loaded, toggles pads DRUMS/FAVORITES (D-12) | same                 | prompt save/discard then exit EDIT      | cancel                    |
 
-SEQ = screen theme (Classic / Studio, kept across power cycles, D-58). SEQ PLAY / SEQ REC: unused (D-50; may be given a job later if there is room to bring the sequencer back).
+SEQ = screen theme: each press steps through Classic, Blue, Yellow, Green, Purple, Red, Pink and White (high contrast), kept across power cycles (D-58, D-64). SEQ PLAY / SEQ REC: unused (D-50; may be given a job later if there is room to bring the sequencer back).
 `IDEA.md` promised a finer spec of K5-K7 "below" but did not give one: the table above was proposed and approved (D-11).
 Sustain comes from the SMK-37's physical sustain input (D-44).
 
@@ -113,7 +113,7 @@ Pianos - 001 - Acoustic      row 1: category - patch number - name
   a further press changes the performance (D-16).
 - Tapping the other solo pad while in solo switches directly to it.
 - Empty lines show `-`. Empty combo pad slot = unlit pad, tap does nothing.
-- Faders act on the _active line_: last line that received a note-on; default LAYER 1; in solo the solo line.
+- Faders F1-F4 are the reverb send of lines L1, L2, S1, S2 (D-62): one effect, the others are not run. Empty lines ignore their fader.
 
 ## 5. EDIT mode
 
@@ -135,7 +135,7 @@ Sustain: YES  Bend: YES  Mod: DEFAULT   (page 2, header shows 2/2)
   pitch bend YES/NO (default YES), K7 mod action. K8 is always the global MASTER on every page and mode.
 - Pads 1-15: pre-select the first patch of category N for the selected line (pad 1 = F001/favorites, pad 2 = Acoustic
   Piano, ... pad 15 = Drums, pad 16 = ICONIC). Does nothing while the popup is open except pads 1/2.
-- Faders: set FX sends of the selected line (soft takeover).
+- Faders: as in PERFORM, the reverb send of each line (soft takeover; D-62). **OCTAVE -/+** change the selected line's own octave (-2..+2, both = 0; saved with the performance, D-63); the global shift is left alone. The row under the header reads `< or > patch search`; the last row shows the line's octave.
 - Exit: PATCH/KNOB BANK/FADER BANK -> `Save changes?` prompt, pad 1 (blue) save, pad 2 (red) discard. Edits apply live
   (audible) to the working copy; storage happens only on save. Timeout 10 s on the prompt = stay in EDIT.
 

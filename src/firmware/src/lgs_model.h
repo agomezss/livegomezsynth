@@ -7,6 +7,7 @@
 #define LGS_NFAV 64u                            /* 4 banks x 16 pads */
 #define LGS_NPERF 112u                          /* 8 banks x 14 combos */
 #define LGS_NLINE 4u
+#define NTHEME 8u                                /* screen themes (lgs_ui.h) */
 #define LGS_NFX 11u                             /* P_CHO_RATE .. P_REV_MIX */
 
 /* K1-K4 of a sound: which patch byte, its name, and how far it goes (value stored = native value - min) */
@@ -34,8 +35,10 @@ static knob_t knob_desc(uint32_t engine, uint32_t i)
 typedef struct { uint16_t patch; uint8_t tw[4], snd[4]; } sound_t;      /* patch id (0 = empty), K1-K4, sends CHO DLY DIST REV */
 typedef struct { sound_t s; uint8_t origin, lo, hi, vol, flags; } lgline_t;   /* origin: favorite number 1..64 or 0 (display only) */
 typedef struct { lgline_t line[LGS_NLINE]; } perf_t;
-enum { LF_SUSTAIN = 1, LF_BEND = 2, LF_MOD_SHIFT = 2 };                 /* flags bit 2..4: mod action 0..5 */
+enum { LF_SUSTAIN = 1, LF_BEND = 2, LF_MOD_SHIFT = 2, LF_OCT_SHIFT = 5 };   /* flags bit 2..4: mod action 0..5; bit 5..7: the line's own octave -2..+2 (two's complement, 0 in older data) */
 enum { MOD_DEFAULT, MOD_OFF, MOD_FILTER, MOD_BRIGHT, MOD_SWELL, MOD_REVERB, MOD_N };
+static int32_t line_oct(const lgline_t *l) { int32_t v = (int32_t)(l->flags >> LF_OCT_SHIFT & 7u); return v > 3 ? v - 8 : v; }
+static void line_oct_set(lgline_t *l, int32_t o) { l->flags = (uint8_t)((l->flags & 31u) | (uint32_t)(o & 7) << LF_OCT_SHIFT); }
 
 /* the user data: this block is what gets persisted (T1.9) */
 #define LGS_DB_MAGIC 0x4C47530Au
@@ -132,6 +135,7 @@ static void sound_defaults(sound_t *s, uint32_t patch_id)      /* a patch as it 
 
 static uint32_t vol_to_lvl(uint32_t vol) { return vol * 100u / 99u; }   /* 0..99 -> engine level (100 = unity) */
 
+static uint8_t fx_sends4 = 1;                   /* PATCH: the four sends (chorus, delay, dist, reverb); PERFORM and EDIT: the reverb send only (less CPU) */
 static uint8_t mod_w;                           /* mod wheel 0..127 */
 static uint8_t mod_act[LGS_NLINE];              /* MOD_* of each part (lines' flags, lgs_ui.h flags_apply) */
 
@@ -147,9 +151,9 @@ static void part_levels(uint32_t p, const sound_t *s, uint32_t vol)
     else if (act == MOD_BRIGHT) cut = mod_w;
     ctl_mod_cut[p] = (int8_t)cut;
     ctl_mix_lvl[p] = (uint8_t)lvl;
-    ctl_mix_cho[p] = s->snd[0];
-    ctl_mix_dly[p] = s->snd[1];
-    ctl_mix_drv[p] = s->snd[2];
+    ctl_mix_cho[p] = fx_sends4 ? s->snd[0] : 0u;
+    ctl_mix_dly[p] = fx_sends4 ? s->snd[1] : 0u;
+    ctl_mix_drv[p] = fx_sends4 ? s->snd[2] : 0u;
     ctl_mix_rev[p] = (uint8_t)rev;
 }
 
@@ -219,7 +223,7 @@ static uint32_t perf_filled(const perf_t *pf)
 
 /* ---- note routing (D-27): the line sounds when the played note, after the OCTAVE shift, lies in its range --- */
 static int8_t oct_shift;                        /* OCTAVE -/+ buttons: -2..+2 octaves */
-static uint8_t held_mask[128], held_note[128];  /* per physical key: the parts it went to and the note sent */
+static uint8_t held_mask[128], held_note[128][NPART];   /* per physical key: the parts it went to and the note each got */
 
 static uint32_t route_mask(const perf_t *pf, uint32_t solo, uint32_t n)
 {
@@ -238,7 +242,7 @@ static void keys_release_all(void)
     for (k = 0; k < 128u; k++)
         if (held_mask[k]) {
             for (p = 0; p < NPART; p++)
-                if (held_mask[k] >> p & 1u) note_event_p(p, 0, held_note[k], 0);
+                if (held_mask[k] >> p & 1u) note_event_p(p, 0, held_note[k][p], 0);
             held_mask[k] = 0;
         }
 }
