@@ -13,7 +13,7 @@ command -v "$WASM_OPT" >/dev/null || { echo "sim: no wasm-opt (brew install bina
 mkdir -p build/sim build/sim-site
 nice -n 15 $ZIG cc --target=wasm32-freestanding -mcpu=generic+bulk_memory -O2 -fno-builtin -ffreestanding -nostdlib \
     -Wall -Wno-unused-function -Wno-unused-variable -Wno-unused-but-set-variable \
-    -DOBV_VOICE_HW=1 -DOBV_DATA_FAMILY='"LIVEGMZ"' \
+    -DOBV_VOICE_HW=1 -DOBV_DATA_FAMILY='"LIVEGMZ"' -DAPP_VER="\"$(tr -d ' \n' < VERSION)\"" \
     -Ifirmware/src -Ifirmware/gen -Ifirmware/hal \
     -Wl,--no-entry -Wl,--export-memory -Wl,--export-dynamic -Wl,-z,stack-size=262144 \
     -o build/sim/raw.wasm web/sim/sim.c

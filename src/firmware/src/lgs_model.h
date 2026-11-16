@@ -47,8 +47,8 @@ static struct { uint32_t magic, ver, gen, theme; sound_t fav[LGS_NFAV]; perf_t p
 static uint8_t db_dirty;
 
 /* ---- catalog --------------------------------------------------------------------------------- */
-static uint16_t cat_first[17];
-static uint8_t cat_n[17];        /* index into LGS_PATCH; categories are contiguous (blocks of 32) */
+static uint16_t cat_first[LGS_NCAT + 1];
+static uint8_t cat_n[LGS_NCAT + 1];        /* index into LGS_PATCH; each category is one contiguous run (tools/gen_catalog.py sorts them) */
 
 static void cat_init(void)
 {

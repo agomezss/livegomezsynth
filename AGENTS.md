@@ -57,25 +57,25 @@ Three UI modes (PATCH, PERFORM, EDIT) over a user-data block `db` (64 favorites,
 
 ## The catalog pipeline
 
-`catalog/catalog.json` -> `tools/gen_catalog.py` -> `lgs_catalog_data.h`. Ids are immutable, category c owns `(c-2)*32+1 .. +32`, except category 16 (ICONIC) which owns 256 ids (449..704). Each entry: `{id, cat, engine, name, factory}`; `factory` = preset index in the engine (SYN: `< 64` is `FACTORY`, `>= 64` is `FACTORY_LGS`). `trims.json` (by **name**) becomes the `trim` field (64 = 0 dB).
+`catalog/catalog.json` (edited by hand) -> `tools/gen_catalog.py` -> `lgs_catalog_data.h`. Ids are immutable and never reused: a patch keeps its id when it moves category or is renamed, a removed id is retired (a favorite or performance line that still points at it comes back empty). The category is the entry's `cat` field, not a range of ids (D-66); there are 14 categories after Favorites. Each entry: `{id, cat, engine, name, factory}`; `factory` = preset index in the engine (SYN: `< 64` is `FACTORY`, `>= 64` is `FACTORY_LGS`). `trims.json` (by **name**) becomes the `trim` field (64 = 0 dB).
 
-**ICONIC** is generated from `tools/famous_defs.py` (SYN recipes, FM2/ORG/SP/FM6 rows, `ORDER`). To add or change timbres, edit the defs and run, in this order:
+The preset rows of the engines come from `tools/famous_defs.py` (SYN recipes, FM2/ORG/SP/FM6 rows, `ORDER`; they were the ICONIC category, which no longer exists, D-66). A catalog entry points at a row by index (`factory`), so a row is never removed or reordered. To add or change such timbres, edit the defs and run, in this order:
 
 ```sh
 python3 tools/port_clipper_engines.py      # FM2 + ORG tables
 python3 tools/gen_lgs_samples.py --venv ~/lgs-scratch/venv/bin/python   # SP table (needs numpy)
-python3 tools/gen_famous.py                # SYN + FM6 rows, catalog entries of category 16
+python3 tools/gen_famous.py                # SYN + FM6 rows (the catalog is not touched)
 python3 tools/gen_catalog.py
 sh web/sim/build.sh
 node tests/catalog_health.mjs --trim ; python3 tools/gen_catalog.py ; sh web/sim/build.sh   # level match, then rebuild
 node tests/catalog_health.mjs --update ; node tests/screens_dump.mjs --update
 ```
 
-New ICONIC entries go **at the end of `ORDER`** so existing ids stay put. Then fix expectations that count things (`tests/engines_test.mjs` counts ORG patches).
+New rows go **at the end of `ORDER`**; then add the catalog entries to `catalog.json` by hand (the next free id above every id ever used). Then fix expectations that count things (`tests/engines_test.mjs` counts ORG patches). A renamed patch keeps its trim only if you move its key in `trims.json`.
 
 ## Limits that bite
 
-- `cat_n` and `pat_idx` are `uint8`: a category holds at most **255** patches (ICONIC has 252).
+- `cat_n` and `pat_idx` are `uint8`: a category holds at most **255** patches.
 - Patch `data` (preset index) is `uint8`: SYN indices are `64 + position` and must stay under 256.
 - Names: 16 characters max, generic (**D-42**: no brands, models, artists; `tools/name_review.py` enforces; `ALLOW` needs a reason).
 - Image budget 327,680 B (now ~290 KB); RAM 98,304 B (now ~73 KB). `lgs_build.py` prints both.
@@ -108,8 +108,8 @@ New ICONIC entries go **at the end of `ORDER`** so existing ids stay put. Then f
 
 ## Where decisions are
 
-`DOCs/00-decisions.md` (D-01..D-54: names D-42, pad lights and solo range D-54, ICONIC D-53, no GM D-51, no sequencer D-50), `DOCs/03-ux-spec.md` (controls, modes, LEDs), `DOCs/04-catalog-spec.md`, `DOCs/05-engines-spec.md`, `DOCs/06-storage-and-safety.md`, `DOCs/safety-audit.md`, `DOCs/09-roadmap.md` (status board), `DOCs/10-open-questions-risks.md`, `DOCs/notes/repertoire-coverage.md` (what the owner plays).
+`DOCs/00-decisions.md` (D-01..D-54: names D-42, pad lights and solo range D-54, ICONIC D-53 (removed again, D-66), no GM D-51, no sequencer D-50), `DOCs/03-ux-spec.md` (controls, modes, LEDs), `DOCs/04-catalog-spec.md`, `DOCs/05-engines-spec.md`, `DOCs/06-storage-and-safety.md`, `DOCs/safety-audit.md`, `DOCs/09-roadmap.md` (status board), `DOCs/10-open-questions-risks.md`, `DOCs/notes/repertoire-coverage.md` (what the owner plays).
 
 ## Working agreement with the owner
 
-The owner works in large autonomous blocks and tests on hardware at the end. Keep the simulator and the tests green, say plainly what was not verified, and never claim hardware results. Sounds are first drafts: the owner judges them by ear, and fixes are parameter edits in `tools/famous_defs.py` (ICONIC) or the engine tables.
+The owner works in large autonomous blocks and tests on hardware at the end. Keep the simulator and the tests green, say plainly what was not verified, and never claim hardware results. Sounds are first drafts: the owner judges them by ear, and fixes are parameter edits in `tools/famous_defs.py` or the engine tables.

@@ -49,7 +49,7 @@ check("no patch clips at one note", hot === 0, hot + " above 0.98");
 check("every patch is silent within 12 s of its release", stuck === 0, stuck + " still sounding");
 ex.sim_load_patch(ex.sim_patch_id(0));
 const flute = [...Array(ex.sim_patch_n()).keys()].map((i) => [ex.sim_patch_id(i), ex.sim_patch_engine(i)]).filter(([, e]) => e === 4);
-check("catalog has the organ patches", flute.length === 40, "" + flute.length);
+check("catalog has the organ patches", flute.length === 24, "" + flute.length);
 // ORG "Soft Flute": only the 8' bar -> a sine at the note
 const softFlute = [...Array(ex.sim_patch_n()).keys()].find((i) => ex.sim_patch_engine(i) === 4 && ex.sim_patch_id(i) === 130);
 if (softFlute !== undefined) {

@@ -19,7 +19,7 @@ Computer keyboard: Z..M / Q..R rows play notes, `1` KNOB BANK, `5` FADER BANK, `
 4. **EDIT.** Press the CHORD button. Page 1: K1 line, K2 patch, K3/K4 low/high octave (layers only; solos have none), K5 volume. PARA toggles page 2: K5 sustain, K6 bend, K7 mod action (try the Pitch and Mod sliders and Space). Pads 1-15 jump to the first patch of a category; `<` `>` open the search popup. KNOB BANK asks Save (pad 1) or Discard (pad 2).
 5. **BT** opens Save/Copy in any mode: K6 destination bank, K7 slot, pad 1 confirm, pad 2 cancel.
 6. Reload the page: favorites and performances you saved are still there.
-7. **Drum kits.** In PATCH, K6 two steps back from Favorites is the Drums category (one step back is ICONIC): the pads become drum hits (PATCH button toggles back to favorites).
+7. **Drum kits.** In PATCH, K6 one step back from Favorites is the Drums category: the pads become drum hits (PATCH button toggles back to favorites).
 8. **Pages.** ARP, NOTE REPEAT (LFO), SCALE (osc / filter), CHORD (envelopes), GLOBE (voice / output) and FX open parameter pages on K1-K4; press again to step through, the last press leaves. FX holds the global chorus, delay, reverb and the DIST send. Only the synth patches have the oscillator / filter pages.
 9. **Panel check.** Hold KNOB BANK for 0.7 s. **MIDI**: Connect MIDI (notes, CC 1 / 7 / 64 / 123, bend, clock).
 
@@ -29,6 +29,6 @@ Computer keyboard: Z..M / Q..R rows play notes, `1` KNOB BANK, `5` FADER BANK, `
 - Soft takeover on the faders: keep, or make the faders jump to their position?
 - Mod actions FILTER / BRIGHT / SWELL / REVERB: names and ranges (FILTER opens the cutoff up to +64, BRIGHT up to +127, SWELL adds up to +27 level, REVERB raises the reverb send).
 - Screens: wording, which rows to show, colours.
-- Catalog: 436 patches (252 of them in ICONIC) (synth, FM, 6-op FM, organ, samples, five drum kits). Names, categories and sounds are first drafts; none has been tuned by ear yet.
+- Catalog: 215 patches (synth, FM, 6-op FM, organ, samples, five drum kits). Names, categories and sounds are first drafts; none has been tuned by ear yet.
 
 Known gaps of the simulator: `DOCs/sim-gaps.md`. Automated checks: `sh tests/run_tests.sh`.

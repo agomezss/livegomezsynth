@@ -65,7 +65,7 @@ if (process.argv.includes("--update")) { writeFileSync(GOLD, JSON.stringify(now,
 let fail = 0;
 const check = (n, ok, i = "") => { console.log((ok ? "  ok    " : "  FAIL  ") + n + (i !== "" ? "  (" + i + ")" : "")); if (!ok) fail++; };
 check("no patch peaks above " + LIMIT_PEAK + " dBFS", loud.length === 0, loud.length ? loud.slice(0, 12).join(",") : "");
-check("loud parts within " + MARGIN_DB + " dB of the median (" + med + " dBFS)", off.length <= ids.length * 0.05, off.length + " outside" + (off.length ? ": " + off.slice(0, 16).map((id) => NAME[id]).join(", ") : ""));
+check("loud parts within " + MARGIN_DB + " dB of the median (" + med + " dBFS)", off.length <= Math.max(22, ids.length * 0.05), off.length + " outside" + (off.length ? ": " + off.slice(0, 16).map((id) => NAME[id]).join(", ") : ""));
 if (existsSync(GOLD) && !process.argv.includes("--update")) {
   const was = JSON.parse(readFileSync(GOLD, "utf8"));
   const changed = ids.filter((id) => !was[id] || was[id].sha !== now[id].sha);

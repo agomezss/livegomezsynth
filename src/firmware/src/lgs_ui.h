@@ -142,30 +142,92 @@ static void splash_draw(uint32_t s)
         int32_t y1 = 134 - top, y2 = 156 - top;
         cv_text((240 - text_w(&FONT_S, "by Alessandro Gomez")) / 2, y1, &FONT_S, "by Alessandro Gomez", fg);
         cv_text((240 - text_w(&FONT_S, "agomezss (Github)")) / 2, y2, &FONT_S, "agomezss (Github)", dim);
+        {
+            static char ver[24];
+            ver[0] = 0;
+            scat(ver, "v");
+            scat(ver, APP_VER);
+            cv_text((240 - text_w(&FONT_S, ver)) / 2, 178 - top, &FONT_S, ver, dim);
+        }
     }
     cv_blit(0, s * 120u);
 }
 
+/* A row wider than the screen scrolls: it waits, slides to its end, waits, slides back (the clock restarts when the row's text
+ * changes, so a still screen always starts at the beginning). mq_on asks for a redraw every few frames while one does. */
+#define ROW_X 6
+#define ROW_W (240 - ROW_X - 4)
+static uint32_t row_h[ROWS], row_t0[ROWS];
+static uint8_t mq_on;
+
+static int32_t row_shift(uint32_t r, int32_t w)
+{
+    enum { WAIT = 900, STEP = 28 };             /* ms: at each end; per pixel */
+    int32_t room = w - ROW_W;
+    uint32_t t, run;
+    if (room <= 0) return 0;
+    run = (uint32_t)room * STEP;
+    t = (fm1_ms - row_t0[r]) % (2u * (WAIT + run));
+    if (t < WAIT) return 0;
+    t -= WAIT;
+    if (t < run) return (int32_t)(t / STEP);
+    t -= run;
+    if (t < WAIT) return room;
+    return room - (int32_t)((t - WAIT) / STEP);
+}
+
+static uint32_t row_sig[ROWS];                  /* what the LCD shows of each row: its text, colour, scroll and theme */
+static uint8_t scr_full = 1;                    /* the LCD holds something else (start-up, the splash): send every row */
+
+/* Only the strips whose row changed are sent: a full redraw is 115 KB over the SPI and keeps the main loop waiting for tens of
+ * milliseconds; a level meter or a scrolling name changes one or two rows. A row is 20 lines and draws nothing outside them. */
 static void scr_flush(void)
 {
-    uint32_t s, r;
-    if (splash_until) { splash_draw(0); splash_draw(1); return; }
+    uint32_t s, r, sig[ROWS];
+    int32_t shift[ROWS];
+    if (splash_until) { splash_draw(0); splash_draw(1); scr_full = 1; return; }
+    mq_on = 0;
+    for (r = 0; r < ROWS; r++) {
+        uint32_t h = 2166136261u;
+        const char *c;
+        int32_t w = row_t[r][0] ? text_w(&FONT_S, row_t[r]) : 0;
+        for (c = row_t[r]; *c; c++) h = (h ^ (uint8_t)*c) * 16777619u;
+        if (h != row_h[r]) { row_h[r] = h; row_t0[r] = fm1_ms; }
+        if (w > ROW_W) mq_on = 1;
+        shift[r] = row_shift(r, w);
+        sig[r] = (((h ^ row_c[r]) * 16777619u ^ (uint32_t)shift[r]) * 16777619u ^ theme) * 16777619u;
+    }
     for (s = 0; s < 2u; s++) {
+        uint32_t first = ROWS, last = 0;
+        for (r = s * 6u; r < s * 6u + 6u; r++)
+            if (scr_full || sig[r] != row_sig[r]) { if (r < first) first = r; last = r; }
+        if (first == ROWS) continue;
         cv_begin(240, 120, theme ? TH[theme].bg : C_BLACK);
         for (r = s * 6u; r < s * 6u + 6u; r++) {
             int32_t y = (int32_t)((r - s * 6u) * 20u);
             if (theme) th_band(r, y);
-            if (row_t[r][0]) cv_text(6, y + 2, &FONT_S, row_t[r], theme ? th_col(row_c[r]) : row_c[r]);
+            if (row_t[r][0]) cv_text(ROW_X - shift[r], y + 2, &FONT_S, row_t[r], theme ? th_col(row_c[r]) : row_c[r]);
         }
-        cv_blit(0, s * 120u);
+        cv_blit_rows(0, s * 120u, (first - s * 6u) * 20u, (last - s * 6u + 1u) * 20u);
+        for (r = first; r <= last; r++) row_sig[r] = sig[r];
     }
+    scr_full = 0;
 }
 
 static char bank_l(uint32_t b) { return (char)('A' + b); }
 static const char *bk(uint32_t b) { static char s[2]; s[0] = bank_l(b); s[1] = 0; return s; }
 static const char *oct_l(uint32_t o) { static char s[3]; s[0] = 'C'; s[1] = (char)('0' + o); s[2] = 0; return s; }
 static const char *pname(uint32_t id) { const lgs_patch_t *p = pat_by_id(id); return p ? p->name : "-"; }
-static const char *pshow(const lgs_patch_t *p) { return p->cat == 16u ? p->name : p->name + 4; }   /* the name without its engine prefix (ICONIC has none) */
+static const char *pshow(const lgs_patch_t *p)    /* the name without its engine prefix ("SYN ", "SP ", ...); a name that has none is shown whole */
+{
+    static const char *const PFX[] = {"SYN ", "FM2 ", "FM6 ", "ORG ", "SP ", "VOC ", "DRM ", "PLY ", "SVF ", "LAD ", "SFX "};
+    uint32_t i, n;
+    for (i = 0; i < sizeof PFX / sizeof PFX[0]; i++) {
+        for (n = 0; PFX[i][n] && p->name[n] == PFX[i][n]; n++) ;
+        if (!PFX[i][n]) return p->name + n;
+    }
+    return p->name;
+}
 
 /* ---- messages and the value bar ----------------------------------------------------------------- */
 static char msg[40], bar[40];
@@ -512,7 +574,7 @@ static void tempo_knob(int32_t d)
 static void pat_nav(int32_t dc, int32_t di)
 {
     uint32_t n;
-    if (dc) { pat_cat = (uint8_t)(1 + wrap((int32_t)pat_cat - 1 + dc, 16)); pat_idx = (uint8_t)(pat_cat == 1u ? fav_first(kb_bank) : 0u); }
+    if (dc) { pat_cat = (uint8_t)(1 + wrap((int32_t)pat_cat - 1 + dc, (int32_t)LGS_NCAT)); pat_idx = (uint8_t)(pat_cat == 1u ? fav_first(kb_bank) : 0u); }
     n = pat_cat == 1u ? LGS_NFAV : cat_n[pat_cat];
     if (di) pat_idx = (uint8_t)wrap((int32_t)pat_idx + di, (int32_t)n);
     if (pat_cat == 1u) kb_bank = (uint8_t)(pat_idx >> 4);     /* the bank letter follows the favorites list */
@@ -748,7 +810,7 @@ static void pad_press(uint32_t p)
         else if (p == 15u) solo_press(2u);
         else if (solo) { solo = 0; keys_release_all(); ui_dirty = 1; say("Solo off - tap again to load", COL_ORG, 1500); }
         else perf_select(fb_bank, p < 7u ? p : p - 1u);
-    } else if (p < 16u) {                                       /* EDIT: category quick pick (pad 16 = ICONIC) */
+    } else if (p < LGS_NCAT) {                                  /* EDIT: category quick pick (pads 1-15; pad 16 does nothing) */
         uint32_t c = p + 1u;
         if (c == 1u) {
             uint32_t f = pop_fav_at(0);
@@ -822,7 +884,7 @@ static void arrows(int32_t d)
 {
     if (mode == M_EDIT) {
         if (ov == OV_NONE) pop_open();
-        if (ov == OV_POP) { pop_cat = (uint8_t)(1 + wrap((int32_t)pop_cat - 1 + d, 16)); pop_idx = 0; pop_preview(); }
+        if (ov == OV_POP) { pop_cat = (uint8_t)(1 + wrap((int32_t)pop_cat - 1 + d, (int32_t)LGS_NCAT)); pop_idx = 0; pop_preview(); }
     } else if (ov == OV_NONE) {
         if (mode == M_PATCH) pat_nav(d, 0);
         else perf_select((uint32_t)wrap((int32_t)fb_bank + d, 8), ps_slot);
@@ -884,6 +946,10 @@ static void ov_timers(void)
         if (!kb_dn) { ov = OV_NONE; ui_dirty = 1; }
         else if (fm1_ms - last >= 100u) { last = fm1_ms; ui_dirty = 1; }
     } else if (ov != OV_NONE && ov != OV_POP && (int32_t)(fm1_ms - ov_until) >= 0) { ov = OV_NONE; ui_dirty = 1; }
+    if (mq_on) {                                /* a scrolling row: the next frame of it */
+        static uint32_t mq_last;
+        if (fm1_ms - mq_last >= 66u) { mq_last = fm1_ms; ui_dirty = 1; }
+    }
     if (msg_until && (int32_t)(fm1_ms - msg_until) >= 0) { msg_until = 0; msg[0] = 0; ui_dirty = 1; }
     if (bar_until && (int32_t)(fm1_ms - bar_until) >= 0) { bar_until = 0; bar[0] = 0; ui_dirty = 1; }
 }
@@ -1198,9 +1264,9 @@ static void screen_draw(void)
 }
 
 /* ---- LEDs --------------------------------------------------------------------------------------- */
-static const uint8_t CAT_RGB[17][3] = {
+static const uint8_t CAT_RGB[LGS_NCAT + 1][3] = {
     {0, 0, 0}, {255, 200, 40}, {255, 255, 255}, {255, 120, 60}, {200, 80, 255}, {60, 200, 120}, {80, 220, 220}, {255, 230, 140},
-    {255, 90, 40}, {255, 150, 80}, {60, 120, 255}, {120, 90, 255}, {255, 60, 160}, {160, 255, 80}, {255, 100, 100}, {150, 150, 150}, {255, 255, 120}};
+    {255, 90, 40}, {255, 150, 80}, {60, 120, 255}, {120, 90, 255}, {255, 60, 160}, {160, 255, 80}, {255, 100, 100}, {150, 150, 150}};
 
 static void pad_rgb(uint32_t p, uint32_t r, uint32_t g, uint32_t b, uint32_t pct)
 {
@@ -1241,7 +1307,7 @@ static void leds_update(void)
                 else pad_rgb(p, 60, 140, 255, 40);
             }
         } else {
-            if (p < 16u) {
+            if (p < LGS_NCAT) {
                 uint32_t same = (p + 1u) == patch_cat_of(cur.line[edit_line].s.patch);
                 pad_rgb(p, CAT_RGB[p + 1u][0], CAT_RGB[p + 1u][1], CAT_RGB[p + 1u][2], same ? 100u : 25u);
             } else pad_rgb(p, 0, 0, 0, 0);
@@ -1322,6 +1388,29 @@ static void flags_apply(void)                   /* the lines' sustain / bend / m
 
 /* ---- the frame ---------------------------------------------------------------------------------- */
 static uint32_t keys_prev;
+static uint8_t ui_ready, keys_busy;
+
+/* The keybed is read by a timer interrupt; this turns its edges into notes. It runs at the top of every frame and also while the
+ * LCD transfers a strip (app_idle): a full redraw keeps the main loop in lcd_sync for tens of milliseconds, and a note played
+ * meanwhile used to wait for it. */
+static void lgs_keys_service(void)
+{
+    uint32_t keys, down, up, k;
+    int32_t e;
+    if (!ui_ready || keys_busy) return;
+    keys_busy = 1;
+    keys = fm1_in.notes; down = keys & ~keys_prev; up = keys_prev & ~keys;
+    for (k = 0; k < 27u; k++) {
+        if (down >> k & 1u) kb_note(1, KEY0 + k, KEY_VEL(k));
+        if (up >> k & 1u) kb_note(0, KEY0 + k, 0);
+    }
+    keys_prev = keys;
+    while ((e = smk_extkey_take()) >= 0) {                      /* the keys beyond the 27 note keys */
+        uint32_t kk = ((uint32_t)e >> 8) % FM1_NKEY, vel = (uint32_t)e & 0xFFu;
+        kb_note(vel ? 1u : 0u, KEY0 + kk - SMK_KEY_F3, vel);
+    }
+    keys_busy = 0;
+}
 
 static void lgs_ui_init(void)
 {
@@ -1343,21 +1432,13 @@ static void lgs_ui_init(void)
     pat_select();
     part_apply(0, &pat, 99);
     fd_reset();
+    ui_ready = 1;
 }
 
 static void lgs_frame(void)
 {
-    uint32_t keys = fm1_in.notes, down = keys & ~keys_prev, up = keys_prev & ~keys, k;
     int32_t e;
-    for (k = 0; k < 27u; k++) {
-        if (down >> k & 1u) kb_note(1, KEY0 + k, KEY_VEL(k));
-        if (up >> k & 1u) kb_note(0, KEY0 + k, 0);
-    }
-    keys_prev = keys;
-    while ((e = smk_extkey_take()) >= 0) {                      /* the keys beyond the 27 note keys */
-        uint32_t kk = ((uint32_t)e >> 8) % FM1_NKEY, vel = (uint32_t)e & 0xFFu;
-        kb_note(vel ? 1u : 0u, KEY0 + kk - SMK_KEY_F3, vel);
-    }
+    lgs_keys_service();
     while ((e = smk_pad_take()) >= 0) {
         uint32_t p = ((uint32_t)e >> 8) & 15u;
         pad_vel = (uint32_t)e & 255u;

@@ -6,6 +6,7 @@
 static volatile unsigned smk_controller_active;
 #define SMK_CONTROLLER_ACTIVE smk_controller_active
 static void app_idle(void);
+static void lgs_keys_service(void);
 #define LCD_IDLE() app_idle()
 #include "platform.c"
 #include "obv_dsp.h"
@@ -44,7 +45,7 @@ static void app_audio(int32_t *out, uint32_t n)
 #endif
 }
 
-static void app_idle(void) {}
+static void app_idle(void) { lgs_keys_service(); }   /* the keys are served while a screen transfer goes out (lcd.c) */
 #ifdef OBV_HOST
 static void host_dump(void) {}                  /* (tests/host.c: the script's DUMP event) */
 #endif

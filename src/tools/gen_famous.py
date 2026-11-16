@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-only
-"""ICONIC (category 16): writes the SYN and FM6 parts of tools/famous_defs.py into the hand-kept headers (between their
-FAMOUS markers) and rewrites the category's entries in catalog/catalog.json. The FM2 / ORG / SP parts are spliced by the
+"""The famous-timbre recipes: writes the SYN and FM6 parts of tools/famous_defs.py into the hand-kept headers (between their
+FAMOUS markers). The ICONIC category is gone (D-66): catalog/catalog.json is edited by hand and its entries keep pointing at
+these preset rows by index, so a recipe row is never removed or reordered. The FM2 / ORG / SP parts are spliced by the
 generators of those engines (port_clipper_engines.py, gen_lgs_samples.py). Run those first, then this, then gen_catalog.py."""
 import json, pathlib, re, sys
 root = pathlib.Path(__file__).resolve().parent.parent
@@ -57,21 +58,6 @@ base = {"syn": 64 + base_syn,
         "fm6": before_famous(f6, "FM6_PRESETS[] = {")}
 print("bases", base)
 
-# -- catalog
-def nice(n):
-    return re.sub(r"\bFm\b", "FM", re.sub(r"\bEp\b", "EP", n.title())).replace("80S", "80s")
-
-cp = root / "catalog" / "catalog.json"
-cat = json.load(open(cp))
-cat["patches"] = [p for p in cat["patches"] if p["cat"] != 16]
-where = {}
-for eng, tab in (("syn", D.SYN), ("fm2", D.FM2), ("org", D.ORG), ("sp", D.SP), ("fm6", D.FM6)):
-    for k, t in enumerate(tab):
-        where[t[0]] = (eng, base[eng] + k)
-assert sorted(where) == sorted(D.ORDER), set(where) ^ set(D.ORDER)
-assert len(D.ORDER) <= 255, 'cat_n is a uint8'
-for k, name in enumerate(D.ORDER):
-    eng, idx = where[name]
-    cat["patches"].append({"id": 449 + k, "cat": 16, "engine": eng, "name": nice(name), "factory": idx})
-json.dump(cat, open(cp, "w"), indent=1)
-print("iconic:", len(D.ORDER))
+# The catalog entries are no longer written here (D-66): catalog/catalog.json is the source of truth, ICONIC is gone as a category,
+# the recipes kept in famous_defs.py are engine presets whose catalog entries point at them by index (the `bases` above).
+print("recipes:", len(D.ORDER), "(catalog.json not touched)")

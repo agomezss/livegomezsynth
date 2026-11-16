@@ -18,7 +18,8 @@ jackson madonna prince whitney bowie jagger gabriel collins lennox lauper depech
 coldplay oasis muse linkin shaman nightwish legiao paralamas titas barao capital engenheiros skank kid abelha blitz
 """.split()
 # whole words only; a word may stay when it is an ordinary English word here (and only with the reason written down)
-ALLOW = {"purple": "a colour: Purple Pad / Purple Drv name no band", "sonic": "an adjective"}
+ALLOW = {"purple": "a colour: Purple Pad / Purple Drv name no band", "sonic": "an adjective",
+         "queen": "the owner's explicit choice (SYN Queen Str, patch sheet 2026-11-16), D-42 knowingly set aside for these two"}
 
 
 def names():

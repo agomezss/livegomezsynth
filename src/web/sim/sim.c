@@ -206,6 +206,7 @@ EXPORT int32_t sim_ui(uint32_t i)
     case 14: return (int32_t)ctl_tempo;
     case 15: return drum_pads;
     case 16: return ui_trk_peak[0];
+    case 17: return mq_on;
     default: return -1;
     }
 }
@@ -249,6 +250,14 @@ EXPORT void sim_load_patch(uint32_t id)         /* test hook: the PATCH mode sou
     memset(&s, 0, sizeof s);
     sound_defaults(&s, id);
     if (mode == M_PATCH) pat_load(&s);
+}
+EXPORT void sim_redraw_full(void) { scr_full = 1; ui_dirty = 1; }     /* test hook: send every row again */
+EXPORT void sim_line_load(uint32_t l, uint32_t id, uint32_t lo, uint32_t hi)   /* test hook: a line of the working performance */
+{
+    if (l >= LGS_NLINE) return;
+    sound_defaults(&cur.line[l].s, id);
+    cur.line[l].lo = (uint8_t)lo; cur.line[l].hi = (uint8_t)hi; cur.line[l].vol = 99; cur.line[l].flags = LF_SUSTAIN | LF_BEND;
+    if (mode != M_PATCH) part_apply(l, &cur.line[l].s, 99);
 }
 EXPORT int32_t sim_fav(uint32_t i) { return i < LGS_NFAV ? db.fav[i].patch : -1; }
 EXPORT int32_t sim_perf(uint32_t i, uint32_t l) { return i < LGS_NPERF && l < LGS_NLINE ? db.perf[i].line[l].s.patch : -1; }

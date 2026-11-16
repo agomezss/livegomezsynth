@@ -95,6 +95,13 @@ const key = (k, on) => {
   run(30);
 }; // k: 0 = F3 (note 53); note 60 = k 7
 const voices = (p) => ex.sim_part(p, 5);
+// only the changed strips are sent to the LCD: the picture must equal a full redraw
+const sameAsFull = (what) => {
+  const part = ex.sim_fb_hash();
+  ex.sim_redraw_full();
+  run(60);
+  check("the partial redraw equals a full one: " + what, ex.sim_fb_hash() === part);
+};
 
 check("init", ex.sim_init(44100) === 0);
 run(300);
@@ -123,13 +130,32 @@ check(
 for (let i = 0; i < 3; i++) press(BTN.KB);
 check("bank wraps D -> A", ex.sim_ui(KB) === 0);
 check("PATCH keeps row 8 free", row(8) === "", row(8));
-ex.sim_load_patch(449);
+ex.sim_load_patch(451); // Classic Piano (it came from ICONIC: no prefix)
 run(60);
 check(
-  "an ICONIC name is shown whole",
-  row(1).endsWith("Rhapsody Piano"),
+  "a name without an engine prefix is shown whole",
+  row(1).endsWith("- Classic Piano"),
   row(1),
 );
+ex.sim_load_patch(4);
+run(60);
+check(
+  "an SP name loses its prefix and nothing else",
+  row(1).endsWith("- Grand Piano"),
+  row(1),
+);
+check("a short row does not scroll", ex.sim_ui(17) === 0);
+ex.sim_load_patch(578); // "Pianos - 578 - Reggaeton Piano" is wider than the screen
+run(100);
+const still = ex.sim_fb_hash();
+check("a row wider than the screen is flagged for scrolling", ex.sim_ui(17) === 1);
+run(1400);
+check("and it slides after a short wait, so the whole name can be read", ex.sim_fb_hash() !== still);
+sameAsFull("a scrolling row");
+ex.sim_load_patch(4);
+run(100);
+check("scrolling stops when the row fits again", ex.sim_ui(17) === 0);
+sameAsFull("PATCH after the scroll");
 {
   const before = ex.sim_ui(CAT);
   press(BTN.RIGHT);
@@ -189,8 +215,8 @@ check(
 );
 enc(5, 1);
 check(
-  "category 3 first patch id 33",
-  ex.sim_ui(PAT) === 33,
+  "category 3 first patch id 1",
+  ex.sim_ui(PAT) === 1,
   "id " + ex.sim_ui(PAT),
 );
 const cut0 = ex.sim_part(0, 6);
@@ -260,6 +286,7 @@ check(
   row(3)[1] !== " " && row(4)[1] === " ",
   row(3) + " | " + row(4),
 );
+sameAsFull("PERFORM with a level meter");
 check(
   "note in C1-C3 goes only to LAYER 1",
   voices(0) >= 1 && voices(1) === 0 && voices(2) === 0,
@@ -595,7 +622,7 @@ check(
 // ---- drum kits (DRUMS engine)
 press(BTN.KB);
 check("back in PATCH for the drums", ex.sim_ui(MODE) === 0);
-enc(5, -2); // ICONIC is category 16, Drums 15
+enc(5, -1); // Drums is the last category (15)
 check(
   "category 15 is Drums; a kit loads and the pads become hits",
   ex.sim_ui(CAT) === 15 && ex.sim_ui(PAT) === 417 && ex.sim_ui(15) === 1,

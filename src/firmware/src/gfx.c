@@ -70,6 +70,14 @@ static void cv_begin(uint32_t w, uint32_t h, uint16_t bg)
 
 static void cv_blit(uint32_t x, uint32_t y) { lcd_blit(x, y, cv_w, cv_h, cv_px); }
 
+/* canvas rows r0 .. r1-1 only, to screen row y + r0 */
+static void cv_blit_rows(uint32_t x, uint32_t y, uint32_t r0, uint32_t r1)
+{
+    if (r1 > cv_h) r1 = cv_h;
+    if (r0 < r1)
+        lcd_blit(x, y + r0, cv_w, r1 - r0, cv_px + r0 * cv_w);
+}
+
 /* canvas rows r0 .. cv_h-1 only, to screen row y + r0 */
 static void cv_blit_from(uint32_t x, uint32_t y, uint32_t r0)
 {

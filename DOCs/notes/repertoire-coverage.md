@@ -27,7 +27,7 @@ still weak or missing. "First draft" = made from parameters, not yet judged by e
 Known holes (not planned yet): orchestral hit, pipe organ, solo saxophone and trumpet, a real legato string section, electric guitar
 voices. Say which of these matter and which patches above are not usable; the next round fixes those first.
 
-## ICONIC (category 16, D-53)
+## ICONIC (category 16, D-53; removed by D-66, the survivors moved to other categories)
 
 125 patches, ids 449..: pianos and EPs, organs (Deep Purple / Doors / Toccata / cathedral), harpsichord, bells and fantasy sounds (Nightwish set), choirs, flutes and pan flutes, string and pad sets, brass (Jump, Final Countdown, arena, Beat It), 80s synth-pop leads, basses and pads (Take On Me, Eurythmics, Depeche Mode, A Little Respect, Radio Pirata), Latin rock keys and strings, and a few extras (Africa marimba, Axel F, Popcorn, chiptune, Oxygene-style lead, Kashmir-style orchestra). All defined in `tools/famous_defs.py`; the order in the instrument is `ORDER` there. Regenerate with `port_clipper_engines.py`, `gen_lgs_samples.py`, `gen_famous.py`, `gen_catalog.py`. Names hint at the song without using titles; the sounds are first drafts built from parameters and were never judged by ear.
 

@@ -41,7 +41,7 @@ The calibration data at `0xC1000` is never written by this firmware or its loade
 
 - The first start initializes the user-data bank (on a keyboard that ran SMKSYNTH: its programs and favourites are cleared, its pattern slots are left alone). The panel check's `Overruns` row ends in `flash OK  s1` after that start (`s0` on later starts); `flash --` means the store was refused and nothing can be saved.
 - Panel check: hold **KNOB BANK** for 0.7 s. It tests faders, wheels, pedal, buttons and voices and shows render time. Calibration must be reported as found; if not, stop and go back.
-- Play a few categories; ICONIC is category 16.
+- Play a few categories (15 in the list, Favorites first, Drums last).
 
 ## If an update says "the device stopped after 0 requests"
 

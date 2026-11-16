@@ -24,6 +24,11 @@ run(a, 300);
 const early = a.sim_fb_hash();
 check("the splash replaces the screen at start-up", early !== normal);
 check("the normal screen text is already prepared underneath", str(a, a.sim_row(0)).startsWith("[PATCH]"), str(a, a.sim_row(0)));
+{
+  const fb = new Uint16Array(a.memory.buffer, a.sim_fb(), 240 * 240), bg = fb[239 * 240];
+  const inked = (y0, y1) => { for (let y = y0; y < y1; y++) for (let x = 0; x < 240; x++) if (fb[y * 240 + x] !== bg) return true; return false; };
+  check("a third line (the version) sits under the author", inked(180, 192) && !inked(200, 240));
+}
 run(a, 4400);
 check("still there after 4.7 s", a.sim_fb_hash() === early);
 run(a, 600);
