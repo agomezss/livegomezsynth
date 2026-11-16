@@ -46,6 +46,6 @@ Catalog tools: `node tests/catalog_health.mjs [--trim|--update]` (level match, g
 
 Safety: **do not install on a device before the checklist in `DOCs/06-storage-and-safety.md` (backup first, P-01).**
 Current state: M1 (PATCH / PERFORM / EDIT, favorites, solo, sends, MIDI in, panel check, storage) and most of M2 (synth, drum kits,
-4-op and 6-op FM, drawbar organ, samples; 215 patches) run in the simulator and in the test suites; the package builds (283 KB of the 320 KB
+4-op and 6-op FM, drawbar organ, samples; 349 patches) run in the simulator and in the test suites; the package builds (283 KB of the 320 KB
 slot). Nothing has run on hardware yet. Tests: `sh tests/run_tests.sh` (add `--quick` to skip the package build); the simulator
 is described in `web/sim/README.md`. Still open: CPU budget on the device, install guide (after the first install).

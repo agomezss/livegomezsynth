@@ -6,6 +6,8 @@ import { readFileSync } from "node:fs";
 const wasm = readFileSync(new URL("../build/sim-site/lgs.wasm", import.meta.url));
 const { instance } = await WebAssembly.instantiate(wasm, {});
 const ex = instance.exports;
+const CAT = JSON.parse(readFileSync(new URL("../catalog/catalog.json", import.meta.url), "utf8")).patches;
+const idOf = (name) => CAT.find((x) => x.name === name).id;
 let fail = 0;
 const check = (n, ok, i = "") => { console.log((ok ? "  ok    " : "  FAIL  ") + n + (i !== "" ? "  (" + i + ")" : "")); if (!ok) fail++; };
 ex.sim_init(44100);
@@ -51,9 +53,9 @@ ex.sim_load_patch(ex.sim_patch_id(0));
 const flute = [...Array(ex.sim_patch_n()).keys()].map((i) => [ex.sim_patch_id(i), ex.sim_patch_engine(i)]).filter(([, e]) => e === 4);
 check("catalog has the organ patches", flute.length === 24, "" + flute.length);
 // ORG "Soft Flute": only the 8' bar -> a sine at the note
-const softFlute = [...Array(ex.sim_patch_n()).keys()].find((i) => ex.sim_patch_engine(i) === 4 && ex.sim_patch_id(i) === 168);
+const softFlute = [...Array(ex.sim_patch_n()).keys()].find((i) => ex.sim_patch_engine(i) === 4 && ex.sim_patch_id(i) === idOf("ORG Soft Flute"));
 if (softFlute !== undefined) {
-  ex.sim_load_patch(168); grab(120);
+  ex.sim_load_patch(idOf("ORG Soft Flute")); grab(120);
   ex.sim_key(5 + 16, 1); const a = grab(600); ex.sim_key(5 + 16, 0);
   const f = freq(a);
   check("ORG Soft Flute plays A4 at 440 Hz", Math.abs(f - 440) < 6, f.toFixed(1) + " Hz");
@@ -68,7 +70,7 @@ const domFreq = (a, lo, hi) => {              // strongest frequency in [lo, hi]
   }
   return bf;
 };
-for (const [id, name] of [[4, "SP Grand Piano"], [132, "SP Flute"], [79, "FM6 Drawbars"]]) {
+for (const [id, name] of [["SP Grand Piano"], ["Flute Solo"], ["FM6 Drawbars"]].map(([n]) => [idOf(n), n])) {
   ex.sim_load_patch(id); grab(120);
   ex.sim_key(5 + 16, 1); grab(300); const a = grab(300); ex.sim_key(5 + 16, 0); grab(2000);
   const f = domFreq(a, 400, 480);

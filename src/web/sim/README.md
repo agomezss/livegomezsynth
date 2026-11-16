@@ -29,6 +29,6 @@ Computer keyboard: Z..M / Q..R rows play notes, `1` KNOB BANK, `5` FADER BANK, `
 - Soft takeover on the faders: keep, or make the faders jump to their position?
 - Mod actions FILTER / BRIGHT / SWELL / REVERB: names and ranges (FILTER opens the cutoff up to +64, BRIGHT up to +127, SWELL adds up to +27 level, REVERB raises the reverb send).
 - Screens: wording, which rows to show, colours.
-- Catalog: 215 patches (synth, FM, 6-op FM, organ, samples, five drum kits). Names, categories and sounds are first drafts; none has been tuned by ear yet.
+- Catalog: 349 patches (synth, FM, 6-op FM, organ, samples, five drum kits). Names, categories and sounds are first drafts; none has been tuned by ear yet.
 
 Known gaps of the simulator: `DOCs/sim-gaps.md`. Automated checks: `sh tests/run_tests.sh`.

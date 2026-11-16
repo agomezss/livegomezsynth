@@ -57,13 +57,27 @@ check("stale patch id is emptied by the sanitizer", e.sim_fav(9) === 0 && e.sim_
   dv2.setUint16(16 + 64 * 10, 417, true);                         // performance 1, line 1: DRM Deep Boom
   crc();
   const m = await boot(old);
-  check("old numbering: a kept patch gets its new number", m.sim_fav(0) === 22 && m.sim_fav(2) === 30, `${m.sim_fav(0)} ${m.sim_fav(2)}`);
+  check("old numbering: a kept patch gets its new number", m.sim_fav(0) === 22 && m.sim_fav(2) === 38, `${m.sim_fav(0)} ${m.sim_fav(2)}`);
   check("old numbering: a removed patch leaves its slot empty", m.sim_fav(1) === 0, "" + m.sim_fav(1));
-  check("old numbering: performance lines are mapped too", m.sim_perf(0, 0) === 211, "" + m.sim_perf(0, 0));
+  check("old numbering: performance lines are mapped too", m.sim_perf(0, 0) === 345, "" + m.sim_perf(0, 0));
   check("old numbering: the image is marked for saving", m.sim_db_dirty() === 1);
   const again = new Uint8Array(m.memory.buffer, m.sim_db_export(), n).slice();
   const m2 = await boot(again);
-  check("and is not mapped a second time", m2.sim_fav(0) === 22 && m2.sim_fav(2) === 30 && m2.sim_db_dirty() === 0, `${m2.sim_fav(0)} ${m2.sim_fav(2)}`);
+  check("and is not mapped a second time", m2.sim_fav(0) === 22 && m2.sim_fav(2) === 38 && m2.sim_db_dirty() === 0, `${m2.sim_fav(0)} ${m2.sim_fav(2)}`);
+}
+
+// an image of the second numbering (0.1.13) is mapped once to the current one
+{
+  const old = img.slice(), dv2 = new DataView(old.buffer);
+  const crc = () => { let cr = 0xffffffff; for (let i = 0; i < n - 4; i++) { cr ^= old[i]; for (let k = 0; k < 8; k++) cr = cr & 1 ? (cr >>> 1) ^ 0xedb88320 : cr >>> 1; } dv2.setUint32(n - 4, (~cr) >>> 0, true); };
+  dv2.setUint32(12, (dv2.getUint32(12, true) & 0xff) | (1 << 8), true);   // db.theme: generation 1
+  dv2.setUint16(16 + 0 * 10, 22, true);                           // Classic Piano
+  dv2.setUint16(16 + 2 * 10, 30, true);                           // first E-Piano
+  dv2.setUint16(16 + 64 * 10, 211, true);                         // performance 1, line 1: DRM Deep Boom
+  crc();
+  const m = await boot(old);
+  check("second numbering: patches get their new numbers", m.sim_fav(0) === 22 && m.sim_fav(2) === 38 && m.sim_perf(0, 0) === 345, `${m.sim_fav(0)} ${m.sim_fav(2)} ${m.sim_perf(0, 0)}`);
+  check("second numbering: the image is marked for saving", m.sim_db_dirty() === 1);
 }
 
 // the screen theme (SEQ button) survives a restart

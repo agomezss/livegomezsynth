@@ -49,7 +49,7 @@ substitute a meaningful one, never a dead knob.
 
 ## 4. Engine-specific design notes
 
-- **FM (6-op):** patches are DX-compatible 6-op voices. Do **not** ship voices extracted from the FM-1 recovery resource or commercial
+- **FM (6-op):** patches are DX-compatible 6-op voices. The SDK's 128 voices (extracted from the FM-1 recovery resource) ship by the owner's decision (D-69); do **not** ship voices from commercial
   cartridges (R-07). Author voices (or use CC0 ones) and keep them in `catalog/fm/*.syx` -> packed bank.
 - **FM2:** `DIGITAL` templates (EP, bell, bass) cover category 03 and parts of Guitar/Bass.
 - **SP:** one-shot/looped zones from `clipper-smk/assets/samples-cc0` (VSCO-2 CE, VCSL, Sonic Pi are CC0). Pipeline

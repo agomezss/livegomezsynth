@@ -1,7 +1,7 @@
 <h1 align="center">LiveGomezSynth</h1>
 
 <p align="center"><b>A live-performance firmware for the M-VAVE SMK-37 Pro.</b><br>
-215 sounds in 15 categories, four-part performances with layers, splits and solos, and a front panel that tells you what it is doing.</p>
+349 sounds in 15 categories, four-part performances with layers, splits and solos, and a front panel that tells you what it is doing.</p>
 
 <p align="center">
 <img alt="license" src="https://img.shields.io/badge/license-GPL--3.0--only-blue">
@@ -21,7 +21,7 @@ The SMK-37 Pro is a very good controller with a small synth inside. I wanted to 
 
 So LiveGomezSynth is built around three ideas:
 
-1. **Sounds first.** A curated catalog (215 sounds, reviewed one by one) covering what a gigging keyboard player reaches for: pianos, electric pianos, organs, strings, choirs, brass, pads, leads, basses, drums and effects.
+1. **Sounds first.** A curated catalog (349 sounds) covering what a gigging keyboard player reaches for: pianos, electric pianos, organs, strings, choirs, brass, pads, leads, basses, drums and effects.
 2. **One tap performance.** Sixteen **favorite** pads for single sounds, and eight banks of **performances** (combos of four lines: two layers split by octave and two solo sounds).
 3. **A UX that stays out of the way.** The controls never move between modes. The pads light up to tell you what is assigned and what is selected. Edits are live, and saving is always a deliberate two-step action.
 
@@ -31,7 +31,7 @@ It is a hobby project made by a keyboard player, with a lot of help from AI (see
 
 | | |
 | --- | --- |
-| **Sounds** | 215 patches, 15 categories: Favorites, Pianos, E-Pianos, Organs, Strings, Winds, Choirs, Brass, Guitars, Basses, Pads, Leads, SFX, Complex, Drums |
+| **Sounds** | 349 patches, 15 categories: Favorites, Pianos, E-Pianos, Organs, Strings, Winds, Choirs, Brass, Guitars, Basses, Pads, Leads, SFX, Complex, Drums |
 | **Engines** | Analog-style synth (OberVave voice core, plus twin-SVF, poly and ladder flavors), 4-operator FM, 6-operator FM (DX-style), drawbar organ, ADPCM sampler, and five drum kits |
 | **Favorites** | 64 slots (4 banks of 16): one pad = one sound with its tweaks and FX sends |
 | **Performances** | 8 banks of 14: each is **two layers** (split by octave range) and **two solos** (whole keyboard, one tap) with per-line volume, sustain, bend and mod-wheel action |
@@ -108,7 +108,7 @@ Be honest with yourself about these before flashing.
 | **No flash dump** | The update protocol only lets the keyboard *pull* a package; there is no way to read its flash from the browser. Your safety net is the package of your current firmware, plus M-VAVE's own M-UPGRADE tool with the factory package. |
 | **User data is re-initialised** | The first start of a new firmware family re-initialises the user-data bank. Back up your SMKSYNTH banks first. |
 | **Warranty and support** | This is not endorsed by M-VAVE. A modified firmware may void your warranty. The software is provided **as is**, with no warranty (GPL-3.0, section 15). |
-| **First-draft sounds** | The 215 sounds were authored from parameters and level-matched by measurement. They were never judged by ear on the real hardware; expect to tweak. |
+| **First-draft sounds** | The 349 sounds were authored from parameters and level-matched by measurement. They were never judged by ear on the real hardware; expect to tweak. |
 | **Names and trademarks** | Sound names hint at songs or sounds but avoid brands and people (a name check runs in the tests). M-VAVE, SMK-37 and other names belong to their owners. |
 
 ## Repository tour

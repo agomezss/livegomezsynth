@@ -222,1301 +222,2239 @@
   },
   {
    "id": 30,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 1",
+   "factory": 19
+  },
+  {
+   "id": 31,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 2",
+   "factory": 23
+  },
+  {
+   "id": 32,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 3",
+   "factory": 27
+  },
+  {
+   "id": 33,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 4",
+   "factory": 31
+  },
+  {
+   "id": 34,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 5",
+   "factory": 35
+  },
+  {
+   "id": 35,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 6",
+   "factory": 39
+  },
+  {
+   "id": 36,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 7",
+   "factory": 43
+  },
+  {
+   "id": 37,
+   "cat": 2,
+   "engine": "fm6",
+   "name": "FM6 Piano 8",
+   "factory": 47
+  },
+  {
+   "id": 38,
    "cat": 3,
    "engine": "syn",
    "name": "SYN Tape Keys",
    "factory": 52
   },
   {
-   "id": 31,
+   "id": 39,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 House Piano",
    "factory": 4
   },
   {
-   "id": 32,
+   "id": 40,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 FM Grand",
    "factory": 21
   },
   {
-   "id": 33,
+   "id": 41,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Digi Piano",
    "factory": 40
   },
   {
-   "id": 34,
+   "id": 42,
    "cat": 3,
    "engine": "syn",
    "name": "SYN Bell XMod",
    "factory": 5
   },
   {
-   "id": 35,
+   "id": 43,
    "cat": 3,
    "engine": "syn",
    "name": "SYN Soft Keys",
    "factory": 17
   },
   {
-   "id": 36,
+   "id": 44,
    "cat": 3,
    "engine": "syn",
    "name": "SYN Clav Pluck",
    "factory": 20
   },
   {
-   "id": 37,
+   "id": 45,
    "cat": 3,
    "engine": "syn",
    "name": "SYN Ice Bells",
    "factory": 49
   },
   {
-   "id": 38,
+   "id": 46,
    "cat": 3,
    "engine": "syn",
    "name": "SYN Soft EP",
    "factory": 50
   },
   {
-   "id": 39,
+   "id": 47,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Tine EP",
    "factory": 0
   },
   {
-   "id": 40,
+   "id": 48,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Bright Tine",
    "factory": 1
   },
   {
-   "id": 41,
+   "id": 49,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Reed EP",
    "factory": 2
   },
   {
-   "id": 42,
+   "id": 50,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Clav",
    "factory": 3
   },
   {
-   "id": 43,
+   "id": 51,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Afro Keys",
    "factory": 5
   },
   {
-   "id": 44,
+   "id": 52,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Stage EP",
    "factory": 23
   },
   {
-   "id": 45,
+   "id": 53,
    "cat": 3,
    "engine": "fm6",
    "name": "FM6 Tine EP",
    "factory": 0
   },
   {
-   "id": 46,
+   "id": 54,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Trap Bell",
    "factory": 6
   },
   {
-   "id": 47,
+   "id": 55,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Plugg Bell",
    "factory": 10
   },
   {
-   "id": 48,
+   "id": 56,
    "cat": 3,
    "engine": "fm2",
    "name": "FM2 Beat Stab",
    "factory": 39
   },
   {
-   "id": 49,
+   "id": 57,
    "cat": 3,
    "engine": "fm2",
    "name": "Ballad EP",
    "factory": 59
   },
   {
-   "id": 50,
+   "id": 58,
    "cat": 3,
    "engine": "fm2",
    "name": "Slow Dance EP",
    "factory": 61
   },
   {
-   "id": 51,
+   "id": 59,
    "cat": 3,
    "engine": "fm2",
    "name": "Flame EP",
    "factory": 89
   },
   {
-   "id": 52,
+   "id": 60,
    "cat": 4,
    "engine": "syn",
    "name": "SYN Pulse Organ",
    "factory": 51
   },
   {
-   "id": 53,
+   "id": 61,
    "cat": 4,
    "engine": "fm2",
    "name": "FM2 Perc Organ",
    "factory": 29
   },
   {
-   "id": 54,
+   "id": 62,
    "cat": 4,
    "engine": "org",
    "name": "ORG Soul Organ",
    "factory": 0
   },
   {
-   "id": 55,
+   "id": 63,
    "cat": 4,
    "engine": "org",
    "name": "ORG Gospel",
    "factory": 1
   },
   {
-   "id": 56,
+   "id": 64,
    "cat": 4,
    "engine": "org",
    "name": "ORG Jazz Organ",
    "factory": 2
   },
   {
-   "id": 57,
+   "id": 65,
    "cat": 4,
    "engine": "org",
    "name": "ORG Dirty Organ",
    "factory": 3
   },
   {
-   "id": 58,
+   "id": 66,
    "cat": 4,
    "engine": "org",
    "name": "ORG House Organ",
    "factory": 4
   },
   {
-   "id": 59,
+   "id": 67,
    "cat": 4,
    "engine": "org",
    "name": "ORG Rock Organ",
    "factory": 5
   },
   {
-   "id": 60,
+   "id": 68,
    "cat": 4,
    "engine": "org",
    "name": "ORG Chapel",
    "factory": 6
   },
   {
-   "id": 61,
+   "id": 69,
    "cat": 4,
    "engine": "org",
    "name": "ORG Jazz Perc",
    "factory": 8
   },
   {
-   "id": 62,
+   "id": 70,
    "cat": 4,
    "engine": "org",
    "name": "ORG Full Organ",
    "factory": 9
   },
   {
-   "id": 63,
+   "id": 71,
    "cat": 4,
    "engine": "org",
    "name": "ORG Blues Organ",
    "factory": 11
   },
   {
-   "id": 64,
+   "id": 72,
    "cat": 4,
    "engine": "org",
    "name": "ORG Reed Organ",
    "factory": 13
   },
   {
-   "id": 65,
+   "id": 73,
    "cat": 4,
    "engine": "fm6",
    "name": "FM6 Drawbars",
    "factory": 6
   },
   {
-   "id": 66,
+   "id": 74,
    "cat": 4,
    "engine": "syn",
    "name": "SYN Combo Organ",
    "factory": 84
   },
   {
-   "id": 67,
+   "id": 75,
    "cat": 4,
    "engine": "org",
    "name": "ORG Purple Drive",
    "factory": 14
   },
   {
-   "id": 68,
+   "id": 76,
    "cat": 4,
    "engine": "org",
    "name": "ORG Tonewheel",
    "factory": 15
   },
   {
-   "id": 69,
+   "id": 77,
    "cat": 4,
    "engine": "org",
    "name": "ORG Slow Rotary",
    "factory": 16
   },
   {
-   "id": 70,
+   "id": 78,
    "cat": 4,
    "engine": "org",
    "name": "ORG Synth",
    "factory": 17
   },
   {
-   "id": 71,
+   "id": 79,
    "cat": 4,
    "engine": "org",
    "name": "Highway Organ",
    "factory": 18
   },
   {
-   "id": 72,
+   "id": 80,
    "cat": 4,
    "engine": "org",
    "name": "Smoke Organ",
    "factory": 19
   },
   {
-   "id": 73,
+   "id": 81,
    "cat": 4,
    "engine": "org",
    "name": "Burn Organ",
    "factory": 20
   },
   {
-   "id": 74,
+   "id": 82,
    "cat": 4,
    "engine": "org",
    "name": "Toccata Organ",
    "factory": 24
   },
   {
-   "id": 75,
+   "id": 83,
    "cat": 4,
    "engine": "org",
    "name": "Cathedral Organ",
    "factory": 25
   },
   {
-   "id": 76,
+   "id": 84,
    "cat": 4,
    "engine": "org",
    "name": "Prayer Organ",
    "factory": 38
   },
   {
-   "id": 77,
+   "id": 85,
    "cat": 4,
    "engine": "org",
    "name": "Walk Organ",
    "factory": 39
   },
   {
-   "id": 78,
+   "id": 86,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 1",
+   "factory": 20
+  },
+  {
+   "id": 87,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 2",
+   "factory": 24
+  },
+  {
+   "id": 88,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 3",
+   "factory": 28
+  },
+  {
+   "id": 89,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 4",
+   "factory": 32
+  },
+  {
+   "id": 90,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 5",
+   "factory": 36
+  },
+  {
+   "id": 91,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 6",
+   "factory": 40
+  },
+  {
+   "id": 92,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 7",
+   "factory": 44
+  },
+  {
+   "id": 93,
+   "cat": 4,
+   "engine": "fm6",
+   "name": "FM6 Organ 8",
+   "factory": 48
+  },
+  {
+   "id": 94,
    "cat": 5,
    "engine": "syn",
    "name": "SYN Queen Str",
    "factory": 4
   },
   {
-   "id": 79,
+   "id": 95,
    "cat": 5,
    "engine": "syn",
    "name": "SYN Ensemble",
    "factory": 47
   },
   {
-   "id": 80,
+   "id": 96,
    "cat": 5,
    "engine": "org",
    "name": "ORG String Organ",
    "factory": 12
   },
   {
-   "id": 81,
+   "id": 97,
    "cat": 5,
    "engine": "sp",
    "name": "SP String Stab",
    "factory": 2
   },
   {
-   "id": 82,
+   "id": 98,
    "cat": 5,
    "engine": "sp",
    "name": "SP Saw Ensemble",
    "factory": 8
   },
   {
-   "id": 83,
+   "id": 99,
    "cat": 5,
    "engine": "sp",
    "name": "SP String Pad",
    "factory": 10
   },
   {
-   "id": 84,
+   "id": 100,
    "cat": 5,
    "engine": "syn",
    "name": "PLY Strings",
    "factory": 69
   },
   {
-   "id": 85,
+   "id": 101,
    "cat": 5,
    "engine": "syn",
    "name": "PLY Orch Strings",
    "factory": 86
   },
   {
-   "id": 86,
+   "id": 102,
    "cat": 5,
    "engine": "syn",
    "name": "SYN Queen Str 2",
    "factory": 87
   },
   {
-   "id": 87,
+   "id": 103,
    "cat": 5,
    "engine": "sp",
    "name": "SP Str Choir",
    "factory": 6
   },
   {
-   "id": 88,
+   "id": 104,
    "cat": 5,
    "engine": "sp",
    "name": "Night Orch Pad",
    "factory": 46
   },
   {
-   "id": 89,
+   "id": 105,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 1",
+   "factory": 85
+  },
+  {
+   "id": 106,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 2",
+   "factory": 89
+  },
+  {
+   "id": 107,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 3",
+   "factory": 93
+  },
+  {
+   "id": 108,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 4",
+   "factory": 97
+  },
+  {
+   "id": 109,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 5",
+   "factory": 101
+  },
+  {
+   "id": 110,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 6",
+   "factory": 105
+  },
+  {
+   "id": 111,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 7",
+   "factory": 109
+  },
+  {
+   "id": 112,
+   "cat": 5,
+   "engine": "fm6",
+   "name": "FM6 Strings 8",
+   "factory": 113
+  },
+  {
+   "id": 113,
    "cat": 6,
    "engine": "sp",
    "name": "SP Flute Pad",
    "factory": 14
   },
   {
-   "id": 90,
+   "id": 114,
    "cat": 6,
    "engine": "sp",
    "name": "SP Pan Flute",
    "factory": 22
   },
   {
-   "id": 91,
+   "id": 115,
    "cat": 6,
    "engine": "sp",
    "name": "Flute Solo",
    "factory": 39
   },
   {
-   "id": 92,
+   "id": 116,
+   "cat": 6,
+   "engine": "syn",
+   "name": "SYN Alto Sax",
+   "factory": 212
+  },
+  {
+   "id": 117,
+   "cat": 6,
+   "engine": "syn",
+   "name": "SYN Tenor Sax",
+   "factory": 213
+  },
+  {
+   "id": 118,
+   "cat": 6,
+   "engine": "syn",
+   "name": "SYN Soprano Sax",
+   "factory": 214
+  },
+  {
+   "id": 119,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 1",
+   "factory": 84
+  },
+  {
+   "id": 120,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 2",
+   "factory": 88
+  },
+  {
+   "id": 121,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 3",
+   "factory": 92
+  },
+  {
+   "id": 122,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 4",
+   "factory": 96
+  },
+  {
+   "id": 123,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 5",
+   "factory": 100
+  },
+  {
+   "id": 124,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 6",
+   "factory": 104
+  },
+  {
+   "id": 125,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 7",
+   "factory": 108
+  },
+  {
+   "id": 126,
+   "cat": 6,
+   "engine": "fm6",
+   "name": "FM6 Wind 8",
+   "factory": 112
+  },
+  {
+   "id": 127,
    "cat": 7,
    "engine": "sp",
    "name": "SP Voice Pad",
    "factory": 15
   },
   {
-   "id": 93,
+   "id": 128,
    "cat": 7,
    "engine": "sp",
    "name": "SP Choir Swell",
    "factory": 16
   },
   {
-   "id": 94,
+   "id": 129,
    "cat": 7,
    "engine": "sp",
    "name": "SP Glass Choir",
    "factory": 17
   },
   {
-   "id": 95,
+   "id": 130,
    "cat": 7,
    "engine": "sp",
    "name": "SP Air Choir",
    "factory": 18
   },
   {
-   "id": 96,
+   "id": 131,
    "cat": 7,
    "engine": "sp",
    "name": "SP Choir Aahs",
    "factory": 21
   },
   {
-   "id": 97,
+   "id": 132,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Choir Aahs",
    "factory": 0
   },
   {
-   "id": 98,
+   "id": 133,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Choir Oohs",
    "factory": 1
   },
   {
-   "id": 99,
+   "id": 134,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Choir Swell",
    "factory": 2
   },
   {
-   "id": 100,
+   "id": 135,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Male Choir",
    "factory": 3
   },
   {
-   "id": 101,
+   "id": 136,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Child Choir",
    "factory": 4
   },
   {
-   "id": 102,
+   "id": 137,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Vowel Pad",
    "factory": 5
   },
   {
-   "id": 103,
+   "id": 138,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Whisper",
    "factory": 6
   },
   {
-   "id": 104,
+   "id": 139,
    "cat": 7,
    "engine": "voc",
    "name": "VOC Eeh Synth",
    "factory": 7
   },
   {
-   "id": 105,
+   "id": 140,
    "cat": 7,
    "engine": "sp",
    "name": "Prayer Choir",
    "factory": 70
   },
   {
-   "id": 106,
+   "id": 141,
    "cat": 7,
    "engine": "sp",
    "name": "Know Choir",
    "factory": 71
   },
   {
-   "id": 107,
+   "id": 142,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 1",
+   "factory": 86
+  },
+  {
+   "id": 143,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 2",
+   "factory": 90
+  },
+  {
+   "id": 144,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 3",
+   "factory": 94
+  },
+  {
+   "id": 145,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 4",
+   "factory": 98
+  },
+  {
+   "id": 146,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 5",
+   "factory": 102
+  },
+  {
+   "id": 147,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 6",
+   "factory": 106
+  },
+  {
+   "id": 148,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 7",
+   "factory": 110
+  },
+  {
+   "id": 149,
+   "cat": 7,
+   "engine": "fm6",
+   "name": "FM6 Voice 8",
+   "factory": 114
+  },
+  {
+   "id": 150,
    "cat": 8,
    "engine": "syn",
    "name": "SYN Poly Brass",
    "factory": 1
   },
   {
-   "id": 108,
+   "id": 151,
    "cat": 8,
    "engine": "syn",
    "name": "SYN Brass Stab",
    "factory": 12
   },
   {
-   "id": 109,
+   "id": 152,
    "cat": 8,
    "engine": "syn",
    "name": "SYN Sync Brass",
    "factory": 18
   },
   {
-   "id": 110,
+   "id": 153,
    "cat": 8,
    "engine": "syn",
    "name": "SYN Big Brass",
    "factory": 40
   },
   {
-   "id": 111,
+   "id": 154,
    "cat": 8,
    "engine": "syn",
    "name": "SYN Horn Section",
    "factory": 41
   },
   {
-   "id": 112,
+   "id": 155,
    "cat": 8,
    "engine": "fm2",
    "name": "FM2 FM Brass",
    "factory": 25
   },
   {
-   "id": 113,
+   "id": 156,
    "cat": 8,
    "engine": "fm6",
    "name": "FM6 Horn Stab",
    "factory": 8
   },
   {
-   "id": 114,
+   "id": 157,
    "cat": 8,
    "engine": "fm6",
    "name": "FM6 Warm Horns",
    "factory": 9
   },
   {
-   "id": 115,
+   "id": 158,
    "cat": 8,
    "engine": "syn",
    "name": "SVF Brass",
    "factory": 66
   },
   {
-   "id": 116,
+   "id": 159,
    "cat": 8,
    "engine": "syn",
    "name": "PLY Brass",
    "factory": 68
   },
   {
-   "id": 117,
+   "id": 160,
    "cat": 8,
    "engine": "fm6",
    "name": "FM6 Brass Sect",
    "factory": 3
   },
   {
-   "id": 118,
+   "id": 161,
    "cat": 8,
    "engine": "syn",
    "name": "PLY Anthem Brass",
    "factory": 79
   },
   {
-   "id": 119,
+   "id": 162,
    "cat": 8,
    "engine": "syn",
    "name": "PLY Fanfare",
    "factory": 80
   },
   {
-   "id": 120,
+   "id": 163,
    "cat": 8,
    "engine": "syn",
    "name": "PLY Brass Swell",
    "factory": 88
   },
   {
-   "id": 121,
+   "id": 164,
    "cat": 8,
    "engine": "sp",
    "name": "Night Horns",
    "factory": 43
   },
   {
-   "id": 122,
+   "id": 165,
    "cat": 8,
    "engine": "sp",
    "name": "Ska Brass",
    "factory": 44
   },
   {
-   "id": 123,
+   "id": 166,
    "cat": 8,
    "engine": "sp",
    "name": "Rock Horns",
    "factory": 64
   },
   {
-   "id": 124,
+   "id": 167,
    "cat": 8,
    "engine": "sp",
    "name": "Soft Horns",
    "factory": 65
   },
   {
-   "id": 125,
+   "id": 168,
+   "cat": 8,
+   "engine": "syn",
+   "name": "SYN Trumpet",
+   "factory": 216
+  },
+  {
+   "id": 169,
+   "cat": 8,
+   "engine": "syn",
+   "name": "SYN Mute Trumpet",
+   "factory": 217
+  },
+  {
+   "id": 170,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 1",
+   "factory": 83
+  },
+  {
+   "id": 171,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 2",
+   "factory": 87
+  },
+  {
+   "id": 172,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 3",
+   "factory": 91
+  },
+  {
+   "id": 173,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 4",
+   "factory": 95
+  },
+  {
+   "id": 174,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 5",
+   "factory": 99
+  },
+  {
+   "id": 175,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 6",
+   "factory": 103
+  },
+  {
+   "id": 176,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 7",
+   "factory": 107
+  },
+  {
+   "id": 177,
+   "cat": 8,
+   "engine": "fm6",
+   "name": "FM6 Brass 8",
+   "factory": 111
+  },
+  {
+   "id": 178,
    "cat": 9,
    "engine": "fm2",
    "name": "FM2 Harp",
    "factory": 17
   },
   {
-   "id": 126,
+   "id": 179,
    "cat": 9,
    "engine": "fm2",
    "name": "FM2 FM Pluck",
    "factory": 20
   },
   {
-   "id": 127,
+   "id": 180,
    "cat": 9,
    "engine": "fm6",
    "name": "FM6 Nylon Pick",
    "factory": 7
   },
   {
-   "id": 128,
+   "id": 181,
    "cat": 9,
    "engine": "fm2",
    "name": "FM2 Nylon Guitar",
    "factory": 30
   },
   {
-   "id": 129,
+   "id": 182,
    "cat": 9,
    "engine": "fm2",
    "name": "FM2 Steel Guitar",
    "factory": 31
   },
   {
-   "id": 130,
+   "id": 183,
    "cat": 9,
    "engine": "fm2",
    "name": "FM2 Muted Guitar",
    "factory": 32
   },
   {
-   "id": 131,
+   "id": 184,
    "cat": 9,
    "engine": "fm2",
    "name": "FM2 Jazz Guitar",
    "factory": 33
   },
   {
-   "id": 132,
+   "id": 185,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 1",
+   "factory": 51
+  },
+  {
+   "id": 186,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 1",
+   "factory": 52
+  },
+  {
+   "id": 187,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 2",
+   "factory": 55
+  },
+  {
+   "id": 188,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 2",
+   "factory": 56
+  },
+  {
+   "id": 189,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 3",
+   "factory": 59
+  },
+  {
+   "id": 190,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 3",
+   "factory": 60
+  },
+  {
+   "id": 191,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 4",
+   "factory": 63
+  },
+  {
+   "id": 192,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 4",
+   "factory": 64
+  },
+  {
+   "id": 193,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 5",
+   "factory": 67
+  },
+  {
+   "id": 194,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 5",
+   "factory": 68
+  },
+  {
+   "id": 195,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 6",
+   "factory": 71
+  },
+  {
+   "id": 196,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 6",
+   "factory": 72
+  },
+  {
+   "id": 197,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 7",
+   "factory": 75
+  },
+  {
+   "id": 198,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 7",
+   "factory": 76
+  },
+  {
+   "id": 199,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 Guitar 8",
+   "factory": 79
+  },
+  {
+   "id": 200,
+   "cat": 9,
+   "engine": "fm6",
+   "name": "FM6 DS Guitar 8",
+   "factory": 80
+  },
+  {
+   "id": 201,
    "cat": 10,
    "engine": "syn",
    "name": "SYN Fat Bass",
    "factory": 6
   },
   {
-   "id": 133,
+   "id": 202,
    "cat": 10,
    "engine": "syn",
    "name": "SYN Sub Bass",
    "factory": 16
   },
   {
-   "id": 134,
+   "id": 203,
    "cat": 10,
    "engine": "syn",
    "name": "SYN XMod Growl",
    "factory": 29
   },
   {
-   "id": 135,
+   "id": 204,
    "cat": 10,
    "engine": "fm2",
    "name": "FM2 FM Bass",
    "factory": 12
   },
   {
-   "id": 136,
+   "id": 205,
    "cat": 10,
    "engine": "fm2",
    "name": "FM2 Bass Guitar",
    "factory": 18
   },
   {
-   "id": 137,
+   "id": 206,
    "cat": 10,
    "engine": "fm2",
    "name": "FM2 FM Bass 2",
    "factory": 22
   },
   {
-   "id": 138,
+   "id": 207,
    "cat": 10,
    "engine": "syn",
    "name": "SVF Bass",
    "factory": 67
   },
   {
-   "id": 139,
+   "id": 208,
    "cat": 10,
    "engine": "syn",
    "name": "LAD Ladder Bass",
    "factory": 72
   },
   {
-   "id": 140,
+   "id": 209,
    "cat": 10,
    "engine": "syn",
    "name": "LAD Sweep Bass",
    "factory": 74
   },
   {
-   "id": 141,
+   "id": 210,
    "cat": 10,
    "engine": "fm6",
    "name": "FM6 Round Bass",
    "factory": 2
   },
   {
-   "id": 142,
+   "id": 211,
    "cat": 10,
    "engine": "syn",
    "name": "LAD 80s Bass",
    "factory": 83
   },
   {
-   "id": 143,
+   "id": 212,
    "cat": 10,
    "engine": "syn",
    "name": "Billie Bass",
    "factory": 118
   },
   {
-   "id": 144,
+   "id": 213,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 1",
+   "factory": 53
+  },
+  {
+   "id": 214,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 1",
+   "factory": 54
+  },
+  {
+   "id": 215,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 2",
+   "factory": 57
+  },
+  {
+   "id": 216,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 2",
+   "factory": 58
+  },
+  {
+   "id": 217,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 3",
+   "factory": 61
+  },
+  {
+   "id": 218,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 3",
+   "factory": 62
+  },
+  {
+   "id": 219,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 4",
+   "factory": 65
+  },
+  {
+   "id": 220,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 4",
+   "factory": 66
+  },
+  {
+   "id": 221,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 5",
+   "factory": 69
+  },
+  {
+   "id": 222,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 5",
+   "factory": 70
+  },
+  {
+   "id": 223,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 6",
+   "factory": 73
+  },
+  {
+   "id": 224,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 6",
+   "factory": 74
+  },
+  {
+   "id": 225,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 7",
+   "factory": 77
+  },
+  {
+   "id": 226,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 7",
+   "factory": 78
+  },
+  {
+   "id": 227,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Bass 8",
+   "factory": 81
+  },
+  {
+   "id": 228,
+   "cat": 10,
+   "engine": "fm6",
+   "name": "FM6 Synth Bass 8",
+   "factory": 82
+  },
+  {
+   "id": 229,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Air Choir",
    "factory": 44
   },
   {
-   "id": 145,
+   "id": 230,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Sweep Pad",
    "factory": 8
   },
   {
-   "id": 146,
+   "id": 231,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Dual Saw",
    "factory": 10
   },
   {
-   "id": 147,
+   "id": 232,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Hollow Pad",
    "factory": 14
   },
   {
-   "id": 148,
+   "id": 233,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Drone Unison",
    "factory": 19
   },
   {
-   "id": 149,
+   "id": 234,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Vintage Pad",
    "factory": 27
   },
   {
-   "id": 150,
+   "id": 235,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Neon Pad",
    "factory": 28
   },
   {
-   "id": 151,
+   "id": 236,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Warm Pad",
    "factory": 42
   },
   {
-   "id": 152,
+   "id": 237,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Dark Pad",
    "factory": 43
   },
   {
-   "id": 153,
+   "id": 238,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Slow Sweep",
    "factory": 45
   },
   {
-   "id": 154,
+   "id": 239,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Ghost Pad",
    "factory": 46
   },
   {
-   "id": 155,
+   "id": 240,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Sync Pad",
    "factory": 48
   },
   {
-   "id": 156,
+   "id": 241,
    "cat": 11,
    "engine": "syn",
    "name": "SYN Space Drone",
    "factory": 63
   },
   {
-   "id": 157,
+   "id": 242,
    "cat": 11,
    "engine": "fm2",
    "name": "FM2 Glass Pad",
    "factory": 11
   },
   {
-   "id": 158,
+   "id": 243,
    "cat": 11,
    "engine": "sp",
    "name": "SP Glass Harp",
    "factory": 7
   },
   {
-   "id": 159,
+   "id": 244,
    "cat": 11,
    "engine": "syn",
    "name": "SVF Morph Pad",
    "factory": 64
   },
   {
-   "id": 160,
+   "id": 245,
    "cat": 11,
    "engine": "syn",
    "name": "PLY Poly Pad",
    "factory": 70
   },
   {
-   "id": 161,
+   "id": 246,
    "cat": 11,
    "engine": "fm6",
    "name": "FM6 Soft Pad",
    "factory": 4
   },
   {
-   "id": 162,
+   "id": 247,
    "cat": 11,
    "engine": "fm2",
    "name": "FM2 Bell Pad",
    "factory": 37
   },
   {
-   "id": 163,
+   "id": 248,
    "cat": 11,
    "engine": "fm2",
    "name": "FM2 Atmosphere",
    "factory": 38
   },
   {
-   "id": 164,
+   "id": 249,
    "cat": 11,
    "engine": "syn",
    "name": "Mello Strings",
    "factory": 136
   },
   {
-   "id": 165,
+   "id": 250,
    "cat": 11,
    "engine": "syn",
    "name": "Blade Brass",
    "factory": 133
   },
   {
-   "id": 166,
+   "id": 251,
    "cat": 11,
    "engine": "syn",
    "name": "Waiting Pad",
    "factory": 206
   },
   {
-   "id": 167,
+   "id": 252,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 1",
+   "factory": 22
+  },
+  {
+   "id": 253,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 2",
+   "factory": 26
+  },
+  {
+   "id": 254,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 3",
+   "factory": 30
+  },
+  {
+   "id": 255,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 4",
+   "factory": 34
+  },
+  {
+   "id": 256,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 5",
+   "factory": 38
+  },
+  {
+   "id": 257,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 6",
+   "factory": 42
+  },
+  {
+   "id": 258,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 7",
+   "factory": 46
+  },
+  {
+   "id": 259,
+   "cat": 11,
+   "engine": "fm6",
+   "name": "FM6 Pad 8",
+   "factory": 50
+  },
+  {
+   "id": 260,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Soft Flute",
    "factory": 60
   },
   {
-   "id": 168,
+   "id": 261,
    "cat": 12,
    "engine": "org",
    "name": "ORG Soft Flute",
    "factory": 10
   },
   {
-   "id": 169,
+   "id": 262,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Sync Lead",
    "factory": 2
   },
   {
-   "id": 170,
+   "id": 263,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Unison Lead",
    "factory": 3
   },
   {
-   "id": 171,
+   "id": 264,
    "cat": 12,
    "engine": "syn",
    "name": "SYN BP Quack",
    "factory": 9
   },
   {
-   "id": 172,
+   "id": 265,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Square Lead",
    "factory": 15
   },
   {
-   "id": 173,
+   "id": 266,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Fifths Lead",
    "factory": 26
   },
   {
-   "id": 174,
+   "id": 267,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Init",
    "factory": 31
   },
   {
-   "id": 175,
+   "id": 268,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Solo Lead",
    "factory": 57
   },
   {
-   "id": 176,
+   "id": 269,
    "cat": 12,
    "engine": "syn",
    "name": "SYN PWM Lead",
    "factory": 58
   },
   {
-   "id": 177,
+   "id": 270,
    "cat": 12,
    "engine": "syn",
    "name": "SYN Scream Lead",
    "factory": 59
   },
   {
-   "id": 178,
+   "id": 271,
    "cat": 12,
    "engine": "fm2",
    "name": "FM2 FM Lead",
    "factory": 26
   },
   {
-   "id": 179,
+   "id": 272,
    "cat": 12,
    "engine": "syn",
    "name": "SVF Morph Lead",
    "factory": 65
   },
   {
-   "id": 180,
+   "id": 273,
    "cat": 12,
    "engine": "syn",
    "name": "PLY Lead",
    "factory": 71
   },
   {
-   "id": 181,
+   "id": 274,
    "cat": 12,
    "engine": "syn",
    "name": "LAD Ladder Lead",
    "factory": 73
   },
   {
-   "id": 182,
+   "id": 275,
    "cat": 12,
    "engine": "syn",
    "name": "LAD Pop Riff",
    "factory": 81
   },
   {
-   "id": 183,
+   "id": 276,
    "cat": 12,
    "engine": "syn",
    "name": "SVF Pop Lead",
    "factory": 82
   },
   {
-   "id": 184,
+   "id": 277,
    "cat": 12,
    "engine": "fm2",
    "name": "Night Fantasy",
    "factory": 44
   },
   {
-   "id": 185,
+   "id": 278,
    "cat": 12,
    "engine": "fm2",
    "name": "Big Jpn",
    "factory": 54
   },
   {
-   "id": 186,
+   "id": 279,
    "cat": 12,
    "engine": "syn",
    "name": "Kombat Syn",
    "factory": 150
   },
   {
-   "id": 187,
+   "id": 280,
    "cat": 12,
    "engine": "syn",
    "name": "Kashmir Orch",
    "factory": 144
   },
   {
-   "id": 188,
+   "id": 281,
    "cat": 12,
    "engine": "syn",
    "name": "Popcorn Synth",
    "factory": 137
   },
   {
-   "id": 189,
+   "id": 282,
    "cat": 12,
    "engine": "syn",
    "name": "Chip Lead",
    "factory": 139
   },
   {
-   "id": 190,
+   "id": 283,
+   "cat": 12,
+   "engine": "syn",
+   "name": "SYN Sax Lead",
+   "factory": 215
+  },
+  {
+   "id": 284,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 1",
+   "factory": 21
+  },
+  {
+   "id": 285,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 2",
+   "factory": 25
+  },
+  {
+   "id": 286,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 3",
+   "factory": 29
+  },
+  {
+   "id": 287,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 4",
+   "factory": 33
+  },
+  {
+   "id": 288,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 5",
+   "factory": 37
+  },
+  {
+   "id": 289,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 6",
+   "factory": 41
+  },
+  {
+   "id": 290,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 7",
+   "factory": 45
+  },
+  {
+   "id": 291,
+   "cat": 12,
+   "engine": "fm6",
+   "name": "FM6 Lead 8",
+   "factory": 49
+  },
+  {
+   "id": 292,
    "cat": 13,
    "engine": "syn",
    "name": "SYN Noise Wash",
    "factory": 13
   },
   {
-   "id": 191,
+   "id": 293,
    "cat": 13,
    "engine": "syn",
    "name": "SYN Laser",
    "factory": 61
   },
   {
-   "id": 192,
+   "id": 294,
    "cat": 13,
    "engine": "syn",
    "name": "SYN Wind Rise",
    "factory": 62
   },
   {
-   "id": 193,
+   "id": 295,
    "cat": 13,
    "engine": "syn",
    "name": "SFX Riser",
    "factory": 76
   },
   {
-   "id": 194,
+   "id": 296,
    "cat": 13,
    "engine": "syn",
    "name": "SFX Texture",
    "factory": 78
   },
   {
-   "id": 195,
+   "id": 297,
    "cat": 14,
    "engine": "sp",
    "name": "SP Breath",
    "factory": 20
   },
   {
-   "id": 196,
+   "id": 298,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Stab Chord",
    "factory": 39
   },
   {
-   "id": 197,
+   "id": 299,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Dark Arp",
    "factory": 0
   },
   {
-   "id": 198,
+   "id": 300,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Arp Chord",
    "factory": 23
   },
   {
-   "id": 199,
+   "id": 301,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Random Arp",
    "factory": 24
   },
   {
-   "id": 200,
+   "id": 302,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Upside Arp",
    "factory": 25
   },
   {
-   "id": 201,
+   "id": 303,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Night Drive",
    "factory": 32
   },
   {
-   "id": 202,
+   "id": 304,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Minor Fall",
    "factory": 33
   },
   {
-   "id": 203,
+   "id": 305,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Shadow Arp",
    "factory": 34
   },
   {
-   "id": 204,
+   "id": 306,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Glass Arp",
    "factory": 35
   },
   {
-   "id": 205,
+   "id": 307,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Pulse Arp",
    "factory": 36
   },
   {
-   "id": 206,
+   "id": 308,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Arp Bass",
    "factory": 37
   },
   {
-   "id": 207,
+   "id": 309,
    "cat": 14,
    "engine": "syn",
    "name": "SYN Dream Arp",
    "factory": 38
   },
   {
-   "id": 208,
+   "id": 310,
    "cat": 14,
    "engine": "fm2",
    "name": "Fantasy Bell",
    "factory": 62
   },
   {
-   "id": 209,
+   "id": 311,
    "cat": 14,
    "engine": "fm2",
    "name": "Respect Bells",
    "factory": 55
   },
   {
-   "id": 210,
+   "id": 312,
    "cat": 14,
    "engine": "fm2",
    "name": "Xmas Bells",
    "factory": 64
   },
   {
-   "id": 211,
+   "id": 313,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Moan",
+   "factory": 115
+  },
+  {
+   "id": 314,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Odd Hit",
+   "factory": 116
+  },
+  {
+   "id": 315,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Block",
+   "factory": 117
+  },
+  {
+   "id": 316,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Waves",
+   "factory": 118
+  },
+  {
+   "id": 317,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Frog Bell",
+   "factory": 119
+  },
+  {
+   "id": 318,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Gong",
+   "factory": 120
+  },
+  {
+   "id": 319,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Strange 1",
+   "factory": 121
+  },
+  {
+   "id": 320,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Mono Fx 1",
+   "factory": 122
+  },
+  {
+   "id": 321,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Tibet Bowl",
+   "factory": 123
+  },
+  {
+   "id": 322,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Log Drum",
+   "factory": 124
+  },
+  {
+   "id": 323,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Cowbell",
+   "factory": 125
+  },
+  {
+   "id": 324,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Mono Fx 2",
+   "factory": 126
+  },
+  {
+   "id": 325,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Finger Cym",
+   "factory": 127
+  },
+  {
+   "id": 326,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Timpani",
+   "factory": 128
+  },
+  {
+   "id": 327,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Tambourine",
+   "factory": 129
+  },
+  {
+   "id": 328,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Descent",
+   "factory": 130
+  },
+  {
+   "id": 329,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Clang Bell",
+   "factory": 131
+  },
+  {
+   "id": 330,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Steel Drum",
+   "factory": 132
+  },
+  {
+   "id": 331,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Conga",
+   "factory": 133
+  },
+  {
+   "id": 332,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Saw Stack 1",
+   "factory": 134
+  },
+  {
+   "id": 333,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Bell Hit",
+   "factory": 135
+  },
+  {
+   "id": 334,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Kalimba",
+   "factory": 136
+  },
+  {
+   "id": 335,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Gamelan",
+   "factory": 137
+  },
+  {
+   "id": 336,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Saw Stack 2",
+   "factory": 138
+  },
+  {
+   "id": 337,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Tube Bells",
+   "factory": 139
+  },
+  {
+   "id": 338,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Brushes",
+   "factory": 140
+  },
+  {
+   "id": 339,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Toms",
+   "factory": 141
+  },
+  {
+   "id": 340,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Saw Stack 3",
+   "factory": 142
+  },
+  {
+   "id": 341,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Echo Pluck",
+   "factory": 143
+  },
+  {
+   "id": 342,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Timbales",
+   "factory": 144
+  },
+  {
+   "id": 343,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Percussion",
+   "factory": 145
+  },
+  {
+   "id": 344,
+   "cat": 14,
+   "engine": "fm6",
+   "name": "FM6 Wonder",
+   "factory": 146
+  },
+  {
+   "id": 345,
    "cat": 15,
    "engine": "drm",
    "name": "DRM Deep Boom",
    "factory": 0
   },
   {
-   "id": 212,
+   "id": 346,
    "cat": 15,
    "engine": "drm",
    "name": "DRM Club Kit",
    "factory": 1
   },
   {
-   "id": 213,
+   "id": 347,
    "cat": 15,
    "engine": "drm",
    "name": "DRM Mini Kit",
    "factory": 2
   },
   {
-   "id": 214,
+   "id": 348,
    "cat": 15,
    "engine": "drm",
    "name": "DRM Snap Kit",
    "factory": 3
   },
   {
-   "id": 215,
+   "id": 349,
    "cat": 15,
    "engine": "drm",
    "name": "DRM Drum-X",

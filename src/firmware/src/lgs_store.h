@@ -16,22 +16,23 @@ static void sound_sanitize(sound_t *s)
     }
 }
 
-static uint16_t id_remap(uint32_t id) { return id && id < LGS_IDMAP_N ? LGS_IDMAP[id] : 0u; }
+static uint16_t id_remap(uint32_t gen, uint32_t id) { return id && id < LGS_IDMAP_N[gen] ? LGS_IDMAP[gen][id] : 0u; }
 
-static void sound_remap(sound_t *s)
+static void sound_remap(sound_t *s, uint32_t gen)
 {
-    uint16_t n = id_remap(s->patch);
+    uint16_t n = id_remap(gen, s->patch);
     if (n) s->patch = n; else memset(s, 0, sizeof *s);              /* a removed patch leaves its slot empty */
 }
 
-/* An image written before the ids were renumbered (generation 0, up to 0.1.12): every patch id goes through LGS_IDMAP, once. */
+/* An image written before the last renumbering (generation 0: up to 0.1.12, 1: up to 0.1.13): every patch id goes through its
+ * generation's table in LGS_IDMAP, once. */
 static void db_migrate(void)
 {
-    uint32_t i, l, p;
-    if ((db.theme >> 8 & 0xFFu) != 0u) return;
-    for (i = 0; i < LGS_NFAV; i++) sound_remap(&db.fav[i]);
+    uint32_t i, l, p, g = db.theme >> 8 & 0xFFu;
+    if (g >= LGS_IDMAP_GENS) return;
+    for (i = 0; i < LGS_NFAV; i++) sound_remap(&db.fav[i], g);
     for (p = 0; p < LGS_NPERF; p++)
-        for (l = 0; l < LGS_NLINE; l++) sound_remap(&db.perf[p].line[l].s);
+        for (l = 0; l < LGS_NLINE; l++) sound_remap(&db.perf[p].line[l].s, g);
     db.theme = (db.theme & 0xFFu) | LGS_ID_GEN << 8;
     db_dirty = 1;
 }

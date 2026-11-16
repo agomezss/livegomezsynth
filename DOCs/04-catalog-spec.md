@@ -42,7 +42,7 @@ The `IDEA.md target` column is the owner's original suggestion (279 names + Drum
 | 13 SFX            | 6                | rise, fall, impact, laser, noise burst, tape stop                                       |
 | 14 Complex        | 8                | arp pad/lead/pluck/seq/chord presets (SYN/SVF/PLY with ARP params)                      |
 | 15 Drums          | 5 kits           | the 5 SMKSYNTH JIANT kits (D-46)                                                        |
-| (16 ICONIC) | removed (D-66) | the category of iconic-song timbres is gone; after a review of the whole list the ones kept live in the categories above; the ids are sequential in category order (D-68) |
+| (16 ICONIC) | removed (D-66) | the category of iconic-song timbres is gone; after a review of the whole list the ones kept live in the categories above; the ids are sequential in category order (D-68, D-69); the SDK's 128 FM voices and six sax/trumpet patches joined in 0.1.14 (349 patches) |
 
 Total live core: ~105 patches + 5 kits. Every engine (SYN, FM, FM2, SP, ORG, SVF, PLY, LAD, DRM) must appear in at
 least 4 patches, and each category with more than one engine shows variations distinguished by prefix. Header counts
@@ -148,7 +148,7 @@ with zero sound-design risk. Task T1.1.
 - Names must not contain trademarks or brand-derived words (D-42): e.g. use `Tine EP`, `Reed EP`, `Elec Grand`, `Combo
 Organ`, `Beat Organ`, `Ladder Bass`, `Pop Piano`, `Chorus Grand`, `FM EP 1`.
 - Level-match patches (peak between -12 and -6 dBFS at velocity 100 for a single note) via the golden health test.
-- Only use data we own, generated, or that is CC0/permissively licensed (R-07). No ripped ROM/dump patches.
+- Only use data we own, generated, or that is CC0/permissively licensed (R-07). No ripped ROM/dump patches; the one exception is the SDK's 128 FM voices (D-69, credited in THIRD_PARTY.md).
 
 ## 9. Raw name lists
 

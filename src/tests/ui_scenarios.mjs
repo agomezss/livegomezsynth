@@ -215,8 +215,8 @@ check(
 );
 enc(5, 1);
 check(
-  "category 3 first patch id 30",
-  ex.sim_ui(PAT) === 30,
+  "category 3 first patch id 38",
+  ex.sim_ui(PAT) === 38,
   "id " + ex.sim_ui(PAT),
 );
 const cut0 = ex.sim_part(0, 6);
@@ -452,7 +452,7 @@ check("K2 changes the patch", ex.sim_line(1, 0) !== l1, "" + ex.sim_line(1, 0));
 tap(3);
 check(
   "pad 4 picks the first Organ",
-  ex.sim_line(1, 0) === 52,
+  ex.sim_line(1, 0) === 60,
   "" + ex.sim_line(1, 0),
 );
 {
@@ -649,7 +649,7 @@ check("back in PATCH for the drums", ex.sim_ui(MODE) === 0);
 enc(5, -1); // Drums is the last category (15)
 check(
   "category 15 is Drums; a kit loads and the pads become hits",
-  ex.sim_ui(CAT) === 15 && ex.sim_ui(PAT) === 211 && ex.sim_ui(15) === 1,
+  ex.sim_ui(CAT) === 15 && ex.sim_ui(PAT) === 345 && ex.sim_ui(15) === 1,
   "id " + ex.sim_ui(PAT),
 );
 run(100);
@@ -679,7 +679,7 @@ check(
 enc(6, 1);
 check(
   "K7 next kit, pads still hits",
-  ex.sim_ui(PAT) === 212 && ex.sim_ui(15) === 1,
+  ex.sim_ui(PAT) === 346 && ex.sim_ui(15) === 1,
 );
 press(BTN.HOME);
 check(

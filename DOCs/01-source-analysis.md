@@ -57,7 +57,7 @@ reset,busy}` with `obv_engines[]` table and an ISR-owned state machine `READY/OU
   (V016 `.fwsc` via workbench).
 - **FM implementation:** MSFA/Dexed 6-op, 32 algorithms, 8 voices/track, 112-byte packed DX7 voices in flash; 16
   factory voices in `app/factory_dx7.inc` (extracted from the FM-1 recovery resource - **licensing of those voice data
-  is unclear, do not ship them**, see risk R-07).
+  is unclear, do not ship them**, see risk R-07; the owner overrode this for the 128 voices in D-69).
 - **Licensing:** app GPL-3.0 with SDK-linking exception; SDK binaries/boot resources proprietary but redistributable for
   SMK-37 use with notices (`LICENSE.md`, `THIRD_PARTY.md` must be retained).
 

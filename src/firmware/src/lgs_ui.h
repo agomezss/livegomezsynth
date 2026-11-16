@@ -19,6 +19,9 @@ static perf_t cur, edit_bak;
 static sound_t pat;                             /* PATCH mode: the sound on part 0 */
 static uint8_t pat_cat = 1, pat_idx, pat_pad = 255;
 static uint8_t drum_pads, load_from_pad, pad_vel;   /* PATCH with a drum kit: the pads hit the kit (HOME toggles back to favorites) */
+#define DRUM_PAD_VEL 100u                       /* a drum pad hits at a fixed velocity: its own dynamics made soft hits quiet or silent */
+#define DRUM_PAD_GUARD_MS 40u                   /* a hit this soon after the same pad's release is a rebound, not a new hit: it would cut the tail */
+static uint32_t drum_rel_t[16];
 static uint8_t ui_dirty = 1;
 static int8_t page_btn = -1;                    /* the parameter page open: index into PGBTN, -1 = none */
 static uint8_t page_i;
@@ -801,7 +804,7 @@ static void pad_press(uint32_t p)
         return;
     }
     if (mode == M_PATCH && drum_pads) {
-        note_event_p(0, 1, DRUM_NOTE[p & 7u], pad_vel);
+        if (fm1_ms - drum_rel_t[p] >= DRUM_PAD_GUARD_MS) note_event_p(0, 1, DRUM_NOTE[p & 7u], DRUM_PAD_VEL);
     } else if (mode == M_PATCH) {
         pad_dn |= (uint16_t)(1u << p);
         pad_t[p] = fm1_ms;
@@ -821,7 +824,11 @@ static void pad_press(uint32_t p)
 
 static void pad_release(uint32_t p)
 {
-    if (mode == M_PATCH && drum_pads) { note_event_p(0, 0, DRUM_NOTE[p & 7u], 0); return; }   /* the key path's note-off, so the held list is the same */
+    if (mode == M_PATCH && drum_pads) {         /* the key path's note-off, so the held list is the same */
+        drum_rel_t[p] = fm1_ms;
+        note_event_p(0, 0, DRUM_NOTE[p & 7u], 0);
+        return;
+    }
     if (mode == M_PATCH && ov == OV_NONE && (pad_dn >> p & 1u)) {      /* a tap: load the favorite */
         pad_dn &= (uint16_t)~(1u << p);
         pat_cat = 1;

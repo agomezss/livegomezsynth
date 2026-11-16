@@ -432,4 +432,56 @@ def row(name, e, env, fx, mono=0):
 
 
 def rows(table):
-    return "    /* ICONIC (tools/famous_defs.py) */\n" + "".join(row(n, e, env, fx) for n, e, env, fx in table)
+    return "    /* ICONIC (tools/famous_defs.py) */\n" + "".join(row(*t) for t in table)
+
+
+# ---- the SDK's 128 six-operator voices (D-69): FM6 rows whose PTCH is 8 + the voice's position in smk37_open's factory_dx7.inc ------
+# rows are in voice order: the catalog entry of voice i points at FM6 row DX_BASE + i (tools/add_dx_catalog.py).
+DX_BASE = 19
+DX_NAMES = ["Moan", "Odd Hit", "Block", "Waves", "Frog Bell", "Gong", "Strange 1", "Mono Fx 1", "Tibet Bowl", "Log Drum", "Cowbell",
+            "Mono Fx 2", "Finger Cym", "Timpani", "Tambourine", "Descent", "Clang Bell", "Steel Drum", "Conga", "Saw Stack 1",
+            "Bell Hit", "Kalimba", "Gamelan", "Saw Stack 2", "Tube Bells", "Brushes", "Toms", "Saw Stack 3", "Echo Pluck", "Timbales",
+            "Percussion", "Wonder"]
+# (name stem, catalog category, env, fx, mono)
+DX_GROUPS = [
+    [("Piano", "Pianos", [0, 64, 127, 100], (0, 35, 20, 30), 0), ("Organ", "Organs", [0, 64, 127, 70], (10, 40, 0, 25), 0),
+     ("Lead", "Leads", [0, 64, 127, 90], (0, 10, 25, 25), 1), ("Pad", "Pads", [0, 64, 127, 110], (0, 60, 30, 65), 0)],
+    [("Guitar", "Guitars", [0, 64, 127, 100], (0, 20, 25, 30), 0), ("DS Guitar", "Guitars", [0, 64, 127, 90], (30, 10, 15, 20), 0),
+     ("Bass", "Basses", [0, 64, 127, 70], (0, 0, 0, 8), 1), ("Synth Bass", "Basses", [0, 64, 127, 70], (0, 0, 0, 8), 1)],
+    [("Brass", "Brass", [0, 64, 127, 90], (0, 25, 15, 35), 0), ("Wind", "Winds", [0, 64, 127, 90], (0, 20, 20, 40), 0),
+     ("Strings", "Strings", [0, 64, 127, 105], (0, 45, 15, 50), 0), ("Voice", "Choirs", [0, 64, 127, 105], (0, 40, 20, 55), 0)],
+]
+DX_FX = ("Complex", [0, 64, 127, 90], (0, 15, 25, 45), 0)
+
+
+def dx_info(i):
+    """(catalog name, category, env, fx, mono) of the SDK voice i"""
+    if i >= 96:
+        cat, env, fx, mono = DX_FX
+        return "FM6 " + DX_NAMES[i - 96], cat, env, fx, mono
+    stem, cat, env, fx, mono = DX_GROUPS[i // 32][i % 4]
+    return "FM6 %s %d" % (stem, i % 32 // 4 + 1), cat, env, fx, mono
+
+
+FM6 += [(dx_info(i)[0][4:], [0, 0, 0, 0, 0, 0, 0, 8 + i], dx_info(i)[2], dx_info(i)[3], dx_info(i)[4]) for i in range(128)]
+
+
+# ---- reed and brass solos (mono): sax and trumpet, authored here, first drafts to be judged by ear (D-69) ----------------------------
+def reed(cut, reso, noise, pw, delay, drive=22, **kw):
+    return m(dict(MODE="M_MONO", O1_WAVE="W_SAW", O2_WAVE="W_PLS", O2_PW=pw, O2_FINE=65, O2_LVL=70, NOISE=noise, FTYPE="F_LP24", CUTOFF=cut,
+                  RESO=reso, FENV_AMT=84, FA=14, FD=62, FS=74, KEYTRK=70, VEL_FLT=60, AA=9, AD=70, AS=118, AR=32, GLIDE=5, LFO_PITCH=6,
+                  LFO_RATE=72, LFO_DELAY=delay, DRIVE=drive, REV_SIZE=60, REV_MIX=20), kw)
+
+
+SYN += [
+    ("ALTO SAX", reed(76, 26, 7, 36, 82)),
+    ("TENOR SAX", reed(68, 24, 9, 44, 90, drive=28)),
+    ("SOPRANO SAX", reed(84, 34, 5, 30, 78, drive=18, GLIDE=3)),
+    ("SAX LEAD", reed(80, 30, 6, 36, 70, drive=34, GLIDE=14, DLY_TIME="DD_8", DLY_FB=30, DLY_MIX=24)),
+    ("TRUMPET", m(MODE="M_MONO", O1_WAVE="W_SAW", O2_WAVE="W_SAW", O2_FINE=66, FTYPE="F_LP24", CUTOFF=66, RESO=8, FENV_AMT=100, FA=26, FD=58,
+                  FS=84, KEYTRK=80, VEL_FLT=70, AA=7, AD=66, AS=120, AR=26, GLIDE=3, LFO_PITCH=5, LFO_RATE=70, LFO_DELAY=96, DRIVE=14,
+                  REV_SIZE=70, REV_MIX=22)),
+    ("MUTED TRUMPET", m(MODE="M_MONO", O1_WAVE="W_SAW", O2_WAVE="W_PLS", O2_PW=50, O2_FINE=66, FTYPE="F_BP12", CUTOFF=70, RESO=28, FENV_AMT=60,
+                        FA=12, FD=60, FS=80, KEYTRK=85, VEL_FLT=60, AA=6, AD=66, AS=118, AR=24, GLIDE=3, LFO_PITCH=4, LFO_RATE=70, LFO_DELAY=100,
+                        DRIVE=10, REV_SIZE=55, REV_MIX=18)),
+]

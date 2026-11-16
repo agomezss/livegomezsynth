@@ -8,7 +8,7 @@
 #define LGS_NPERF 112u                          /* 8 banks x 14 combos */
 #define LGS_NLINE 4u
 #define NTHEME 8u                                /* screen themes (lgs_ui.h) */
-#define LGS_ID_GEN 1u                            /* numbering of the patch ids; db.theme bits 8-15 hold the generation an image was written in (0 = the first numbering, mapped by LGS_IDMAP) */
+#define LGS_ID_GEN 2u                            /* numbering of the patch ids; db.theme bits 8-15 hold the generation an image was written in (0 = the first numbering, mapped by LGS_IDMAP) */
 #define LGS_NFX 11u                             /* P_CHO_RATE .. P_REV_MIX */
 
 /* K1-K4 of a sound: which patch byte, its name, and how far it goes (value stored = native value - min) */
