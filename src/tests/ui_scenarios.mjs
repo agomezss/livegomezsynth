@@ -130,14 +130,14 @@ check(
 for (let i = 0; i < 3; i++) press(BTN.KB);
 check("bank wraps D -> A", ex.sim_ui(KB) === 0);
 check("PATCH keeps row 8 free", row(8) === "", row(8));
-ex.sim_load_patch(451); // Classic Piano (it came from ICONIC: no prefix)
+ex.sim_load_patch(22); // Classic Piano (it came from ICONIC: no prefix)
 run(60);
 check(
   "a name without an engine prefix is shown whole",
   row(1).endsWith("- Classic Piano"),
   row(1),
 );
-ex.sim_load_patch(4);
+ex.sim_load_patch(1);
 run(60);
 check(
   "an SP name loses its prefix and nothing else",
@@ -145,14 +145,14 @@ check(
   row(1),
 );
 check("a short row does not scroll", ex.sim_ui(17) === 0);
-ex.sim_load_patch(578); // "Pianos - 578 - Reggaeton Piano" is wider than the screen
+ex.sim_load_patch(26); // "Pianos - 26 - Reggaeton Piano" is wider than the screen
 run(100);
 const still = ex.sim_fb_hash();
 check("a row wider than the screen is flagged for scrolling", ex.sim_ui(17) === 1);
 run(1400);
 check("and it slides after a short wait, so the whole name can be read", ex.sim_fb_hash() !== still);
 sameAsFull("a scrolling row");
-ex.sim_load_patch(4);
+ex.sim_load_patch(1);
 run(100);
 check("scrolling stops when the row fits again", ex.sim_ui(17) === 0);
 sameAsFull("PATCH after the scroll");
@@ -215,8 +215,8 @@ check(
 );
 enc(5, 1);
 check(
-  "category 3 first patch id 1",
-  ex.sim_ui(PAT) === 1,
+  "category 3 first patch id 30",
+  ex.sim_ui(PAT) === 30,
   "id " + ex.sim_ui(PAT),
 );
 const cut0 = ex.sim_part(0, 6);
@@ -452,7 +452,7 @@ check("K2 changes the patch", ex.sim_line(1, 0) !== l1, "" + ex.sim_line(1, 0));
 tap(3);
 check(
   "pad 4 picks the first Organ",
-  ex.sim_line(1, 0) === 65,
+  ex.sim_line(1, 0) === 52,
   "" + ex.sim_line(1, 0),
 );
 {
@@ -482,6 +482,30 @@ check(
   ex.sim_button(BTN.OCTU, 0);
   run(30);
   check("both buttons reset the line's octave", loct() === 0 && ex.sim_ui(OCT) === shift);
+}
+{
+  enc(0, 4); // K1 to the last line: SOLO 2
+  check("K1 reaches SOLO 2", ex.sim_ui(EL) === 3, "" + ex.sim_ui(EL));
+  key(0, 1);
+  run(50);
+  check(
+    "editing a solo line plays that solo, not the layers",
+    voices(3) >= 1 && voices(0) === 0 && voices(1) === 0,
+    `${voices(0)}${voices(1)}${voices(2)}${voices(3)}`,
+  );
+  key(0, 0);
+  run(1500);
+  enc(0, -4);
+  key(0, 1);
+  run(50);
+  check(
+    "back on a layer, the keys play the layers by range again",
+    voices(0) + voices(1) >= 1 && voices(3) === 0,
+    `${voices(0)}${voices(1)}${voices(2)}${voices(3)}`,
+  );
+  key(0, 0);
+  run(1500);
+  enc(0, 1); // the line the next tests expect
 }
 press(BTN.EDIT);
 check("PARA toggles page 2", ex.sim_ui(PAGE) === 1 && row(0).includes("2/2"));
@@ -520,7 +544,7 @@ enc(0, 1);
 tap(0);
 check(
   "popup confirm applies the patch",
-  ex.sim_ui(OV) === 0 && ex.sim_line(1, 0) !== 97,
+  ex.sim_ui(OV) === 0 && ex.sim_line(1, 0) !== 78,
   "" + ex.sim_line(1, 0),
 );
 press(BTN.KB);
@@ -625,7 +649,7 @@ check("back in PATCH for the drums", ex.sim_ui(MODE) === 0);
 enc(5, -1); // Drums is the last category (15)
 check(
   "category 15 is Drums; a kit loads and the pads become hits",
-  ex.sim_ui(CAT) === 15 && ex.sim_ui(PAT) === 417 && ex.sim_ui(15) === 1,
+  ex.sim_ui(CAT) === 15 && ex.sim_ui(PAT) === 211 && ex.sim_ui(15) === 1,
   "id " + ex.sim_ui(PAT),
 );
 run(100);
@@ -655,7 +679,7 @@ check(
 enc(6, 1);
 check(
   "K7 next kit, pads still hits",
-  ex.sim_ui(PAT) === 418 && ex.sim_ui(15) === 1,
+  ex.sim_ui(PAT) === 212 && ex.sim_ui(15) === 1,
 );
 press(BTN.HOME);
 check(

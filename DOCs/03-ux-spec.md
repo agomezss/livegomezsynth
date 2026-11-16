@@ -135,6 +135,7 @@ Sustain: YES  Bend: YES  Mod: DEFAULT   (page 2, header shows 2/2)
   pitch bend YES/NO (default YES), K7 mod action. K8 is always the global MASTER on every page and mode.
 - Pads 1-15: pre-select the first patch of category N for the selected line (pad 1 = F001/favorites, pad 2 = Acoustic
   Piano, ... pad 15 = Drums; pad 16 does nothing). Does nothing while the popup is open except pads 1/2.
+- Keys: with a layer selected the layers play by octave range as in PERFORM; with a **solo** line selected (K1) that solo plays on the whole keyboard, so it can be heard while it is edited (D-68).
 - Faders: as in PERFORM, the reverb send of each line (soft takeover; D-62). **OCTAVE -/+** change the selected line's own octave (-2..+2, both = 0; saved with the performance, D-63); the global shift is left alone. The row under the header reads `< or > patch search`; the last row shows the line's octave.
 - Exit: PATCH/KNOB BANK/FADER BANK -> `Save changes?` prompt, pad 1 (blue) save, pad 2 (red) discard. Edits apply live
   (audible) to the working copy; storage happens only on save. Timeout 10 s on the prompt = stay in EDIT.

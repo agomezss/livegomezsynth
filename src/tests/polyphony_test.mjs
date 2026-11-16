@@ -23,7 +23,7 @@ async function drums(id, first, second, hold) {
   out.push(...grab(ex, 700));
   return out;
 }
-for (const id of [417, 418, 421]) for (const hold of [false, true]) {
+for (const id of [211, 212, 215]) for (const hold of [false, true]) {
   const kick = await drums(id, true, null, hold);
   let worst = 0;
   for (const s of [1, 2, 3, 5, 6, 7]) {
@@ -37,7 +37,7 @@ for (const id of [417, 418, 421]) for (const hold of [false, true]) {
 // polyphony of one-shot effects and the monophonic leads
 const ex = await boot(); grab(ex, 300);
 const voices = (id) => { ex.sim_load_patch(id); grab(ex, 100); for (const k of [12, 16, 19]) ex.sim_key(k, 1); grab(ex, 150); const v = ex.sim_voices(); for (const k of [12, 16, 19]) ex.sim_key(k, 0); grab(ex, 1500); return v; };
-for (const [id, name] of [[353, "Reso Zap"], [356, "Laser"], [359, "Thump"]]) check(`${name} plays overlapping hits`, voices(id) === 3, "" + voices(id));
-check("a bass stays monophonic on purpose (SYN Fat Bass)", voices(257) === 1);
-check("so does a lead (SYN Sync Lead)", voices(321) === 1);
+for (const [id, name] of [[191, "Laser"]]) check(`${name} plays overlapping hits`, voices(id) === 3, "" + voices(id));
+check("a bass stays monophonic on purpose (SYN Fat Bass)", voices(132) === 1);
+check("so does a lead (SYN Sync Lead)", voices(169) === 1);
 process.exit(fail ? 1 : 0);

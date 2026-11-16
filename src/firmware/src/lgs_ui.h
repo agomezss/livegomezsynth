@@ -743,7 +743,7 @@ static void kb_note(uint32_t on, uint32_t key, uint32_t vel)
     if (key >= 128u) return;
     if (on) {
         n = (uint32_t)clampi((int32_t)key + (kb_ext ? 0 : oct_shift * 12), 0, 127);
-        m = mode == M_PATCH ? 1u : ov == OV_POP && mode == M_EDIT ? 1u << edit_line : route_mask(&cur, solo, n);   /* the popup auditions on the edited line, whatever its range */
+        m = mode == M_PATCH ? 1u : ov == OV_POP && mode == M_EDIT ? 1u << edit_line : route_mask(&cur, mode == M_EDIT && edit_line >= 2u ? edit_line - 1u : solo, n);   /* the popup auditions on the edited line, whatever its range; editing a solo line plays that solo on the whole keyboard */
         if (held_mask[key]) return;
         held_mask[key] = (uint8_t)m;
         for (p = 0; p < NPART; p++)
@@ -929,7 +929,7 @@ static void buttons_poll(void)
     if ((e >> BTN_SEQ & 1u) && ov == OV_NONE) {            /* the screen theme, kept across power cycles */
         static char th_msg[32];
         theme = (uint8_t)((theme + 1u) % NTHEME);
-        db.theme = theme;
+        db.theme = (db.theme & ~0xFFu) | theme;
         save_request();
         th_msg[0] = 0;
         scat(th_msg, "Theme: "); scat(th_msg, THEME_NAME[theme]); scat(th_msg, " (saved)");

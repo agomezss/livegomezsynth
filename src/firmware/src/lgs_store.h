@@ -16,10 +16,30 @@ static void sound_sanitize(sound_t *s)
     }
 }
 
+static uint16_t id_remap(uint32_t id) { return id && id < LGS_IDMAP_N ? LGS_IDMAP[id] : 0u; }
+
+static void sound_remap(sound_t *s)
+{
+    uint16_t n = id_remap(s->patch);
+    if (n) s->patch = n; else memset(s, 0, sizeof *s);              /* a removed patch leaves its slot empty */
+}
+
+/* An image written before the ids were renumbered (generation 0, up to 0.1.12): every patch id goes through LGS_IDMAP, once. */
+static void db_migrate(void)
+{
+    uint32_t i, l, p;
+    if ((db.theme >> 8 & 0xFFu) != 0u) return;
+    for (i = 0; i < LGS_NFAV; i++) sound_remap(&db.fav[i]);
+    for (p = 0; p < LGS_NPERF; p++)
+        for (l = 0; l < LGS_NLINE; l++) sound_remap(&db.perf[p].line[l].s);
+    db.theme = (db.theme & 0xFFu) | LGS_ID_GEN << 8;
+    db_dirty = 1;
+}
+
 static void db_sanitize(void)
 {
     uint32_t i, l;
-    if (db.theme >= NTHEME) db.theme = 0;
+    if ((db.theme & 0xFFu) >= NTHEME) db.theme &= ~0xFFu;
     for (i = 0; i < LGS_NFAV; i++) sound_sanitize(&db.fav[i]);
     for (i = 0; i < LGS_NPERF; i++)
         for (l = 0; l < LGS_NLINE; l++) {
@@ -44,6 +64,7 @@ static int lgs_store_load(void)
 {
     if (store_stage_len != sizeof db || !ab_image_ok(&store_io, store_stage, sizeof db)) return 0;
     memcpy(&db, store_stage, sizeof db);
+    db_migrate();
     db_sanitize();
     return 1;
 }
@@ -62,6 +83,7 @@ static uint8_t store_scratch[sizeof db] __attribute__((aligned(4)));
 static int lgs_store_load(void)
 {
     if (!flash_ok || !ab_load(&store_io, &store_st, (uint8_t *)&db, store_scratch, sizeof db)) return 0;
+    db_migrate();
     db_sanitize();
     return 1;
 }

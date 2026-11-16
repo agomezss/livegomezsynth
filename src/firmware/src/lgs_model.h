@@ -8,6 +8,7 @@
 #define LGS_NPERF 112u                          /* 8 banks x 14 combos */
 #define LGS_NLINE 4u
 #define NTHEME 8u                                /* screen themes (lgs_ui.h) */
+#define LGS_ID_GEN 1u                            /* numbering of the patch ids; db.theme bits 8-15 hold the generation an image was written in (0 = the first numbering, mapped by LGS_IDMAP) */
 #define LGS_NFX 11u                             /* P_CHO_RATE .. P_REV_MIX */
 
 /* K1-K4 of a sound: which patch byte, its name, and how far it goes (value stored = native value - min) */
@@ -106,7 +107,7 @@ static void patch_build(patch_t *np, const lgs_patch_t *cp)
         for (i = 0; i < PATCH_NAME && pr->name[i]; i++) np->v[NPARAM + i] = (uint8_t)pr->name[i];
     } else if (cp->data >= NFACT) patch_from_factory(np, &FACTORY_LGS[cp->data - NFACT]);
     else patch_from_factory(np, &FACTORY[cp->data]);
-    if (cp->id == 353u || cp->id == 356u || cp->id == 359u) np->v[P_MODE] = M_POLY;     /* one-shot effects (Reso Zap, Laser, Thump): fast hits overlap */
+    if (!memcmp(cp->name, "SYN Laser", 10)) np->v[P_MODE] = M_POLY;     /* a one-shot effect: fast hits overlap */
 }
 
 static uint32_t sound_engine(const sound_t *s) { const lgs_patch_t *cp = pat_by_id(s->patch); return cp ? cp->engine : 0u; }
@@ -196,6 +197,7 @@ static void db_defaults(void)
     memset(&db, 0, sizeof db);
     db.magic = LGS_DB_MAGIC;
     db.ver = LGS_DB_VER;
+    db.theme = LGS_ID_GEN << 8;
     for (i = 0; i < sizeof FAV_FACTORY; i++) sound_defaults(&db.fav[i], pid_of(FAV_FACTORY[i]));
     /* A-1: bass below, brass above, a lead and a pad as the two solos */
     line_set(&db.perf[0].line[0], 6, 1, 3);

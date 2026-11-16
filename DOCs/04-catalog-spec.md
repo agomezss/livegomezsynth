@@ -42,7 +42,7 @@ The `IDEA.md target` column is the owner's original suggestion (279 names + Drum
 | 13 SFX            | 6                | rise, fall, impact, laser, noise burst, tape stop                                       |
 | 14 Complex        | 8                | arp pad/lead/pluck/seq/chord presets (SYN/SVF/PLY with ARP params)                      |
 | 15 Drums          | 5 kits           | the 5 SMKSYNTH JIANT kits (D-46)                                                        |
-| (16 ICONIC) | removed (D-66) | the category of iconic-song timbres is gone; after a review of the whole list the ones kept live in the categories above (ids 449.. are no longer inside a category's block) |
+| (16 ICONIC) | removed (D-66) | the category of iconic-song timbres is gone; after a review of the whole list the ones kept live in the categories above; the ids are sequential in category order (D-68) |
 
 Total live core: ~105 patches + 5 kits. Every engine (SYN, FM, FM2, SP, ORG, SVF, PLY, LAD, DRM) must appear in at
 least 4 patches, and each category with more than one engine shows variations distinguished by prefix. Header counts

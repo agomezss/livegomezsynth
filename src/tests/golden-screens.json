@@ -1,11 +1,11 @@
 {
- "1-patch": "bca48fc6",
- "1b-patch-fader": "1ccb3d55",
- "2-perform": "90ff1757",
- "2b-perform-solo": "d180a70e",
- "3-edit-p1": "5d5f96d1",
- "3b-edit-p2": "760c3541",
- "4-popup": "b6dab4fe",
+ "1-patch": "b31303d4",
+ "1b-patch-fader": "ee8de597",
+ "2-perform": "1a67d806",
+ "2b-perform-solo": "48eda25b",
+ "3-edit-p1": "7e8a97cd",
+ "3b-edit-p2": "b531089c",
+ "4-popup": "52984a9e",
  "5-save-dialog": "57f88cb0",
  "6-exit": "235fca75",
  "7-fav-save": "d61f823e"
